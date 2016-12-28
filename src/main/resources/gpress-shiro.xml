@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<property name="securityManager" ref="securityManager" />
+		<property name="loginUrl" value="/main/login.do" />
+		<property name="successUrl" value="/main/mainpage.do" />
+		<property name="unauthorizedUrl" value="/main/login.do" />
+		<property name="filterChainDefinitions">
+			<value>
+				/main/login.do = anon
+				/main/authenticate.do = anon
+				/main/mainpage.do = authc
+				/dist/** = anon
+				/bootstrap/** = anon
+				/fonts/** = anon
+				/pages/** = anon
+				/plugins/** = anon
+				/test/** = anon
+				/dev/** = anon
+				/** = authc
+			</value>
+		</property>
+	</bean>
+
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="defaultRealm" />
+		<property name="rememberMeManager" ref="rememberMeManager" />
+	</bean>
+	
+	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+		<property name="cipherKey" value="kPH+bIxk5D2deZiIxcaaaA=="/>
+	</bean>
+	
+	<bean id="gpMatcher" class="com.gp.web.shiro.CredMatcher"/>
+	
+	<bean id="defaultRealm" class="com.gp.web.shiro.AuthorizeRealm" >
+		<property name="credentialsMatcher" ref="gpMatcher"/>
+	</bean>
+		
+</beans>
