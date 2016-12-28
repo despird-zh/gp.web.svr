@@ -29,7 +29,14 @@
 			<artifactId>gp-search</artifactId>
 			<version>0.1</version>
 		</dependency-->
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.gp</groupId>
 			<artifactId>gp-svc</artifactId>
