@@ -4,11 +4,11 @@
  */
 package com.gp.web.shiro;
 
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -24,7 +24,7 @@ import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.joda.time.DateTimeZone;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,7 +145,7 @@ public class AuthorizeRealm extends AuthorizingRealm {
         }
         principal.setLocale(locale);
          
- 		principal.setTimeZone(DateTimeZone.forTimeZone(TimeZone.getTimeZone(uinfo.getTimeZone())));
+ 		principal.setTimeZone(ZoneId.of(uinfo.getTimeZone()));
 		
 		logger.info("Found user with username [" + authtoken.getUsername() + "]");
 
