@@ -18,7 +18,6 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 
 import com.gp.web.socket.CustSubProtocolHandler;
 
-@Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfigurer extends WebSocketMessageBrokerConfigurationSupport implements WebSocketMessageBrokerConfigurer {
   

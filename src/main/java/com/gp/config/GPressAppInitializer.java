@@ -12,6 +12,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
+import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 
 import java.io.File;
@@ -66,27 +67,32 @@ public class GPressAppInitializer implements WebApplicationInitializer {
         servletContext.addListener(new RequestContextListener());
 
         // Add encoding filter
-        FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter",  
+        FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter",  
         	      new CharacterEncodingFilter());
-        	   fr.setInitParameter("encoding", "UTF-8");
-        	   fr.setInitParameter("forceEncoding", "true");
-        	   fr.addMappingForUrlPatterns(null, true, "/*");
-        	   
+        encodingFilter.setInitParameter("encoding", "UTF-8");
+        encodingFilter.setInitParameter("forceEncoding", "true");
+        encodingFilter.addMappingForUrlPatterns(null, true, "/*");
+
+        // Add service filter
+        FilterRegistration.Dynamic serviceFilter = servletContext.addFilter("serviceFilter",  
+         	      new ServiceFilter());
+        serviceFilter.addMappingForUrlPatterns(null, true, "/gp_svc/*"); 
+        
         // Add security shiro filter
-        FilterRegistration.Dynamic fr1 = servletContext.addFilter("shiroFilter",  
+        FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter",  
          	      new DelegatingFilterProxy());
-         	   fr1.setInitParameter("targetFilterLifecycle", "true");
-         	   fr1.addMappingForUrlPatterns(null, true, "/*"); 
+        shiroFilter.setInitParameter("targetFilterLifecycle", "true");
+        shiroFilter.addMappingForUrlPatterns(null, true, "/*"); 
          	   
         // Add image cache filter
-        FilterRegistration.Dynamic fr2 = servletContext.addFilter("GroupressImageFilter",  
+        FilterRegistration.Dynamic imageFilter = servletContext.addFilter("GroupressImageFilter",  
               	      new ImageFilter());
-              	   fr2.addMappingForUrlPatterns(null, true, "/img_cache/*"); 
-              	   
+        imageFilter.addMappingForUrlPatterns(null, true, "/img_cache/*"); 
+        
         // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
         webMvcContext.register(WebMVCConfigurer.class);
-        
+        webMvcContext.register(WebSocketConfigurer.class);
         /***********************************************************************
          * Add the SpringMVC DispatcherServlet
          ***********************************************************************/
