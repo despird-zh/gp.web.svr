@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import com.gp.validate.ValidateMessage;
 
 /**
@@ -41,8 +42,9 @@ public class ActionResult  extends BaseResult{
 		map.put("message", this.message);
 		map.put("data", data);
 		map.put("state", super.getState());
-		map.put("detailmsgs", detailmsgs);
-		
+		if(CollectionUtils.isNotEmpty(this.detailmsgs)){
+			map.put("detailmsgs", detailmsgs);
+		}
 		return map;
 	}
 
