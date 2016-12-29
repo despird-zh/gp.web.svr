@@ -1,8 +1,12 @@
 package com.gp.web.util;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.ArrayUtils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -35,7 +39,7 @@ public class JwtTokenUtils {
         	
             if(MapUtils.isNotEmpty(payload.getClaims())){
             	
-            	for(Map.Entry<String, Object> entry: payload.getClaims().entrySet()){
+            	for(Map.Entry<String, String> entry: payload.getClaims().entrySet()){
             		build.withClaim(entry.getKey(), entry.getValue());
             	}
             }
@@ -63,7 +67,7 @@ public class JwtTokenUtils {
     	    .withJWTId(payload.getJwtId());
     	    if(MapUtils.isNotEmpty(payload.getClaims())){
             	
-            	for(Map.Entry<String, Object> entry: payload.getClaims().entrySet()){
+            	for(Map.Entry<String, String> entry: payload.getClaims().entrySet()){
             		verification.withClaim(entry.getKey(), entry.getValue());
             	}
             }
@@ -90,5 +94,41 @@ public class JwtTokenUtils {
     	
     	JWT decode = JWT.decode(jwtToken);
     	return decode.getId();
+    }
+    
+    /**
+     * get the payload of token
+     * 
+     * @param secret
+     * @param jwtToken
+     * 
+     * @return String the jwt id
+     **/
+    public static JWTPayload parsePayload(String jwtToken, String ...claimKeys){
+    	
+    	JWT decode = JWT.decode(jwtToken);
+    	
+    	JWTPayload payload = new JWTPayload();
+    	
+    	payload.setIssuer(decode.getIssuer());
+    	List<String> audiences = decode.getAudience();
+    	
+    	if(CollectionUtils.isNotEmpty(audiences))
+    		payload.setAudience(audiences.get(0));
+    	
+    	payload.setSubject(decode.getSubject());
+    	payload.setIssueAt(decode.getIssuedAt());
+    	payload.setExpireTime(decode.getExpiresAt());
+    	payload.setNotBefore(decode.getNotBefore());
+    	
+    	if(ArrayUtils.isNotEmpty(claimKeys)){
+    		Map<String, String> map = new HashMap<String, String>();
+    		for(String key : claimKeys){
+    			map.put(key, decode.getClaim(key).asString());
+    		}
+    		payload.setClaims(map);
+    	}
+    	
+    	return payload;
     }
 }
