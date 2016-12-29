@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ServiceFilter implements Filter{
 
+	public static final String AUTH_TOKEN = "auth-token";
+	
 	@Override
 	public void destroy() {
 		// ignore
@@ -21,7 +23,7 @@ public class ServiceFilter implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
-		httpRequest.getHeader("");
+		String token = httpRequest.getHeader("auth-token");
 		
 		//request.get
 		

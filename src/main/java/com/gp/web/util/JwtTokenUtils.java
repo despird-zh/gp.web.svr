@@ -78,4 +78,17 @@ public class JwtTokenUtils {
     	
     } 
 
+    /**
+     * get the jwt id of token
+     * 
+     * @param secret
+     * @param jwtToken
+     * 
+     * @return String the jwt id
+     **/
+    public static String parseJwtId(String secret, String jwtToken){
+    	
+    	JWT decode = JWT.decode(jwtToken);
+    	return decode.getId();
+    }
 }
