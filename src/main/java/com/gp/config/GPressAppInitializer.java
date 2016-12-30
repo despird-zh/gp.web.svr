@@ -2,6 +2,10 @@ package com.gp.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
@@ -30,23 +34,15 @@ import javax.servlet.ServletRegistration;
  * @author gary diao
  * @version 0.1 2015-12-10
  **/
-public class GPressAppInitializer implements WebApplicationInitializer {
+public class GPressAppInitializer implements ServletContextInitializer {
 
+	Logger LOGGER = LoggerFactory.getLogger(GPressAppInitializer.class);
+	
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-
-        System.out.println("Initializing Application for " + servletContext.getServerInfo());
-         
-        String prefix =  servletContext.getRealPath("/");     
-        String filepath = "WEB-INF"
-        		+ System.getProperty("file.separator")
-        		+ "classes"+System.getProperty("file.separator")
-        		+ "log4j2.xml";
         
-        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
-        File file = new File(prefix + filepath);
-        loggerCtx.setConfigLocation(file.toURI());
-        
+    	LOGGER.debug("Start weaving the web context...");
+        // the web context
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(RootConfigurer.class);
         rootContext.register(ServiceConfigurer.class);
@@ -125,6 +121,7 @@ public class GPressAppInitializer implements WebApplicationInitializer {
         servlet2.setMultipartConfig( getMultiPartConfig() );
         servlet2.setLoadOnStartup(3);
         
+        LOGGER.debug("End weaving the web context...");
     }
     
     // Define the MultipartConfigElement for file transfer servlet
