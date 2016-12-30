@@ -147,6 +147,7 @@ public class ServiceFilter implements Filter{
 			dispatcher.forward(request, response);
 		} catch (ServletException | IOException e) {
 			
+			LOGGER.error("fail to forward the request", e);
 			// ignore
 		}
 	}
