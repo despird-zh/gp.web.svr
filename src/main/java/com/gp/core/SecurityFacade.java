@@ -1,7 +1,9 @@
 package com.gp.core;
 
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.JwtPayload;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
@@ -30,16 +33,20 @@ import com.gp.exception.ServiceException;
 import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.dao.info.SourceInfo;
+import com.gp.dao.info.SysOptionInfo;
+import com.gp.dao.info.TokenInfo;
 import com.gp.info.KVPair;
 import com.gp.dao.info.UserInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
 import com.gp.svc.SourceService;
+import com.gp.svc.SystemService;
 import com.gp.svc.SecurityService;
 import com.gp.svc.info.UserExtInfo;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.util.HashUtils;
+import com.gp.util.JwtTokenUtils;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 
@@ -60,12 +67,18 @@ public class SecurityFacade {
 	
 	private static CommonService idservice;
 	
+	private static SystemService systemservice;
+	
 	@Autowired
-	private SecurityFacade(SecurityService securityservice, CommonService idservice,SourceService masterservice){
+	private SecurityFacade(SecurityService securityservice, 
+			CommonService idservice,
+			SourceService masterservice,
+			SystemService systemservice){
 		
 		SecurityFacade.securityservice = securityservice;
 		SecurityFacade.idservice = idservice;
 		SecurityFacade.masterservice = masterservice;
+		SecurityFacade.systemservice = systemservice;
 	}
 	
 	public static UserInfo findAccountLite(AccessPoint accesspoint, 
@@ -488,5 +501,121 @@ public class SecurityFacade {
 			ContextHelper.handleContext();
 		}
 		return result;
+	}
+	
+	/**
+	 * Find a principal from database 
+	 **/
+	public static Principal findPrincipal(AccessPoint accesspoint,
+			InfoId<Long> userId,
+			String account, String type) throws CoreException{
+		
+		Principal principal = null;
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(GroupUsers.PSEUDO_USER, accesspoint)){
+			UserInfo uinfo = null;
+			
+			svcctx.beginOperation(Operations.FIND_ACCOUNT.name(),  null, 
+					new KVPair<String, String>("account",account));
+			
+			uinfo = securityservice.getAccountLite(svcctx, userId, account, type);
+			
+			principal = new Principal(uinfo.getInfoId());
+			principal.setSourceId(uinfo.getSourceId());
+			principal.setAccount(account);
+	        principal.setEmail(uinfo.getEmail());
+	        principal.setPassword(uinfo.getPassword());
+	        
+	        // zh_CN / en_US / fr_FR
+	        String[] localeStr = StringUtils.split(uinfo.getLanguage(), "_");
+	        Locale locale = Locale.ENGLISH;
+	        if(localeStr.length == 2){
+	        	locale = new Locale(localeStr[0], localeStr[1]);
+	        }
+	        principal.setLocale(locale);
+	         
+	 		principal.setTimeZone(ZoneId.of(uinfo.getTimeZone()));
+	 		
+		} catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.account");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return principal;
+		
+	}
+	
+	/**
+	 * find a token by token id 
+	 **/
+	public static TokenInfo findToken(AccessPoint accesspoint,
+			InfoId<Long> tokenId) throws CoreException{
+		
+		TokenInfo token = null;
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(GroupUsers.PSEUDO_USER, accesspoint)){
+			
+			svcctx.beginOperation(Operations.FIND_TOKEN.name(),  null,
+					new KVPair<String, String>("token_id", String.valueOf(tokenId.getId())));
+			
+			token = securityservice.getToken(svcctx, tokenId);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.token");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return token;
+	}
+	
+	/**
+	 * create a new token for JWT payload
+	 * @param payload the JWT payload
+	 * @return String the JWT token string 
+	 **/
+	public static String newToken(AccessPoint accesspoint, JwtPayload payload) 
+			throws CoreException{
+		
+		String token = null;
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(GroupUsers.PSEUDO_USER, accesspoint)){
+			
+			svcctx.beginOperation(Operations.NEW_TOKEN.name(),  null,
+					payload);
+			
+			SysOptionInfo option = systemservice.getOption(svcctx, SystemOptions.SECURITY_JWT_SECRET);
+			
+			
+			InfoId<Long> tokenId = idservice.generateId(IdKey.TOKEN, Long.class);
+			TokenInfo tokenInfo = new TokenInfo();
+			
+			tokenInfo.setInfoId(tokenId);
+			payload.setJwtId(String.valueOf(tokenId.getId()));
+			
+			tokenInfo.setAudience(payload.getAudience());
+			tokenInfo.setIssuer(payload.getIssuer());
+			tokenInfo.setSubject(payload.getSubject());
+			tokenInfo.setIssueAt(payload.getIssueAt());
+			tokenInfo.setExpireTime(payload.getExpireTime());
+			tokenInfo.setNotBefore(payload.getNotBefore());
+			
+			svcctx.setTraceInfo(tokenInfo);
+			
+			token = JwtTokenUtils.signHS256(option.getOptionKey(), payload);
+			tokenInfo.setJwtToken(token);
+			
+			securityservice.newToken(svcctx, tokenInfo);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.find.token");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return token;
 	}
 }

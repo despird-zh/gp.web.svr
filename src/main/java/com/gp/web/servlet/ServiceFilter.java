@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -14,8 +15,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
+import com.gp.audit.AccessPoint;
+import com.gp.common.JwtPayload;
 import com.gp.common.SpringContextUtil;
+import com.gp.core.SecurityFacade;
+import com.gp.exception.CoreException;
 import com.gp.svc.SystemService;
+import com.gp.web.BaseController;
+import com.gp.util.JwtTokenUtils;
 
 public class ServiceFilter implements Filter{
 
@@ -32,8 +39,8 @@ public class ServiceFilter implements Filter{
 		
 		NEED_AUTHC,
 		FAIL_AUTHC,
-		WRONG_TOKEN,
-		;
+		BAD_TOKEN,
+		UNKNOWN;
 	}
 	
 	@Autowired
@@ -53,20 +60,40 @@ public class ServiceFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
+		
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
-		String token = httpRequest.getHeader("auth-token");
+		String token = httpRequest.getHeader(AUTH_TOKEN);
+		RequestState state = RequestState.UNKNOWN;
 		
 		if(StringUtils.isBlank(token)){
+			// don't have token, forward request to authenticate it
+			state = RequestState.NEED_AUTHC;
+		}else{
+			JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
+			AccessPoint accesspoint = BaseController.getAccessPoint(httpRequest);
 			
 		}
 		
 	}
 
-	private void trap(ServletRequest request, ServletResponse response){
-		
+	/**
+	 * forward the request as per the state of request and token
+	 * @param request
+	 * @param response
+	 * @param state 
+	 * 
+	 **/
+	private void forward(ServletRequest request, ServletResponse response, RequestState state){
+		RequestDispatcher dispatcher = null;
 		try {
-			filterConfig.getServletContext().getRequestDispatcher("/gp_svc/trap.do").
-			forward(request, response);
+			if(RequestState.NEED_AUTHC == state)
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/authenticate.do");
+			else if(RequestState.BAD_TOKEN == state)
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/bad_token.do");
+			else{
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/trap.do");
+			}
+			dispatcher.forward(request, response);
 		} catch (ServletException | IOException e) {
 			
 			// ignore
