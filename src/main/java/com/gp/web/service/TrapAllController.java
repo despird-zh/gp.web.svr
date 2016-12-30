@@ -11,11 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.exception.CoreException;
+import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 
 @Controller
 @RequestMapping("/gp_svc")
-public class TrapAllController {
+public class TrapAllController extends BaseController{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
 	
@@ -28,14 +29,16 @@ public class TrapAllController {
 	@RequestMapping("authenticate.do")
 	public ModelAndView doAuthenticate(HttpServletRequest request){	
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+		ModelAndView mav = super.getJsonModelView();
 		LOGGER.debug("------", accesspoint.getApp());
+		ActionResult result = new ActionResult();
 //		try{
 //			Principal SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
 //			
 //		}catch(CoreException ce){
 //			
 //		}
-		return null;
+		return mav.addAllObjects(result.asMap());
 	}
 	
 	@RequestMapping("bad_token")

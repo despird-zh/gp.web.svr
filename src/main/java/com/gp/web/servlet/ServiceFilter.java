@@ -79,9 +79,10 @@ public class ServiceFilter implements Filter{
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
 		RequestState state = RequestState.UNKNOWN;
-		if(null != request.getAttribute(FILTER_STATE))
+		if(null != request.getAttribute(FILTER_STATE)){
 			filterChain.doFilter(request, response);
-			
+			return;
+		}
 		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token)){
 			// don't have token, forward request to authenticate it
