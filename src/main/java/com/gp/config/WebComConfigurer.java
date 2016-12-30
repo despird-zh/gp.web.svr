@@ -72,7 +72,7 @@ public class WebComConfigurer {
 		registrationBean.setName("EncodingFilter");
         registrationBean.setFilter(encodeingFilter);
         List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/*");
+        urlPatterns.add("*.do");
         registrationBean.addInitParameter("encoding", "UTF-8");
         registrationBean.addInitParameter("forceEncoding", "true");
         registrationBean.setUrlPatterns(urlPatterns);
@@ -96,9 +96,9 @@ public class WebComConfigurer {
 	@Bean
 	public FilterRegistrationBean shiroFilterFilterBean() {
 		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		registrationBean.setName("ShiroFilter");
+		registrationBean.setName("shiroFilter");
 		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
-		serviceFilter.setTargetBeanName("ShiroFilter");
+		serviceFilter.setTargetBeanName("shiroFilter");
         registrationBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
         urlPatterns.add("/*");

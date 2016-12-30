@@ -2,6 +2,8 @@ package com.gp.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,15 +17,18 @@ import com.gp.web.BaseController;
 @RequestMapping("/gp_svc")
 public class TrapAllController {
 	
+	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
+	
 	@RequestMapping("trap")
 	public ModelAndView doTrap(HttpServletRequest request){	
 		
 		return null;
 	}
 	
-	@RequestMapping("authenticate")
+	@RequestMapping("authenticate.do")
 	public ModelAndView doAuthenticate(HttpServletRequest request){	
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
+		LOGGER.debug("------", accesspoint.getApp());
 //		try{
 //			Principal SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
 //			

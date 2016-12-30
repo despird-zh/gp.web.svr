@@ -36,6 +36,8 @@ public class ServiceFilter implements Filter{
 	
 	public static final String AUTH_TOKEN = "auth-token";
 	
+	public static final String FILTER_STATE = "_svc_filter_state";
+	
 	private FilterConfig filterConfig = null;
 	
 	public static final String FILTER_PREFIX = "/gp_svc";
@@ -51,6 +53,7 @@ public class ServiceFilter implements Filter{
 		GHOST_TOKEN,
 		INVALID_TOKEN,
 		VALID_TOKEN,
+		NEED_FORWARD,
 		UNKNOWN;
 	}
 	
@@ -74,8 +77,12 @@ public class ServiceFilter implements Filter{
 		
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String token = httpRequest.getHeader(AUTH_TOKEN);
-		RequestState state = RequestState.UNKNOWN;
 		
+		RequestState state = RequestState.UNKNOWN;
+		if(null != request.getAttribute(FILTER_STATE))
+			filterChain.doFilter(request, response);
+			
+		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token)){
 			// don't have token, forward request to authenticate it
 			state = RequestState.NEED_AUTHC;
@@ -102,6 +109,8 @@ public class ServiceFilter implements Filter{
 						}
 						else{
 							state = RequestState.VALID_TOKEN;
+							// attach the state to request
+							request.setAttribute(FILTER_STATE, state);
 							// a valid token, continue the further process
 							filterChain.doFilter(request, response);
 						}
@@ -114,6 +123,7 @@ public class ServiceFilter implements Filter{
 		}
 		// trap all the invalid token request
 		if(state != RequestState.VALID_TOKEN){
+			request.setAttribute(FILTER_STATE, state);
 			forward(request, response, state);
 		}
 	}
