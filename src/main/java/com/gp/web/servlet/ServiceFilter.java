@@ -59,8 +59,8 @@ public class ServiceFilter implements Filter{
 	
 	public ServiceFilter(){
 		// here let autowired annotation work
-		AutowireCapableBeanFactory awfactory = SpringContextUtil.getApplicationContext().getAutowireCapableBeanFactory();
-		awfactory.autowireBean(this);
+		//AutowireCapableBeanFactory awfactory = SpringContextUtil.getApplicationContext().getAutowireCapableBeanFactory();
+		//awfactory.autowireBean(this);
 	}
 	
 	@Override

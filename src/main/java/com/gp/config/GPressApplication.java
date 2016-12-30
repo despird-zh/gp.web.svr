@@ -8,17 +8,26 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Import;
 
 import com.gp.common.GeneralConfig;
 
 @SpringBootApplication
-public class GPressApplication{
+@Import({ RootConfigurer.class, ServiceConfigurer.class, WebComConfigurer.class })
+public class GPressApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
 		initialLogger();
-        SpringApplication.run(new Class[] { GPressApplication.class, GPressAppInitializer.class }, args);
+        SpringApplication.run(new Class[] { GPressApplication.class}, args);
     }
 
+	@Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+      return application.sources(GPressApplication.class);
+    }
+	
 	/**
 	 * Initial the logger setting 
 	 **/
