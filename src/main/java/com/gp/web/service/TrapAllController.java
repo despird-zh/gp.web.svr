@@ -25,21 +25,7 @@ public class TrapAllController extends BaseController{
 		
 		return null;
 	}
-	
-	@RequestMapping("authenticate.do")
-	public ModelAndView doAuthenticate(HttpServletRequest request){	
-		AccessPoint accesspoint = BaseController.getAccessPoint(request);
-		ModelAndView mav = super.getJsonModelView();
-		LOGGER.debug("------", accesspoint.getApp());
-		ActionResult result = new ActionResult();
-//		try{
-//			Principal SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
-//			
-//		}catch(CoreException ce){
-//			
-//		}
-		return mav.addAllObjects(result.asMap());
-	}
+
 	
 	@RequestMapping("bad_token")
 	public ModelAndView doBadToken(HttpServletRequest request){	
