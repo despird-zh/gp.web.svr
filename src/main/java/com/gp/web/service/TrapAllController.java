@@ -20,16 +20,33 @@ public class TrapAllController extends BaseController{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
 	
+	/**
+	 * trap all the illegal process 
+	 **/
 	@RequestMapping("trap")
 	public ModelAndView doTrap(HttpServletRequest request){	
 		
-		return null;
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		result.setState(ActionResult.FAIL);
+		result.setMessage(this.getMessage("excp.invalid.token"));
+		
+		return mav.addAllObjects(result.asMap());
 	}
 
-	
+	/**
+	 * Process the bad token request. 
+	 **/
 	@RequestMapping("bad_token")
 	public ModelAndView doBadToken(HttpServletRequest request){	
 		
-		return null;
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		result.setState(ActionResult.FAIL);
+		result.setMessage(this.getMessage("excp.invalid.token"));
+		
+		return mav.addAllObjects(result.asMap());
 	}
 }
