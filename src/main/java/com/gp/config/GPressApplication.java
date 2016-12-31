@@ -14,15 +14,28 @@ import org.springframework.context.annotation.Import;
 
 import com.gp.common.GeneralConfig;
 
+/**
+ * The the start point the Spring-Boot Applicaiton
+ * 
+ * @author gary diao
+ * 
+ * @version 0.1 2016-12-20 
+ **/
 @SpringBootApplication
 @Import({ RootConfigurer.class, ServiceConfigurer.class, WebComConfigurer.class })
 public class GPressApplication extends SpringBootServletInitializer{
 
+	/**
+	 * The main entrance of applicaiton 
+	 **/
 	public static void main(String[] args) {
 		initialLogger();
         SpringApplication.run(new Class[] { GPressApplication.class}, args);
     }
 
+	/**
+	 * configure the application 
+	 **/
 	@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
       return application.sources(GPressApplication.class);
