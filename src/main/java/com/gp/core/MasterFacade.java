@@ -31,7 +31,10 @@ public class MasterFacade {
 	private MasterFacade(SystemService systemservice){
 		MasterFacade.systemservice = systemservice;
 	}
-		
+	
+	/**
+	 * Save the system option setting 
+	 **/
 	public static Boolean saveSystemOption(AccessPoint accesspoint,
 			Principal principal,
 			String optionKey,
@@ -56,6 +59,9 @@ public class MasterFacade {
 		
 	}
 	
+	/**
+	 * find the system options by group key 
+	 **/
 	public static List<SysOptionInfo> findSystemOptions(AccessPoint accesspoint,
 			Principal principal,
 			String groupKey)throws CoreException{
@@ -83,6 +89,40 @@ public class MasterFacade {
 		return result;
 	}
 	
+	/**
+	 * find the system options by group key 
+	 **/
+	public static SysOptionInfo findSystemOption(AccessPoint accesspoint,
+			Principal principal,
+			String optionKey)throws CoreException{
+			
+		SysOptionInfo result = null;		
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_SYSOPTIONS)){
+			
+			String[][] parms = new String[][]{
+				{"optkey",optionKey}};	
+				
+			Map<?,?> parmap = ArrayUtils.toMap(parms);			
+			svcctx.addOperationPredicates(parmap);
+
+			// query accounts information
+			result = systemservice.getOption(svcctx, optionKey);
+
+		} catch (Exception e) {
+		
+			ContextHelper.stampContext(e, "excp.find.sysopts");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * find the system option groups 
+	 **/
 	public static List<String> findSystemOptionGroups(AccessPoint accesspoint,
 			Principal principal)throws CoreException{
 		

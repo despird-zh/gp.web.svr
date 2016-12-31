@@ -70,20 +70,19 @@ public class ServiceFilter implements Filter{
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
+		AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
 		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token)){
 			// don't have token, forward request to authenticate it
 			state = RequestState.NEED_AUTHC;
 		}else{
 			JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
-			if(jwtPayload == null){
+			if(!verifyToken(accesspoint, jwtPayload.getJwtId(), token)){
 				// can not parse the payload
 				state = RequestState.BAD_TOKEN;
 				
 			}else{
-				
-				AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
+
 				try{
 					InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(NumberUtils.toLong(jwtPayload.getJwtId()));
 					TokenInfo tokenInfo = SecurityFacade.findToken(accesspoint, tokenId);
@@ -149,6 +148,21 @@ public class ServiceFilter implements Filter{
 			
 			LOGGER.error("fail to forward the request", e);
 			// ignore
+		}
+	}
+	
+	private boolean verifyToken(AccessPoint accesspoint, String tokenId, String token){
+		
+		InfoId<Long> tokenid = IdKey.TOKEN.getInfoId(NumberUtils.toLong(tokenId));
+		try {
+			TokenInfo tkinfo = SecurityFacade.findToken(accesspoint, tokenid);
+			
+			return StringUtils.equals(tkinfo.getJwtToken(), token);
+			
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
