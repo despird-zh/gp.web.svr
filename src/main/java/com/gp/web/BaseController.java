@@ -70,12 +70,7 @@ public abstract class BaseController extends MultiActionController implements Me
 	 **/
 	public static AccessPoint getAccessPoint(HttpServletRequest request){
 		
-		String client = request.getHeader("User-Agent");
-		String host = CustomWebUtils.getIpAddr(request);
-		String app = ConfigSettingUtils.getSystemOption(SystemOptions.SYSTEM_APP);
-		String version = ConfigSettingUtils.getSystemOption(SystemOptions.SYSTEM_VERSION);
-		
-		return new AccessPoint(client, host, app, version);
+		return CustomWebUtils.getAccessPoint(request);
 	}
 	
 	/**

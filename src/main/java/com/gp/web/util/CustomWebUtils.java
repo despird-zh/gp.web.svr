@@ -210,6 +210,10 @@ public abstract class CustomWebUtils extends WebUtils{
 	    }
 	}
 	
+	/**
+	 * Get the access point object for the request
+	 * @param request the request from client 
+	 **/
 	public static AccessPoint getAccessPoint(HttpServletRequest  request){
 		
 		String client = request.getHeader("User-Agent");
@@ -235,4 +239,5 @@ public abstract class CustomWebUtils extends WebUtils{
         }
         return ip;
     }
+
 }

@@ -15,19 +15,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
-import com.gp.common.SpringContextUtil;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.svc.SystemService;
-import com.gp.web.BaseController;
+import com.gp.web.util.CustomWebUtils;
 import com.gp.util.JwtTokenUtils;
 
 public class ServiceFilter implements Filter{
@@ -56,16 +51,7 @@ public class ServiceFilter implements Filter{
 		NEED_FORWARD,
 		UNKNOWN;
 	}
-	
-	@Autowired
-	SystemService systemsvc;
-	
-	public ServiceFilter(){
-		// here let autowired annotation work
-		//AutowireCapableBeanFactory awfactory = SpringContextUtil.getApplicationContext().getAutowireCapableBeanFactory();
-		//awfactory.autowireBean(this);
-	}
-	
+
 	@Override
 	public void destroy() {
 		// ignore
@@ -80,9 +66,11 @@ public class ServiceFilter implements Filter{
 		
 		RequestState state = RequestState.UNKNOWN;
 		if(null != request.getAttribute(FILTER_STATE)){
+			// if the request has been attached filter state, we just let it go to further process 
 			filterChain.doFilter(request, response);
 			return;
 		}
+		
 		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token)){
 			// don't have token, forward request to authenticate it
@@ -95,7 +83,7 @@ public class ServiceFilter implements Filter{
 				
 			}else{
 				
-				AccessPoint accesspoint = BaseController.getAccessPoint(httpRequest);
+				AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
 				try{
 					InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(NumberUtils.toLong(jwtPayload.getJwtId()));
 					TokenInfo tokenInfo = SecurityFacade.findToken(accesspoint, tokenId);
@@ -114,6 +102,7 @@ public class ServiceFilter implements Filter{
 							request.setAttribute(FILTER_STATE, state);
 							// a valid token, continue the further process
 							filterChain.doFilter(request, response);
+							return;
 						}
 					}
 				}catch(CoreException ce){
@@ -122,11 +111,11 @@ public class ServiceFilter implements Filter{
 				}
 			}
 		}
+		
 		// trap all the invalid token request
-		if(state != RequestState.VALID_TOKEN){
-			request.setAttribute(FILTER_STATE, state);
-			forward(request, response, state);
-		}
+		request.setAttribute(FILTER_STATE, state);
+		forward(request, response, state);
+		
 	}
 
 	/**
