@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.MultipartConfigElement;
 
-import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -22,9 +21,18 @@ import com.gp.web.servlet.ImageFilter;
 import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 
+/**
+ * Weave the web components: filters, listeners, servlets required in the application.
+ * 
+ * @author diaogc
+ * @version 0.1 2016-12-29
+ **/
 @Configuration
 public class WebComConfigurer {
 	
+	/**
+	 * The CoreStart listener 
+	 **/
 	@Bean ServletListenerRegistrationBean<CoreStarter> coreStarterListener(){
 		ServletListenerRegistrationBean<CoreStarter> listenerReg = new ServletListenerRegistrationBean<CoreStarter>();
 		
@@ -32,6 +40,9 @@ public class WebComConfigurer {
 		return listenerReg;
 	}
 	
+	/**
+	 * The Request Context Listener 
+	 **/
 	@Bean ServletListenerRegistrationBean<RequestContextListener> requestContextListener(){
 		ServletListenerRegistrationBean<RequestContextListener> listenerReg = new ServletListenerRegistrationBean<RequestContextListener>();
 		
@@ -40,6 +51,9 @@ public class WebComConfigurer {
 		return listenerReg;
 	}
 	
+	/**
+	 * The dispatcher servlet to handle all the request. 
+	 **/
 	@Bean
 	public DispatcherServlet dispatcherServlet() {
 
@@ -53,103 +67,127 @@ public class WebComConfigurer {
 	    return  servlet;
 	}
 
+	/**
+	 * Register the dispatch servlet 
+	 **/
 	@Bean
 	public ServletRegistrationBean dispatcherServletRegistration() {
 		
-	    ServletRegistrationBean registrationBean = new ServletRegistrationBean(dispatcherServlet());
-	    registrationBean.setName("Groupress");
-	    registrationBean.addInitParameter("throwExceptionIfNoHandlerFound", "true");
-	    registrationBean.addUrlMappings("*.do");
-	    registrationBean.setAsyncSupported(true);
-	    registrationBean.setLoadOnStartup(1);
-	    return registrationBean;
+	    ServletRegistrationBean registerBean = new ServletRegistrationBean(dispatcherServlet());
+	    registerBean.setName("Groupress");
+	    registerBean.addInitParameter("throwExceptionIfNoHandlerFound", "true");
+	    registerBean.addUrlMappings("*.do");
+	    registerBean.setAsyncSupported(true);
+	    registerBean.setLoadOnStartup(1);
+	    return registerBean;
 	}
 	
+	/**
+	 * Register the encoding filter bean 
+	 **/
 	@Bean
 	public FilterRegistrationBean encodingFilterBean() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
 		CharacterEncodingFilter encodeingFilter = new CharacterEncodingFilter();
-		registrationBean.setName("EncodingFilter");
-        registrationBean.setFilter(encodeingFilter);
+		registerBean.setName("EncodingFilter");
+		registerBean.setFilter(encodeingFilter);
         List<String> urlPatterns = new ArrayList<String>();
         urlPatterns.add("*.do");
-        registrationBean.addInitParameter("encoding", "UTF-8");
-        registrationBean.addInitParameter("forceEncoding", "true");
-        registrationBean.setUrlPatterns(urlPatterns);
-        registrationBean.setOrder(1);
-        return registrationBean;
+        registerBean.addInitParameter("encoding", "UTF-8");
+        registerBean.addInitParameter("forceEncoding", "true");
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.setOrder(1);
+        return registerBean;
 	}
 	
+	/**
+	 * Register the service filter to validate all the rpc request 
+	 **/
 	@Bean
 	public FilterRegistrationBean serviceFilterBean() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
 		ServiceFilter serviceFilter = new ServiceFilter();
-		registrationBean.setName("ServiceFilter");
-        registrationBean.setFilter(serviceFilter);
+		registerBean.setName("ServiceFilter");
+		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
         urlPatterns.add("/gp_svc/*");
-        registrationBean.setUrlPatterns(urlPatterns);
-        registrationBean.setOrder(2);
-        return registrationBean;
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.setOrder(2);
+        return registerBean;
 	}
 	
+	/**
+	 * Register the shiro filter 
+	 **/
 	@Bean
 	public FilterRegistrationBean shiroFilterFilterBean() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-		registrationBean.setName("shiroFilter");
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
+		registerBean.setName("shiroFilter");
 		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
 		serviceFilter.setTargetBeanName("shiroFilter");
-        registrationBean.setFilter(serviceFilter);
+		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
         urlPatterns.add("/*");
         
-        registrationBean.setUrlPatterns(urlPatterns);
-        registrationBean.addInitParameter("targetFilterLifecycle", "true");
-        registrationBean.setOrder(3);
-        return registrationBean;
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.addInitParameter("targetFilterLifecycle", "true");
+        registerBean.setOrder(3);
+        return registerBean;
 	}
 	
+	/**
+	 * Register the image filter 
+	 **/
 	@Bean
 	public FilterRegistrationBean imageFilterFilterBean() {
-		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
 		ImageFilter serviceFilter = new ImageFilter();
-		registrationBean.setName("ImageFilter");
-        registrationBean.setFilter(serviceFilter);
+		registerBean.setName("ImageFilter");
+		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
         urlPatterns.add("/img_cache/*");
         
-        registrationBean.setUrlPatterns(urlPatterns);
-        registrationBean.setOrder(4);
-        return registrationBean;
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.setOrder(4);
+        return registerBean;
 
 	}
 	
+	/**
+	 * Register the transfer servlet 
+	 **/
 	@Bean
 	public ServletRegistrationBean transferServletBean() {
 		
-		ServletRegistrationBean registrationBean = new ServletRegistrationBean(new TransferServlet());
-		registrationBean.setName("TransferServlet");
-	    registrationBean.addInitParameter("upload_path", "d:\\");
-	    registrationBean.addUrlMappings("/transfer");
-	    registrationBean.setAsyncSupported(true);
-	    registrationBean.setMultipartConfig(getMultiPartConfig());
-	    registrationBean.setLoadOnStartup(2);
-		return registrationBean;
+		ServletRegistrationBean registerBean = new ServletRegistrationBean(new TransferServlet());
+		registerBean.setName("TransferServlet");
+		registerBean.addInitParameter("upload_path", "d:\\");
+		registerBean.addUrlMappings("/transfer");
+		registerBean.setAsyncSupported(true);
+		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setLoadOnStartup(2);
+		return registerBean;
 	}
 	
+	/**
+	 * Register the avatar servlet 
+	 **/
 	@Bean
 	public ServletRegistrationBean avatarServletBean() {
 		
-		ServletRegistrationBean registrationBean = new ServletRegistrationBean(new TransferServlet());
-		registrationBean.setName("AvatarServlet");
-	    registrationBean.addUrlMappings("/avatar");
-	    registrationBean.setAsyncSupported(true);
-	    registrationBean.setMultipartConfig(getMultiPartConfig());
-	    registrationBean.setLoadOnStartup(3);
-		return registrationBean;
+		ServletRegistrationBean registerBean = new ServletRegistrationBean(new TransferServlet());
+		registerBean.setName("AvatarServlet");
+		registerBean.addUrlMappings("/avatar");
+		registerBean.setAsyncSupported(true);
+		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setLoadOnStartup(3);
+		return registerBean;
 	}
 
-    // Define the MultipartConfigElement for file transfer servlet
+    /**
+     *  Define the MultipartConfigElement for file transfer servlet
+     */
     private MultipartConfigElement getMultiPartConfig() {
         String location = "";
         long maxFileSize = -1;
