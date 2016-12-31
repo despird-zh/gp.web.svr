@@ -77,7 +77,7 @@ public class ServiceFilter implements Filter{
 			state = RequestState.NEED_AUTHC;
 		}else{
 			JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
-			if(!verifyToken(accesspoint, jwtPayload.getJwtId(), token)){
+			if(null == jwtPayload){
 				// can not parse the payload
 				state = RequestState.BAD_TOKEN;
 				
@@ -151,20 +151,6 @@ public class ServiceFilter implements Filter{
 		}
 	}
 	
-	private boolean verifyToken(AccessPoint accesspoint, String tokenId, String token){
-		
-		InfoId<Long> tokenid = IdKey.TOKEN.getInfoId(NumberUtils.toLong(tokenId));
-		try {
-			TokenInfo tkinfo = SecurityFacade.findToken(accesspoint, tokenid);
-			
-			return StringUtils.equals(tkinfo.getJwtToken(), token);
-			
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-	}
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
