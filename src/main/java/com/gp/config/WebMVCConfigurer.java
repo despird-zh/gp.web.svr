@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -31,7 +32,20 @@ import javax.servlet.http.HttpServletRequest;
 		"com.gp.ga" 
 })
 public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
-
+	
+	/**
+	 * Make the cors enabled 
+	 **/
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/api/**")
+			.allowedOrigins("http://domain2.com")
+			.allowedMethods("PUT", "DELETE")
+			.allowedHeaders("header1", "header2", "header3")
+			.exposedHeaders("header1", "header2")
+			.allowCredentials(false).maxAge(3600);
+	}
+	
 	/**
 	 * Create a multiple resolver to handle the multipart/form-data request.
 	 **/
