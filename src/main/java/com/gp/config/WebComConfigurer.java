@@ -119,21 +119,21 @@ public class WebComConfigurer {
 	/**
 	 * Register the shiro filter 
 	 **/
-	@Bean
-	public FilterRegistrationBean shiroFilterFilterBean() {
-		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		registerBean.setName("shiroFilter");
-		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
-		serviceFilter.setTargetBeanName("shiroFilter");
-		registerBean.setFilter(serviceFilter);
-        List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/*");
-        
-        registerBean.setUrlPatterns(urlPatterns);
-        registerBean.addInitParameter("targetFilterLifecycle", "true");
-        registerBean.setOrder(3);
-        return registerBean;
-	}
+//	@Bean
+//	public FilterRegistrationBean shiroFilterFilterBean() {
+//		FilterRegistrationBean registerBean = new FilterRegistrationBean();
+//		registerBean.setName("shiroFilter");
+//		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
+//		serviceFilter.setTargetBeanName("shiroFilter");
+//		registerBean.setFilter(serviceFilter);
+//        List<String> urlPatterns = new ArrayList<String>();
+//        urlPatterns.add("/*");
+//        
+//        registerBean.setUrlPatterns(urlPatterns);
+//        registerBean.addInitParameter("targetFilterLifecycle", "true");
+//        registerBean.setOrder(3);
+//        return registerBean;
+//	}
 	
 	/**
 	 * Register the image filter 
