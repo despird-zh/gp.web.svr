@@ -24,10 +24,9 @@ public class TrapAllController extends BaseController{
 	public ModelAndView doTrap(HttpServletRequest request){	
 		
 		ModelAndView mav = super.getJsonModelView();
-		ActionResult result = new ActionResult();
+		ActionResult result = null;
 		
-		result.setState(ActionResult.FAIL);
-		result.setMessage(this.getMessage("excp.invalid.token"));
+		result = ActionResult.failure(this.getMessage("excp.invalid.token"));
 		
 		return mav.addAllObjects(result.asMap());
 	}
@@ -41,9 +40,8 @@ public class TrapAllController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		result.setState(ActionResult.FAIL);
-		result.setMessage(this.getMessage("excp.invalid.token"));
-		
+		result = ActionResult.failure(this.getMessage("excp.invalid.token"));
+
 		return mav.addAllObjects(result.asMap());
 	}
 }

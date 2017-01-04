@@ -8,21 +8,47 @@ import org.apache.commons.collections.CollectionUtils;
 import com.gp.validate.ValidateMessage;
 
 /**
+ * 
+ * @author diaogc
+ * @version 0.1 2014-12-10
  **/
-public class ActionResult  extends BaseResult{
+public class ActionResult{
 	
-	private String message = null;
+	/** the action operation state : success */ 
+	public static final String SUCCESS = "success";
+	/** the action operation state : error */ 
+	public static final String ERROR = "error";
+	/** the action operation state : error */ 
+	public static final String FAIL = "fail";
+	
+	private Meta meta = null;
 
 	private Object data = null;
-	
-	private Set<ValidateMessage> detailmsgs = null;
-	
-	public String getMessage() {
-		return message;
+
+    public static ActionResult failure(String message) {
+    	ActionResult ref = new ActionResult();
+        ref.meta = new Meta(FAIL, message);
+        return ref;
+    }
+    
+    public static ActionResult error(String message) {
+    	ActionResult ref = new ActionResult();
+        ref.meta = new Meta(ERROR, message);
+        return ref;
+    }
+    
+    public static ActionResult success(String message) {
+    	ActionResult ref = new ActionResult();
+        ref.meta = new Meta(SUCCESS, message);
+        return ref;
+    }
+    
+	public Meta getMeta() {
+		return meta;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMeta(Meta meta) {
+		this.meta = meta;
 	}
 
 	public Object getData() {
@@ -39,20 +65,32 @@ public class ActionResult  extends BaseResult{
 	public Map<String, Object> asMap(){
 		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("message", this.message);
+		map.put("meta", this.meta);
 		map.put("data", data);
-		map.put("state", super.getState());
-		if(CollectionUtils.isNotEmpty(this.detailmsgs)){
-			map.put("detailmsgs", detailmsgs);
-		}
+		
 		return map;
 	}
+	
+    public static class Meta {
 
-	public Set<ValidateMessage> getDetailmsgs() {
-		return detailmsgs;
-	}
+        private String state;
+        private String message;
 
-	public void setDetailmsgs(Set<ValidateMessage> detailmsgs) {
-		this.detailmsgs = detailmsgs;
-	}
+        public Meta(String state) {
+            this.state = state;
+        }
+
+        public Meta(String state, String message) {
+            this.state = state;
+            this.message = message;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 }

@@ -113,9 +113,8 @@ public class AvatarServlet extends HttpServlet {
         // if not new operation, just crop the image to expected size.
         if( !"new".equals(operFlag)){
         	// new operation 
-	        ActionResult rmsg = new ActionResult();
-	        rmsg.setMessage("OK");
-	        rmsg.setState("200");
+	        ActionResult rmsg = ActionResult.success("OK");
+	        
 	        rmsg.setData("../" + CACHE_PATH + '/' + cacheFileName);
 	        
 	        mapper.writeValue(response.getOutputStream(), rmsg);

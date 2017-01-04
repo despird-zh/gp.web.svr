@@ -71,14 +71,14 @@ public class AuthenticateController extends BaseController{
 	 * Verify the password and return the Result 
 	 **/
 	private ActionResult verifyAccount(AccessPoint accesspoint, String account, String password){
-		ActionResult result = new ActionResult();
+		ActionResult result = null;
 		try{
 			
 			Principal principal = SecurityFacade.findPrincipal(accesspoint, null, account, null);
 			if(null == principal){
 				String mesg = super.getMessage("excp.no.principal");
-				result.setState(ActionResult.FAIL);
-				result.setMessage( mesg);
+				result = ActionResult.failure(mesg);
+				
 			}else{
 				boolean pass = SecurityFacade.authenticate(accesspoint, principal, password);
 				
@@ -93,20 +93,19 @@ public class AuthenticateController extends BaseController{
 					payload.setExpireTime(new Date(System.currentTimeMillis() + 60 * 60 * 1000 ));
 					
 					String token = SecurityFacade.newToken(accesspoint, payload);
-					
+					result = ActionResult.success(mesg);
 					result.setData(token);
-					result.setState(ActionResult.SUCCESS);
-					result.setMessage( mesg);
+					
 				}else{
 					String mesg = super.getMessage("excp.pwd.wrong");
-					result.setState(ActionResult.FAIL);
-					result.setMessage( mesg);
+					result = ActionResult.failure(mesg);
+					
 				}
 			}
 			
 		}catch(CoreException ce){
-			result.setState(ActionResult.ERROR);
-			result.setMessage( ce.getLocalizedMessage());
+			result = ActionResult.error(ce.getLocalizedMessage());
+		
 		}
 
 		return result;
