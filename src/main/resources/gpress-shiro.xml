@@ -27,8 +27,6 @@
 				/fonts/** = anon
 				/pages/** = anon
 				/plugins/** = anon
-				/test/** = anon
-				/dev/** = anon
 				/gpapi/** = anon
 				/** = authc
 			</value>

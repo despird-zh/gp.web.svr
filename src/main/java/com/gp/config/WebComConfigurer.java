@@ -110,7 +110,7 @@ public class WebComConfigurer {
 		registerBean.setName("ServiceFilter");
 		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/apapi/**");
+        urlPatterns.add("/gpapi/*");
         registerBean.setUrlPatterns(urlPatterns);
         registerBean.setOrder(2);
         return registerBean;
