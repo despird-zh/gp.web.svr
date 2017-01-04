@@ -63,6 +63,9 @@ public class ServiceFilter implements Filter{
 			throws IOException, ServletException {
 		
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
+		CustomWebUtils.dumpRequestAttributes(httpRequest);
+		CustomWebUtils.dumpRequestBody(httpRequest);
+		
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
 		RequestState state = RequestState.UNKNOWN;

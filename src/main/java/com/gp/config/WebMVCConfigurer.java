@@ -42,7 +42,7 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/gpapi/**")
 			.allowedOrigins("*")
-			.allowedMethods("PUT", "DELETE", "POST", "GET", "HEAD")
+			.allowedMethods("OPTIONS", "PUT", "DELETE", "POST", "GET", "HEAD")
 			.allowedHeaders(AUTH_TOKEN)
 			//.exposedHeaders("header1", "header2")
 			.allowCredentials(false).maxAge(3600);
