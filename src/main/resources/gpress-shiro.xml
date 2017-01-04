@@ -29,7 +29,7 @@
 				/plugins/** = anon
 				/test/** = anon
 				/dev/** = anon
-				/gp_svc/** = anon
+				/gpapi/** = anon
 				/** = authc
 			</value>
 		</property>
