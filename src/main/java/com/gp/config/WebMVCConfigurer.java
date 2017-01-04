@@ -33,16 +33,18 @@ import javax.servlet.http.HttpServletRequest;
 })
 public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	
+	public static final String AUTH_TOKEN = "Auth-Token";
+	
 	/**
 	 * Make the cors enabled 
 	 **/
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/api/**")
-			.allowedOrigins("http://domain2.com")
-			.allowedMethods("PUT", "DELETE")
-			.allowedHeaders("header1", "header2", "header3")
-			.exposedHeaders("header1", "header2")
+		registry.addMapping("/gpapi/**")
+			.allowedOrigins("*")
+			.allowedMethods("PUT", "DELETE", "POST", "GET", "HEAD")
+			.allowedHeaders(AUTH_TOKEN)
+			//.exposedHeaders("header1", "header2")
 			.allowCredentials(false).maxAge(3600);
 	}
 	

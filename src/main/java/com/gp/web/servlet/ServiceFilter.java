@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
+import com.gp.config.WebMVCConfigurer;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
@@ -29,13 +30,13 @@ public class ServiceFilter implements Filter{
 
 	Logger LOGGER = LoggerFactory.getLogger(ServiceFilter.class);
 	
-	public static final String AUTH_TOKEN = "auth-token";
+	public static final String AUTH_TOKEN = WebMVCConfigurer.AUTH_TOKEN;
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
 	
 	private FilterConfig filterConfig = null;
 	
-	public static final String FILTER_PREFIX = "/gp_svc";
+	public static final String FILTER_PREFIX = "/gpapi";
 	
 	/**
 	 * Define the state of request 
