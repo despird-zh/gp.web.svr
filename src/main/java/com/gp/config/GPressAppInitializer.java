@@ -1,12 +1,8 @@
 package com.gp.config;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -16,10 +12,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
-import com.gp.web.servlet.Service1Filter;
-import com.gp.web.servlet.TransferServlet;
 
-import java.io.File;
+import com.gp.web.servlet.TransferServlet;
 
 import javax.servlet.FilterRegistration;
 import javax.servlet.MultipartConfigElement;
@@ -70,9 +64,9 @@ public class GPressAppInitializer implements ServletContextInitializer {
         encodingFilter.addMappingForUrlPatterns(null, true, "/*");
 
         // Add service filter
-        FilterRegistration.Dynamic serviceFilter = servletContext.addFilter("serviceFilter",  
-         	      new Service1Filter());
-        serviceFilter.addMappingForUrlPatterns(null, true, "/gp_svc/*"); 
+        //FilterRegistration.Dynamic serviceFilter = servletContext.addFilter("serviceFilter",  
+        // 	      new ServiceFilter());
+        //serviceFilter.addMappingForUrlPatterns(null, true, "/gpapi/*"); 
         
         // Add security shiro filter
         FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter",  

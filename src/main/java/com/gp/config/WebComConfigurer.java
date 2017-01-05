@@ -15,13 +15,11 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
-import com.gp.web.servlet.Service1Filter;
 import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 

@@ -1,4 +1,4 @@
-package com.gp.web.servlet;
+package gp.svc;
 
 import java.io.IOException;
 
