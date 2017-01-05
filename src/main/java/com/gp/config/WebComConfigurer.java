@@ -12,12 +12,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
+import com.gp.web.servlet.Service1Filter;
 import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 
@@ -100,13 +104,27 @@ public class WebComConfigurer {
         return registerBean;
 	}
 	
+	@Bean
+	public FilterRegistrationBean corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader(ServiceFilter.AUTH_TOKEN);
+		config.addAllowedMethod("*");
+		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
+		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
+		bean.setOrder(2);
+		return bean;
+	}
+	
 	/**
 	 * Register the service filter to validate all the rpc request 
-	 **/
+	 *
 	@Bean
 	public FilterRegistrationBean serviceFilterBean() {
 		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		ServiceFilter serviceFilter = new ServiceFilter();
+		Service1Filter serviceFilter = new Service1Filter();
 		registerBean.setName("ServiceFilter");
 		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
@@ -114,26 +132,26 @@ public class WebComConfigurer {
         registerBean.setUrlPatterns(urlPatterns);
         registerBean.setOrder(2);
         return registerBean;
-	}
+	}*/
 	
 	/**
 	 * Register the shiro filter 
 	 **/
-//	@Bean
-//	public FilterRegistrationBean shiroFilterFilterBean() {
-//		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-//		registerBean.setName("shiroFilter");
-//		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
-//		serviceFilter.setTargetBeanName("shiroFilter");
-//		registerBean.setFilter(serviceFilter);
-//        List<String> urlPatterns = new ArrayList<String>();
-//        urlPatterns.add("/*");
-//        
-//        registerBean.setUrlPatterns(urlPatterns);
-//        registerBean.addInitParameter("targetFilterLifecycle", "true");
-//        registerBean.setOrder(3);
-//        return registerBean;
-//	}
+	@Bean
+	public FilterRegistrationBean shiroFilterFilterBean() {
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
+		registerBean.setName("shiroFilter");
+		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
+		serviceFilter.setTargetBeanName("shiroFilter");
+		registerBean.setFilter(serviceFilter);
+        List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add("/*");
+        
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.addInitParameter("targetFilterLifecycle", "true");
+        registerBean.setOrder(3);
+        return registerBean;
+	}
 	
 	/**
 	 * Register the image filter 

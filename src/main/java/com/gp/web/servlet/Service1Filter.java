@@ -2,6 +2,7 @@ package com.gp.web.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.RequestDispatcher;
@@ -9,21 +10,11 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsProcessor;
-import org.springframework.web.cors.CorsUtils;
-import org.springframework.web.cors.DefaultCorsProcessor;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
@@ -32,27 +23,19 @@ import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.util.JwtTokenUtils;
 import com.gp.web.util.CustomWebUtils;
+import com.gp.util.JwtTokenUtils;
 
-/**
- * This filter customize as per the CorsFilter, add the authentication process 
- * 
- * @author diaogc
- * @version 0.1 2016-10-20 
- **/
-public class ServiceFilter extends OncePerRequestFilter {
+public class Service1Filter implements Filter{
 
-	Logger LOGGER = LoggerFactory.getLogger(ServiceFilter.class);
+	Logger LOGGER = LoggerFactory.getLogger(Service1Filter.class);
 	
 	public static final String AUTH_TOKEN = WebMVCConfigurer.AUTH_TOKEN;
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
 	
-	/**
-	 * the patter will be /p1/p2, remember it will be applied to controller annotation.
-	 * so don't change it pattern 
-	 **/
+	private FilterConfig filterConfig = null;
+	
 	public static final String FILTER_PREFIX = "/gpapi";
 	
 	/**
@@ -69,58 +52,20 @@ public class ServiceFilter extends OncePerRequestFilter {
 		NEED_FORWARD,
 		UNKNOWN;
 	}
-	
-	private final CorsConfigurationSource configSource;
-
-	private CorsProcessor processor = new DefaultCorsProcessor();
-
-
-	/**
-	 * Constructor accepting a {@link CorsConfigurationSource} used by the filter
-	 * to find the {@link CorsConfiguration} to use for each incoming request.
-	 * @see UrlBasedCorsConfigurationSource
-	 */
-	public ServiceFilter(CorsConfigurationSource configSource) {
-		Assert.notNull(configSource, "CorsConfigurationSource must not be null");
-		this.configSource = configSource;
-	}
-
-
-	/**
-	 * Configure a custom {@link CorsProcessor} to use to apply the matched
-	 * {@link CorsConfiguration} for a request.
-	 * <p>By default {@link DefaultCorsProcessor} is used.
-	 */
-	public void setCorsProcessor(CorsProcessor processor) {
-		Assert.notNull(processor, "CorsProcessor must not be null");
-		this.processor = processor;
-	}
-
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain) throws ServletException, IOException {
+	public void destroy() {
+		// ignore
+	}
 
-		if (CorsUtils.isCorsRequest(request)) {
-			CorsConfiguration corsConfiguration = this.configSource.getCorsConfiguration(request);
-			if (corsConfiguration != null) {
-				boolean isValid = this.processor.processRequest(corsConfiguration, request, response);
-				if (!isValid || CorsUtils.isPreFlightRequest(request)) {
-					return;
-				}
-			}
-		}
-
-		/**
-		 * filterChain.doFilter(request, response);
-		 * append further authentication here.
-		 **/
-		 
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+			throws IOException, ServletException {
+		
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
-		if(LOGGER.isDebugEnabled()){
-			CustomWebUtils.dumpRequestAttributes(httpRequest);
-			CustomWebUtils.dumpRequestBody(httpRequest);
-		}
+		CustomWebUtils.dumpRequestAttributes(httpRequest);
+		CustomWebUtils.dumpRequestBody(httpRequest);
+		
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
 		RequestState state = RequestState.UNKNOWN;
@@ -169,6 +114,7 @@ public class ServiceFilter extends OncePerRequestFilter {
 		// trap all the invalid token request
 		request.setAttribute(FILTER_STATE, state);
 		forward(request, response, state);
+		
 	}
 
 	/**
@@ -181,22 +127,20 @@ public class ServiceFilter extends OncePerRequestFilter {
 	private void forward(ServletRequest request, ServletResponse response, RequestState state){
 		RequestDispatcher dispatcher = null;
 		
-		FilterConfig filterConfig = this.getFilterConfig();
-		
 		try {
 			if(RequestState.NEED_AUTHC == state){
 			
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/authenticate.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/authenticate.do");
 			
 			}else if(RequestState.BAD_TOKEN == state ||
 					RequestState.GHOST_TOKEN == state ||
 					RequestState.INVALID_TOKEN == state){
 			
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/bad_token.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/bad_token.do");
 			
 			}else{
 				
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/trap.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher("/gp_svc/trap.do");
 			}
 			
 			dispatcher.forward(request, response);
@@ -206,4 +150,12 @@ public class ServiceFilter extends OncePerRequestFilter {
 			// ignore
 		}
 	}
+	
+	
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		
+		this.filterConfig = filterConfig;
+	}
+
 }

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.Service1Filter;
 import com.gp.web.servlet.TransferServlet;
 
 import java.io.File;
@@ -71,7 +71,7 @@ public class GPressAppInitializer implements ServletContextInitializer {
 
         // Add service filter
         FilterRegistration.Dynamic serviceFilter = servletContext.addFilter("serviceFilter",  
-         	      new ServiceFilter());
+         	      new Service1Filter());
         serviceFilter.addMappingForUrlPatterns(null, true, "/gp_svc/*"); 
         
         // Add security shiro filter

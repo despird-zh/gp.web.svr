@@ -27,9 +27,10 @@ import com.gp.util.DateTimeUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
+import com.gp.web.servlet.ServiceFilter;
 
 @Controller
-@RequestMapping("/gp_svc")
+@RequestMapping(ServiceFilter.FILTER_PREFIX)
 public class AuthenticateController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);

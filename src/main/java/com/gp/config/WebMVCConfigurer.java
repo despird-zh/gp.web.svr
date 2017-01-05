@@ -37,7 +37,7 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	
 	/**
 	 * Make the cors enabled 
-	 **/
+	 *
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/gpapi/**")
@@ -46,7 +46,7 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 			//.allowedHeaders(AUTH_TOKEN)
 			//.exposedHeaders("header1", "header2")
 			.allowCredentials(false).maxAge(3600);
-	}
+	}*/
 	
 	/**
 	 * Create a multiple resolver to handle the multipart/form-data request.

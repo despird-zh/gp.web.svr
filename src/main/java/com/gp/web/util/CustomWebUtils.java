@@ -32,7 +32,7 @@ import com.gp.util.ConfigSettingUtils;
  * */
 public abstract class CustomWebUtils extends WebUtils{
 	
-	static Logger logger = LoggerFactory.getLogger(CustomWebUtils.class);
+	static Logger LOGGER = LoggerFactory.getLogger(CustomWebUtils.class);
 	
 	/**
 	 * Dump the attributes in session to facilitate the development
@@ -44,16 +44,16 @@ public abstract class CustomWebUtils extends WebUtils{
 		HttpSession session = request.getSession(false);
 		if(session != null) {
 			Enumeration<String> keys = session.getAttributeNames();
-			logger.info("Start Dumping the session attributes ----" );
+			LOGGER.info("Start Dumping the session attributes ----" );
 			while (keys.hasMoreElements())
 			{
 			  String key = (String)keys.nextElement();
-			  logger.info("Attribute KEY : " + key + " - VALUE : " + session.getAttribute(key) );
+			  LOGGER.info("Attribute KEY : " + key + " - VALUE : " + session.getAttribute(key) );
 			}
-			logger.info("End Dumping the session attributes ----" );
+			LOGGER.info("End Dumping the session attributes ----" );
 		}else{
 		
-			logger.info("session is null!" );
+			LOGGER.info("session is null!" );
 		}
 	}
 
@@ -66,27 +66,34 @@ public abstract class CustomWebUtils extends WebUtils{
 	public static void dumpRequestAttributes(HttpServletRequest  request){
 		
 		Enumeration<String> keys = request.getParameterNames();
-		logger.info("Start Dumping the request attributes ----" );
+		LOGGER.info("Dumping the request attributes ----" );
 		Cookie[] cookies = request.getCookies();
 		while( keys.hasMoreElements() ) {
 			String key = keys.nextElement();
 
 			for( String value : request.getParameterValues( key ) ) {
-				logger.info("Attribute KEY : " + key + " - VALUE : " + value );
+				LOGGER.info("Attribute KEY : " + key + " - VALUE : " + value );
+			}
+		}
+		keys = request.getHeaderNames();
+		while( keys.hasMoreElements() ) {
+			String key = keys.nextElement();
+			Enumeration<String> vals = request.getHeaders(key);
+			while( vals.hasMoreElements() ) {
+				LOGGER.info("Header KEY : " + key + " - VALUE : " + vals.nextElement() );
 			}
 		}
 		if(cookies != null && cookies.length > 0){
-			logger.info("Dumping the request cookies ----" );
+			LOGGER.info("Dumping the request cookies ----" );
 			for (Cookie cookie:cookies){
 				
-				logger.info("Cookie Name : " + cookie.getName() + " - VALUE : " + cookie.getValue() );
+				LOGGER.info("Cookie Name : " + cookie.getName() + " - VALUE : " + cookie.getValue() );
 			}
 			
 		}else {
 			
-			logger.info("No cookie in request ----" );
+			LOGGER.info("No cookie in request ----" );
 		}
-		logger.info("End Dumping the request attributes ----" );
 	}
 	
 	/**
@@ -102,10 +109,10 @@ public abstract class CustomWebUtils extends WebUtils{
 		
 		ServletServerHttpRequest req = new ServletServerHttpRequest(request);
 		try {
-			logger.info("Start Dumping the request body content ----" );
+			LOGGER.info("Start Dumping the request body content ----" );
 			String text = CustomWebUtils.getRequestBody(req.getBody());
-			logger.info(text);
-			logger.info("End Dumping the request body content ----" );
+			LOGGER.info(text);
+			LOGGER.info("End Dumping the request body content ----" );
 		} catch (IOException e) {
 
 			e.printStackTrace();
@@ -132,7 +139,7 @@ public abstract class CustomWebUtils extends WebUtils{
 	public static UUID toUUID(String s){
 		
 		if ( s==null || s.length() ==0){
-			logger.debug("The String value is null, can't convert to UUID!");
+			LOGGER.debug("The String value is null, can't convert to UUID!");
 			return null;
 		}
 		return UUID.fromString(s);
@@ -166,7 +173,7 @@ public abstract class CustomWebUtils extends WebUtils{
 		} catch (UnsupportedEncodingException e) {
 
 			//e.printStackTrace();
-			logger.debug("getRequestBody UnsupportedEncodingException:",e);
+			LOGGER.debug("getRequestBody UnsupportedEncodingException:",e);
 		}
         final int CHARS_PER_PAGE = 5000; //counting spaces
         final char[] buffer = new char[CHARS_PER_PAGE];
@@ -179,7 +186,7 @@ public abstract class CustomWebUtils extends WebUtils{
             }
         } catch (IOException ignore) { 
         	
-        	logger.debug("getRequestBody IOException",ignore);
+        	LOGGER.debug("getRequestBody IOException",ignore);
         }
 
         String text = output.toString();
