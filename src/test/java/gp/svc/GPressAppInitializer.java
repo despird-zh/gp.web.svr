@@ -1,4 +1,4 @@
-package com.gp.config;
+package gp.svc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +9,11 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import com.gp.config.RootConfigurer;
+import com.gp.config.ServiceConfigurer;
+import com.gp.config.WebMVCConfigurer;
+import com.gp.config.WebSocketConfigurer;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;
