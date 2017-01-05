@@ -109,6 +109,7 @@ public class WebComConfigurer {
 		config.setAllowCredentials(true);
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader(ServiceFilter.AUTH_TOKEN);
+		config.addAllowedHeader("content-type");// required, otherwise the preflight not work
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
