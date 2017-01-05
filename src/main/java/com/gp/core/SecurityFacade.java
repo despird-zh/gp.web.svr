@@ -30,7 +30,6 @@ import com.gp.common.GroupUsers;
 import com.gp.common.GroupUsers.UserState;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.info.CombineInfo;
 import com.gp.info.InfoId;
 import com.gp.dao.info.SourceInfo;
 import com.gp.dao.info.SysOptionInfo;
@@ -572,7 +571,8 @@ public class SecurityFacade {
 	}
 	
 	/**
-	 * create a new token for JWT payload
+	 * create a new token by JWT payload, there will be a token per subject & audience.
+	 * 
 	 * @param payload the JWT payload
 	 * @return String the JWT token string 
 	 **/
@@ -586,8 +586,7 @@ public class SecurityFacade {
 					payload);
 			
 			SysOptionInfo option = systemservice.getOption(svcctx, SystemOptions.SECURITY_JWT_SECRET);
-			
-			
+
 			InfoId<Long> tokenId = idservice.generateId(IdKey.TOKEN, Long.class);
 			TokenInfo tokenInfo = new TokenInfo();
 			
@@ -603,7 +602,7 @@ public class SecurityFacade {
 			
 			svcctx.setTraceInfo(tokenInfo);
 			
-			token = JwtTokenUtils.signHS256(option.getOptionKey(), payload);
+			token = JwtTokenUtils.signHS256(option.getOptionValue(), payload);
 			tokenInfo.setJwtToken(token);
 			
 			securityservice.newToken(svcctx, tokenInfo);

@@ -34,11 +34,11 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  **/
 public class AccessPoint {
 	
-	/** client name e.g browser desption*/
+	/** client name e.g browser ,or device*/
 	private String client;
 	/** client address */
 	private String host;
-	/** appllication name e.g admin */
+	/** application name e.g admin */
 	private String app;
 	/** the version */
 	private String version;

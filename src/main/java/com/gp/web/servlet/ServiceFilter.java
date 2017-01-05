@@ -25,9 +25,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
+import com.gp.common.SystemOptions;
+import com.gp.core.MasterFacade;
 import com.gp.core.SecurityFacade;
+import com.gp.dao.info.SysOptionInfo;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
@@ -141,13 +145,14 @@ public class ServiceFilter extends OncePerRequestFilter {
 				try{
 					InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(NumberUtils.toLong(jwtPayload.getJwtId()));
 					TokenInfo tokenInfo = SecurityFacade.findToken(accesspoint, tokenId);
-					
+					// check if the token record exists
 					if(tokenInfo == null){
 						// not find any token in db
 						state = RequestState.GHOST_TOKEN;
 					}else{
+						SysOptionInfo secret = MasterFacade.findSystemOption(accesspoint, GroupUsers.PSEUDO_USER, SystemOptions.SECURITY_JWT_SECRET);
 						if(!StringUtils.equals(tokenInfo.getJwtToken(), token)
-							|| !StringUtils.equals(jwtPayload.getSubject(), tokenInfo.getSubject())){
+							|| !JwtTokenUtils.verifyHS256(secret.getOptionValue(), token, jwtPayload)){
 							state = RequestState.INVALID_TOKEN;
 						}
 						else{

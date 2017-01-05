@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -47,8 +48,9 @@ public class AuthenticateController extends BaseController{
 		Map<String, String> map = JACKSON_MAPPER.readValue(payload, new TypeReference<Map<String, String>>(){});
 		String account = map.get("principal");
 		String password = map.get("credential");
+		String audience = map.get("audience");
 		
-		ActionResult result = verifyAccount(accesspoint, account, password);
+		ActionResult result = authenAccount(accesspoint, audience, account, password);
 		return mav.addAllObjects(result.asMap());
 	}
 	
@@ -63,7 +65,9 @@ public class AuthenticateController extends BaseController{
 		
 		String account = request.getParameter("principal");
 		String password = request.getParameter("credential");
-		ActionResult result = verifyAccount(accesspoint, account, password);
+		String audience = request.getParameter("audience");
+		
+		ActionResult result = authenAccount(accesspoint, audience, account, password);
 		
 		return mav.addAllObjects(result.asMap());
 	}
@@ -71,25 +75,33 @@ public class AuthenticateController extends BaseController{
 	/**
 	 * Verify the password and return the Result 
 	 **/
-	private ActionResult verifyAccount(AccessPoint accesspoint, String account, String password){
+	private ActionResult authenAccount(AccessPoint accesspoint, String audience, String account, String password){
 		ActionResult result = null;
 		try{
-			
+			if(StringUtils.isBlank(audience) ||
+					StringUtils.isBlank(account) ||
+					StringUtils.isBlank(password) ){
+				
+				String mesg = super.getMessage("excp.param.miss");
+				result = ActionResult.failure(mesg);
+			}
 			Principal principal = SecurityFacade.findPrincipal(accesspoint, null, account, null);
 			if(null == principal){
 				String mesg = super.getMessage("excp.no.principal");
 				result = ActionResult.failure(mesg);
 				
 			}else{
+				// authenticate the subject & credential
 				boolean pass = SecurityFacade.authenticate(accesspoint, principal, password);
 				
 				if(pass){
-					String mesg = super.getMessage("excp.pwd.pass");
+					String mesg = super.getMessage("mesg.pwd.pass");
 					
 					JwtPayload payload = new JwtPayload();
 					payload.setIssuer("gp.svc.svr");
 					payload.setSubject(account);
-					payload.setAudience(account);
+					payload.setAudience(audience);
+					payload.setNotBefore(DateTimeUtils.now());
 					payload.setIssueAt(DateTimeUtils.now());
 					payload.setExpireTime(new Date(System.currentTimeMillis() + 60 * 60 * 1000 ));
 					
