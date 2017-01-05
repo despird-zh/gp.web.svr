@@ -106,7 +106,7 @@ public class WebComConfigurer {
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
+		config.setAllowCredentials(false);
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader(ServiceFilter.AUTH_TOKEN);
 		config.addAllowedHeader("content-type");// required, otherwise the preflight not work

@@ -17,6 +17,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.EnumerationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -66,28 +68,32 @@ public abstract class CustomWebUtils extends WebUtils{
 	public static void dumpRequestAttributes(HttpServletRequest  request){
 		
 		Enumeration<String> keys = request.getParameterNames();
-		LOGGER.info("Dumping the request attributes ----" );
+		
 		Cookie[] cookies = request.getCookies();
+		
+		LOGGER.info("Dumping the request attributes ----" );
 		while( keys.hasMoreElements() ) {
 			String key = keys.nextElement();
 
 			for( String value : request.getParameterValues( key ) ) {
-				LOGGER.info("Attribute KEY : " + key + " - VALUE : " + value );
+				LOGGER.info("Attr Name : " + key + " - Value : " + value );
 			}
 		}
+		
+		LOGGER.info("Dumping the request headers ----" );
 		keys = request.getHeaderNames();
 		while( keys.hasMoreElements() ) {
 			String key = keys.nextElement();
 			Enumeration<String> vals = request.getHeaders(key);
 			while( vals.hasMoreElements() ) {
-				LOGGER.info("Header KEY : " + key + " - VALUE : " + vals.nextElement() );
+				LOGGER.info("Header Name : " + key + " - Value : " + vals.nextElement() );
 			}
 		}
 		if(cookies != null && cookies.length > 0){
 			LOGGER.info("Dumping the request cookies ----" );
 			for (Cookie cookie:cookies){
 				
-				LOGGER.info("Cookie Name : " + cookie.getName() + " - VALUE : " + cookie.getValue() );
+				LOGGER.info("Cookie Name : " + cookie.getName() + " - Value : " + cookie.getValue() );
 			}
 			
 		}else {

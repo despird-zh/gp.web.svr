@@ -30,7 +30,7 @@ public class Service1Filter implements Filter{
 
 	Logger LOGGER = LoggerFactory.getLogger(Service1Filter.class);
 	
-	public static final String AUTH_TOKEN = WebMVCConfigurer.AUTH_TOKEN;
+	public static final String AUTH_TOKEN ="";
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
 	

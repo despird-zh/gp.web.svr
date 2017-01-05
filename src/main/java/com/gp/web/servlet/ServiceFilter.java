@@ -27,7 +27,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.gp.audit.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
-import com.gp.config.WebMVCConfigurer;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
@@ -45,7 +44,9 @@ public class ServiceFilter extends OncePerRequestFilter {
 
 	Logger LOGGER = LoggerFactory.getLogger(ServiceFilter.class);
 	
-	public static final String AUTH_TOKEN = WebMVCConfigurer.AUTH_TOKEN;
+	public static final String AUTH_TOKEN = "Auth-Token";
+	
+	public static final String BLIND_TOKEN = "__blind_token__";
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
 	
@@ -119,7 +120,6 @@ public class ServiceFilter extends OncePerRequestFilter {
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		if(LOGGER.isDebugEnabled()){
 			CustomWebUtils.dumpRequestAttributes(httpRequest);
-			CustomWebUtils.dumpRequestBody(httpRequest);
 		}
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
@@ -127,7 +127,7 @@ public class ServiceFilter extends OncePerRequestFilter {
 
 		AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
 		LOGGER.debug(httpRequest.getRequestURI());
-		if(StringUtils.isBlank(token)){
+		if(StringUtils.isBlank(token) || StringUtils.equalsIgnoreCase(BLIND_TOKEN, token)){
 			// don't have token, forward request to authenticate it
 			state = RequestState.NEED_AUTHC;
 		}else{

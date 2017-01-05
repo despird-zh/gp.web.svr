@@ -32,22 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 		"com.gp.ga" 
 })
 public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
-	
-	public static final String AUTH_TOKEN = "Auth-Token";
-	
-	/**
-	 * Make the cors enabled 
-	 *
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/gpapi/**")
-			.allowedOrigins("*")
-			//.allowedMethods("OPTIONS", "PUT", "DELETE", "POST", "GET", "HEAD")
-			//.allowedHeaders(AUTH_TOKEN)
-			//.exposedHeaders("header1", "header2")
-			.allowCredentials(false).maxAge(3600);
-	}*/
-	
+
 	/**
 	 * Create a multiple resolver to handle the multipart/form-data request.
 	 **/
