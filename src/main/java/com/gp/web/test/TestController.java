@@ -13,7 +13,7 @@ import com.gp.common.Principal;
 import com.gp.exception.WebException;
 import com.gp.web.BaseController;
 
-@Controller("test-ctlr")
+@Controller
 @RequestMapping("/test")
 public class TestController extends BaseController{
 	

@@ -14,7 +14,7 @@ import com.gp.exception.ServiceException;
 import com.gp.exception.WebException;
 import com.gp.web.BaseController;
 
-@Controller("test2-ctlr")
+@Controller
 @RequestMapping("/test")
 public class Test2Controller extends BaseController{
 	

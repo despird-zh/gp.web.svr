@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.web.BaseController;
 import com.gp.web.util.CustomWebUtils;
 
-@Controller("test-data-ctlr")
+@Controller
 @RequestMapping("/test")
 public class TestDataController extends BaseController{
 	

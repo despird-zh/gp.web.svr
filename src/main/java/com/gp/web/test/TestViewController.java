@@ -14,7 +14,7 @@ import com.gp.web.BaseController;
 import com.gp.web.model.TreeNode;
 import com.gp.web.test.TestController.TestBean;
 
-@Controller("test-view-ctlr")
+@Controller
 @RequestMapping("/test")
 public class TestViewController extends BaseController{
 	
