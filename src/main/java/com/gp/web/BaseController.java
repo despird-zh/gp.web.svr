@@ -16,7 +16,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UriUtils;
 
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.common.SystemOptions;
-import com.gp.util.ConfigSettingUtils;
 import com.gp.web.util.CustomWebUtils;
 
 
@@ -36,7 +33,7 @@ import com.gp.web.util.CustomWebUtils;
  * @author gary diao
  * @version 0.1 2015-12-12 
  **/
-public abstract class BaseController extends MultiActionController implements MessageSourceAware{
+public abstract class BaseController implements MessageSourceAware{
 
 	static Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 	

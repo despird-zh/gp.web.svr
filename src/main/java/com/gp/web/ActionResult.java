@@ -2,12 +2,9 @@ package com.gp.web;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.collections.CollectionUtils;
-import com.gp.validate.ValidateMessage;
 
 /**
+ * ActionResult Wrap the result of JSON data.
  * 
  * @author diaogc
  * @version 0.1 2014-12-10
@@ -71,9 +68,13 @@ public class ActionResult{
 		return map;
 	}
 	
+	/**
+	 * Meta class keep the state, error code and message. 
+	 **/
     public static class Meta {
 
         private String state;
+        private String code;
         private String message;
 
         public Meta(String state) {
@@ -92,5 +93,13 @@ public class ActionResult{
         public String getMessage() {
             return message;
         }
+
+		public String getCode() {
+			return code;
+		}
+
+		public void setCode(String code) {
+			this.code = code;
+		}
     }
 }
