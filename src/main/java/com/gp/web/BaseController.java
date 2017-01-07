@@ -138,11 +138,11 @@ public abstract class BaseController implements MessageSourceAware{
 	}
 	
 	/**
-	 * Read the request parameters into certain datawrapper.
+	 * Read the request parameters into certain data wrapper.
 	 * This method will retrieve the request from RequestContextHolder.
 	 * @param datawrapper the data wrapper.
 	 **/
-	protected void readRequestData(Object datawrapper){
+	protected void readRequestData(Object dataWrapper){
 		
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		
@@ -150,19 +150,19 @@ public abstract class BaseController implements MessageSourceAware{
 			
 			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
 			HttpServletRequest request = servletRequestAttributes.getRequest();			
-			ServletRequestDataBinder binder = new ServletRequestDataBinder(datawrapper);
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dataWrapper);
 			binder.bind(request); 
 		}
 	}
 	
 	/**
-	 * Read the request parameters into certain datawrapper.
-	 * @param request the http request
+	 * Read the request parameters into certain data wrapper.
+	 * @param request the HTTP request
 	 * @param datawrapper the data wrapper.
 	 **/
-	protected void readRequestData(HttpServletRequest request, Object datawrapper){
+	protected void readRequestData(HttpServletRequest request, Object dataWrapper){
 		
-		ServletRequestDataBinder binder = new ServletRequestDataBinder(datawrapper);
+		ServletRequestDataBinder binder = new ServletRequestDataBinder(dataWrapper);
 		binder.bind(request); 
 	}
 	
