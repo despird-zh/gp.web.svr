@@ -1,7 +1,6 @@
 package com.gp.web.service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +18,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.gp.audit.AccessPoint;
 import com.gp.common.JwtPayload;
 import com.gp.common.Principal;
-import com.gp.common.SystemOptions;
-import com.gp.core.MasterFacade;
 import com.gp.core.SecurityFacade;
-import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.CoreException;
 import com.gp.util.DateTimeUtils;
-import com.gp.util.JwtTokenUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceFilter;

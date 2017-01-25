@@ -56,7 +56,7 @@ public class GlobalExceptionAdvice {
 	    mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", ActionResult.ERROR);
+		mav.addObject("state", BaseController.ERROR);
 
 		return mav;
 	}
@@ -87,7 +87,7 @@ public class GlobalExceptionAdvice {
 		mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", ActionResult.ERROR);
+		mav.addObject("state", BaseController.ERROR);
 
 		return mav;
 	}
@@ -121,7 +121,7 @@ public class GlobalExceptionAdvice {
 	    mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", ActionResult.ERROR);
+		mav.addObject("state", BaseController.ERROR);
 
 		return mav;
 	}

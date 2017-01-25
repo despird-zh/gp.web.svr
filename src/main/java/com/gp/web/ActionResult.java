@@ -11,32 +11,25 @@ import java.util.Map;
  **/
 public class ActionResult{
 	
-	/** the action operation state : success */ 
-	public static final String SUCCESS = "success";
-	/** the action operation state : error */ 
-	public static final String ERROR = "error";
-	/** the action operation state : error */ 
-	public static final String FAIL = "fail";
-	
 	private Meta meta = null;
 
 	private Object data = null;
 
     public static ActionResult failure(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(FAIL, message);
+        ref.meta = new Meta(BaseController.FAIL, message);
         return ref;
     }
     
     public static ActionResult error(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(ERROR, message);
+        ref.meta = new Meta(BaseController.ERROR, message);
         return ref;
     }
     
     public static ActionResult success(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(SUCCESS, message);
+        ref.meta = new Meta(BaseController.SUCCESS, message);
         return ref;
     }
     
@@ -62,8 +55,8 @@ public class ActionResult{
 	public Map<String, Object> asMap(){
 		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put("meta", this.meta);
-		map.put("data", data);
+		map.put(BaseController.MODEL_KEY_META, this.meta);
+		map.put(BaseController.MODEL_KEY_DATA, data);
 		
 		return map;
 	}
