@@ -50,7 +50,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 			InputStream log4jIS = GeneralConfig.class.getClassLoader().getResourceAsStream("log4j2.xml");
 	        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
 	        ConfigurationSource cs = new ConfigurationSource(log4jIS);
-	        XmlConfiguration config = new XmlConfiguration(cs);
+	        XmlConfiguration config = new XmlConfiguration(loggerCtx, cs);
 	        loggerCtx.updateLoggers(config);
 		}catch(Exception ce){
 			//
