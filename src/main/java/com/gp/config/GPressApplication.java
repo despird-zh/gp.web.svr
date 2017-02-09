@@ -26,7 +26,7 @@ import com.gp.common.GeneralConfig;
 public class GPressApplication extends SpringBootServletInitializer{
 
 	/**
-	 * The main entrance of applicaiton 
+	 * The main entrance of application 
 	 **/
 	public static void main(String[] args) {
 		initialLogger();
