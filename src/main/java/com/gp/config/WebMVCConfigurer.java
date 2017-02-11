@@ -1,5 +1,6 @@
 package com.gp.config;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,13 +8,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -24,12 +23,9 @@ import com.gp.web.view.GenericFileView;
 import com.gp.web.view.GenericFileViewResolver;
 import com.gp.web.view.MultipleViewResolver;
 
-import javax.servlet.http.HttpServletRequest;
-
 @EnableWebMvc
 @ComponentScan(basePackages = { 
-		"com.gp.web",
-		"com.gp.ga" 
+	"com.gp.web"
 })
 public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 
@@ -37,10 +33,11 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	 * Create a multiple resolver to handle the multipart/form-data request.
 	 **/
 	@Bean
-	public MultipartResolver multipartResolver(){
+	public MultipartResolver multipartResolver() throws IOException {
 
 		CommonsMultipartResolver mpresolver = new CommonsMultipartResolver();
 
+		//mpresolver.setUploadTempDir(new FileSystemResource("/WEB-INF/tmp/spittr/uploads"));  
 		mpresolver.setDefaultEncoding("utf-8");
 		mpresolver.setMaxUploadSize(10485760000l);
 		mpresolver.setMaxInMemorySize(40960);

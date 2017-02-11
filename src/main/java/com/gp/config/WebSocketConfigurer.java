@@ -15,6 +15,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
 
 import com.gp.web.socket.CustSubProtocolHandler;
+import com.gp.web.socket.HandshakeHandler;
+import com.gp.web.socket.HandshakeInterceptor;
 
 @EnableWebSocketMessageBroker
 public class WebSocketConfigurer extends AbstractWebSocketMessageBrokerConfigurer {
@@ -22,12 +24,16 @@ public class WebSocketConfigurer extends AbstractWebSocketMessageBrokerConfigure
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.setApplicationDestinationPrefixes("/gp-app");
+        config.setUserDestinationPrefix("/gp-user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        registry.addEndpoint("/gp-ws")
+        .setAllowedOrigins("*")
+        .setHandshakeHandler(new HandshakeHandler())
+        .addInterceptors(new HandshakeInterceptor()).withSockJS();
     }
 
 }

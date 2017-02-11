@@ -30,7 +30,7 @@ import com.gp.web.servlet.TransferServlet;
  * @version 0.1 2016-12-29
  **/
 @Configuration
-public class WebComConfigurer {
+public class WebCompConfigurer {
 	
 	/**
 	 * The CoreStart listener 
@@ -60,9 +60,9 @@ public class WebComConfigurer {
 	public DispatcherServlet dispatcherServlet() {
 
 		 // Create ApplicationContext
-	        AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
-	        webMvcContext.register(WebMVCConfigurer.class);
-	        webMvcContext.register(WebSocketConfigurer.class);
+        AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
+        webMvcContext.register(WebMVCConfigurer.class);
+        webMvcContext.register(WebSocketConfigurer.class);
 	        
 	    DispatcherServlet servlet=new DispatcherServlet(webMvcContext);
  
@@ -99,6 +99,7 @@ public class WebComConfigurer {
         registerBean.addInitParameter("forceEncoding", "true");
         registerBean.setUrlPatterns(urlPatterns);
         registerBean.setOrder(1);
+        registerBean.setAsyncSupported(true);
         return registerBean;
 	}
 	
@@ -113,6 +114,7 @@ public class WebComConfigurer {
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
+		bean.setAsyncSupported(true);
 		bean.setOrder(2);
 		return bean;
 	}
@@ -148,6 +150,7 @@ public class WebComConfigurer {
         
         registerBean.setUrlPatterns(urlPatterns);
         registerBean.addInitParameter("targetFilterLifecycle", "true");
+        registerBean.setAsyncSupported(true);
         registerBean.setOrder(3);
         return registerBean;
 	}
@@ -166,6 +169,7 @@ public class WebComConfigurer {
         urlPatterns.add("/img_cache/*");
         
         registerBean.setUrlPatterns(urlPatterns);
+        registerBean.setAsyncSupported(true);
         registerBean.setOrder(4);
         return registerBean;
 
@@ -183,6 +187,7 @@ public class WebComConfigurer {
 		registerBean.addUrlMappings("/transfer");
 		registerBean.setAsyncSupported(true);
 		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setAsyncSupported(true);
 		registerBean.setLoadOnStartup(2);
 		return registerBean;
 	}
@@ -198,6 +203,7 @@ public class WebComConfigurer {
 		registerBean.addUrlMappings("/avatar");
 		registerBean.setAsyncSupported(true);
 		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setAsyncSupported(true);
 		registerBean.setLoadOnStartup(3);
 		return registerBean;
 	}
