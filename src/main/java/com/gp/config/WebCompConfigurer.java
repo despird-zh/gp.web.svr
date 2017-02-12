@@ -62,8 +62,8 @@ public class WebCompConfigurer {
 		 // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
         webMvcContext.register(WebMVCConfigurer.class);
-        webMvcContext.register(WebSocketConfigurer.class);
-	        
+        webMvcContext.register(WebSecurityConfigurer.class);
+
 	    DispatcherServlet servlet=new DispatcherServlet(webMvcContext);
  
 	    return  servlet;
@@ -137,7 +137,7 @@ public class WebCompConfigurer {
 	
 	/**
 	 * Register the shiro filter 
-	 **/
+	 **
 	@Bean
 	public FilterRegistrationBean shiroFilterFilterBean() {
 		FilterRegistrationBean registerBean = new FilterRegistrationBean();
@@ -153,7 +153,7 @@ public class WebCompConfigurer {
         registerBean.setAsyncSupported(true);
         registerBean.setOrder(3);
         return registerBean;
-	}
+	}*/
 	
 	/**
 	 * Register the image filter 

@@ -22,7 +22,11 @@ import com.gp.common.GeneralConfig;
  * @version 0.1 2016-12-20 
  **/
 @SpringBootApplication
-@Import({ RootConfigurer.class, ServiceConfigurer.class, WebCompConfigurer.class })
+@Import({ 
+	RootConfigurer.class, 
+	ServiceConfigurer.class, 
+	WebCompConfigurer.class
+	})
 public class GPressApplication extends SpringBootServletInitializer{
 
 	/**

@@ -17,7 +17,6 @@ import com.gp.core.AppContextListener;
 @PropertySource("classpath:/gpress-context.properties")
 @ImportResource({
 		"classpath:/gpress-datasource.xml",
-		"classpath:/gpress-shiro.xml",
 		"classpath:/gpress-context.xml"
 	})
 @ComponentScan(basePackages = { 
