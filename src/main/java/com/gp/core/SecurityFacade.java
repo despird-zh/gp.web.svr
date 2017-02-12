@@ -1,6 +1,7 @@
 package com.gp.core;
 
 import java.time.ZoneId;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -8,11 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 import com.gp.svc.info.UserLiteInfo;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.codec.Base64;
-import org.apache.shiro.util.CollectionUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -376,7 +378,7 @@ public class SecurityFacade {
 			svcctx.addOperationPredicates(new DefaultKeyValue("password", password));
 			byte[] pwdbytes;
 			try {
-				pwdbytes = Base64.decode(principal.getPassword());
+				pwdbytes = Base64.getDecoder().decode(principal.getPassword());
 				pass =  HashUtils.isExpectedPassword(password.toCharArray(), HASH_SALT.getBytes(), pwdbytes);
 				
 			} catch (Exception e) {

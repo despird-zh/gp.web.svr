@@ -6,7 +6,8 @@ import java.util.Set;
 
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
-import org.apache.shiro.util.CollectionUtils;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -6,11 +6,12 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -113,14 +114,6 @@ public abstract class BaseController implements MessageSourceAware{
 	public ModelAndView getJspModelView(String jspname){
 		
 		return new ModelAndView(jspname); 		
-	}
-	
-	/**
-	 * Get the principal from shiro  
-	 **/
-	public static Principal getPrincipal() {
-		
-		return (Principal) SecurityUtils.getSubject().getPrincipal();
 	}
 	
 	/**
@@ -251,6 +244,14 @@ public abstract class BaseController implements MessageSourceAware{
 		}
 		
 		return sbuf.toString();
+	}
+	
+	/**
+	 * Get the principal from the security context 
+	 **/
+	public static Principal getPrincipal(){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return (Principal)authentication.getPrincipal();
 	}
 	
 	/**
