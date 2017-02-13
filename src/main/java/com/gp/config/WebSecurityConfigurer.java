@@ -2,6 +2,7 @@ package com.gp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -16,17 +17,32 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.gp.web.security.LogoffSuccessHandler;
-import com.gp.web.security.LogonSuccessHandler;
-import com.gp.web.security.PrincipalsService;
-import com.gp.web.security.SecurityFilter;
+import com.gp.security.LogoffSuccessHandler;
+import com.gp.security.LogonSuccessHandler;
+import com.gp.security.MetadataSourceService;
+import com.gp.security.PrincipalsService;
+import com.gp.security.SecurityDecisionManager;
+import com.gp.security.SecurityInterceptor;
 import com.gp.web.servlet.ServiceFilter;
 
 @EnableWebSecurity
+@ComponentScan(basePackages = { 
+		"com.gp.security"
+	})
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	
-	@Autowired  
-    private SecurityFilter securityFilter; 
+	@Autowired
+	MetadataSourceService metadataSourceService;
+	
+	@Bean  
+    public SecurityInterceptor securityInterceptor(){
+		return new SecurityInterceptor();
+	}
+	
+	@Bean  
+    public SecurityDecisionManager accessDecisionManager(){
+		return new SecurityDecisionManager();
+	}
 	
 	@Override
  	public void configure(WebSecurity web) throws Exception {
@@ -42,7 +58,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 		
 		http.cors().configurationSource(getCorsConfigureSource());
 		
-		http.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+		http.addFilterBefore(securityInterceptor(), FilterSecurityInterceptor.class)
 			.antMatcher("/**")
 			.authorizeRequests()
 			.antMatchers("/", "/login**", "/webjars/**").permitAll()

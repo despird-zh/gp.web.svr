@@ -121,7 +121,9 @@ public class WebCompConfigurer {
         return registerBean;
 	}
 	
-	/*@Bean
+	/**
+	 * @Bean
+	 *
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();

@@ -1,4 +1,4 @@
-package com.gp.web.security;
+package com.gp.security;
 import java.io.IOException;  
 import java.util.Set;  
   

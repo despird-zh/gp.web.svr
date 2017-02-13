@@ -1,4 +1,4 @@
-package com.gp.web.security;
+package com.gp.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

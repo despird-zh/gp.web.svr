@@ -1,4 +1,4 @@
-package com.gp.web.security;
+package com.gp.security;
 
 import java.io.IOException;
 import javax.annotation.PostConstruct;
@@ -18,13 +18,13 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Component;
 
 @Component 
-public class SecurityFilter extends AbstractSecurityInterceptor implements Filter {
+public class SecurityInterceptor extends AbstractSecurityInterceptor implements Filter {
 
 	@Autowired
-	private AccessSecurityMetadataSourceService mySecurityMetadataSource;
+	private MetadataSourceService securityMetadataSource;
 
 	@Autowired
-	private SecurityDecisionManager myAccessDecisionManager;
+	private SecurityDecisionManager accessDecisionManager;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -32,7 +32,7 @@ public class SecurityFilter extends AbstractSecurityInterceptor implements Filte
 	@PostConstruct
 	public void init() {
 		super.setAuthenticationManager(authenticationManager);
-		super.setAccessDecisionManager(myAccessDecisionManager);
+		super.setAccessDecisionManager(accessDecisionManager);
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -47,7 +47,7 @@ public class SecurityFilter extends AbstractSecurityInterceptor implements Filte
 	}
 
 	public void invoke(FilterInvocation fi) throws IOException, ServletException {
-		System.out.println("filter..........................");
+		
 		InterceptorStatusToken token = super.beforeInvocation(fi);
 		try {
 			fi.getChain().doFilter(fi.getRequest(), fi.getResponse());
@@ -59,15 +59,15 @@ public class SecurityFilter extends AbstractSecurityInterceptor implements Filte
 
 	@Override
 	public SecurityMetadataSource obtainSecurityMetadataSource() {
-		System.out.println("filtergergetghrthetyetyetyetyj");
-		return this.mySecurityMetadataSource;
+		
+		return this.securityMetadataSource;
 	}
 
 	public void destroy() {
-		System.out.println("filter===========================end");
+		
 	}
 
 	public void init(FilterConfig filterconfig) throws ServletException {
-		System.out.println("filter===========================");
+		
 	}
 }

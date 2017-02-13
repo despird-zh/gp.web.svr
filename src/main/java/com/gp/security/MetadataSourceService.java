@@ -1,4 +1,4 @@
-package com.gp.web.security;
+package com.gp.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,14 +26,14 @@ import com.gp.exception.ServiceException;
 import com.gp.svc.AuthorizeService;
 
 @Service
-public class AccessSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
+public class MetadataSourceService implements FilterInvocationSecurityMetadataSource {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AccessSecurityMetadataSourceService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MetadataSourceService.class);
 
 	private AuthorizeService authoritysvc;
 
 	@Autowired
-	public AccessSecurityMetadataSourceService(AuthorizeService authoritysvc) {
+	public MetadataSourceService(AuthorizeService authoritysvc) {
 		this.authoritysvc = authoritysvc;
 		initResources();
 	}
