@@ -3,10 +3,6 @@ package com.gp.config;
 import org.springframework.security.config.annotation.web.messaging.MessageSecurityMetadataSourceRegistry;
 import org.springframework.security.config.annotation.web.socket.AbstractSecurityWebSocketMessageBrokerConfigurer;
 
-/**
- * @author Rob Winch
- */
-// @Configuration
 public class WebSocketSecurityConfigurer
 		extends AbstractSecurityWebSocketMessageBrokerConfigurer {
 

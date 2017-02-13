@@ -15,7 +15,6 @@ import com.gp.web.socket.DisconnectHandler;
  *
  * @author Rob Winch
  */
-// @Configuration
 public class WebSocketHandlersConfigurer<S extends ExpiringSession> {
 
 	@SuppressWarnings("rawtypes")

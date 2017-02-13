@@ -24,7 +24,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.gp.web.security.PrincipalsService;
 import com.gp.web.servlet.ServiceFilter;
 
-//@Configuration
 @EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	
