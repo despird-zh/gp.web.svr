@@ -13,9 +13,9 @@ public class DisconnectHandler<S>
 	
 	private SimpMessageSendingOperations messagingTemplate;
 
-	private SessionRepository<ExpiringSession> sessionRepository;
+	private SessionRepository sessionRepository;
 	
-	public DisconnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository<ExpiringSession> sessionRepository) {
+	public DisconnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository sessionRepository) {
 		super();
 		this.messagingTemplate = messagingTemplate;
 		this.sessionRepository = sessionRepository;

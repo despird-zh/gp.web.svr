@@ -36,6 +36,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 	 **/
 	public static void main(String[] args) {
 		initialLogger();
+		
         SpringApplication.run(new Class[] { GPressApplication.class}, args);
     }
 
@@ -63,4 +64,5 @@ public class GPressApplication extends SpringBootServletInitializer{
 			ce.printStackTrace();
 		}
 	}
+
 }

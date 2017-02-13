@@ -1,14 +1,9 @@
 package com.gp.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.session.ExpiringSession;
-import org.springframework.session.MapSessionRepository;
-import org.springframework.session.SessionRepository;
 import org.springframework.session.web.socket.config.annotation.AbstractSessionWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -44,9 +39,5 @@ public class WebSocketConfigurer extends AbstractSessionWebSocketMessageBrokerCo
 	public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
 		registration.setSendTimeLimit(15 * 1000).setSendBufferSizeLimit(512 * 1024);
 	}
-	
-	@Bean
-	SessionRepository<ExpiringSession> sessionRepository() {
-		return new MapSessionRepository();
-    }
+
 }

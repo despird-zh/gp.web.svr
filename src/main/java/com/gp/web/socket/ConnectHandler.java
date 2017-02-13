@@ -17,9 +17,9 @@ public class ConnectHandler<S>
 
 	private SimpMessageSendingOperations messagingTemplate;
 	
-	private SessionRepository<ExpiringSession> sessionRepository;
+	private SessionRepository sessionRepository;
 	
-	public ConnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository<ExpiringSession> sessionRepository) {
+	public ConnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository sessionRepository) {
 		super();
 		this.messagingTemplate = messagingTemplate;
 		this.sessionRepository = sessionRepository;
