@@ -24,8 +24,10 @@ import com.gp.common.GeneralConfig;
 @SpringBootApplication
 @Import({ 
 	RootConfigurer.class, 
-	ServiceConfigurer.class, 
-	WebCompConfigurer.class
+	ServiceConfigurer.class,
+	WebCompConfigurer.class,
+	WebSecurityConfigurer.class,
+	WebSocketConfigurer.class
 	})
 public class GPressApplication extends SpringBootServletInitializer{
 

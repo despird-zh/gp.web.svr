@@ -62,7 +62,6 @@ public class WebCompConfigurer {
 		 // Create ApplicationContext
         AnnotationConfigWebApplicationContext webMvcContext = new AnnotationConfigWebApplicationContext();
         webMvcContext.register(WebMVCConfigurer.class);
-        webMvcContext.register(WebSecurityConfigurer.class);
 
 	    DispatcherServlet servlet=new DispatcherServlet(webMvcContext);
  
@@ -103,7 +102,7 @@ public class WebCompConfigurer {
         return registerBean;
 	}
 	
-	@Bean
+	/*@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -117,7 +116,7 @@ public class WebCompConfigurer {
 		bean.setAsyncSupported(true);
 		bean.setOrder(2);
 		return bean;
-	}
+	}*/
 	
 	/**
 	 * Register the service filter to validate all the rpc request 
