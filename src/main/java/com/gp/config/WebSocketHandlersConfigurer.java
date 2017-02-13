@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.session.ExpiringSession;
+import org.springframework.session.SessionRepository;
 
 import com.gp.web.socket.ConnectHandler;
 import com.gp.web.socket.DisconnectHandler;
@@ -17,18 +18,21 @@ import com.gp.web.socket.DisconnectHandler;
 // @Configuration
 public class WebSocketHandlersConfigurer<S extends ExpiringSession> {
 
+	@Autowired
+	private SessionRepository sessionRepository;
+	
     @Autowired
     private SimpMessageSendingOperations messagingTemplate;
 	
 	@Bean
 	public ConnectHandler<S> webSocketConnectHandler() {
 		
-		return new ConnectHandler<S>(messagingTemplate);
+		return new ConnectHandler<S>(messagingTemplate, sessionRepository);
 	}
 
 	@Bean
 	public DisconnectHandler<S> webSocketDisconnectHandler() {
 		
-		return new DisconnectHandler<S>(messagingTemplate);
+		return new DisconnectHandler<S>(messagingTemplate, sessionRepository);
 	}
 }

@@ -8,17 +8,21 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.SessionRepository;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 public class ConnectHandler<S>
 		implements ApplicationListener<SessionConnectEvent> {
 
 	private SimpMessageSendingOperations messagingTemplate;
-
-	public ConnectHandler(SimpMessageSendingOperations messagingTemplate) {
+	
+	private SessionRepository<ExpiringSession> sessionRepository;
+	
+	public ConnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository<ExpiringSession> sessionRepository) {
 		super();
 		this.messagingTemplate = messagingTemplate;
-
+		this.sessionRepository = sessionRepository;
 	}
 
 	public void onApplicationEvent(SessionConnectEvent event) {

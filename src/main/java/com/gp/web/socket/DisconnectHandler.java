@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.session.ExpiringSession;
+import org.springframework.session.SessionRepository;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 public class DisconnectHandler<S>
@@ -11,9 +13,12 @@ public class DisconnectHandler<S>
 	
 	private SimpMessageSendingOperations messagingTemplate;
 
-	public DisconnectHandler(SimpMessageSendingOperations messagingTemplate) {
+	private SessionRepository<ExpiringSession> sessionRepository;
+	
+	public DisconnectHandler(SimpMessageSendingOperations messagingTemplate, SessionRepository<ExpiringSession> sessionRepository) {
 		super();
 		this.messagingTemplate = messagingTemplate;
+		this.sessionRepository = sessionRepository;
 	}
 
 	public void onApplicationEvent(SessionDisconnectEvent event) {
