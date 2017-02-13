@@ -2,8 +2,6 @@ package com.gp.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -11,21 +9,24 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
-import org.springframework.session.ExpiringSession;
-import org.springframework.session.MapSessionRepository;
-import org.springframework.session.SessionRepository;
-import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.gp.web.security.LogoffSuccessHandler;
+import com.gp.web.security.LogonSuccessHandler;
 import com.gp.web.security.PrincipalsService;
+import com.gp.web.security.SecurityFilter;
 import com.gp.web.servlet.ServiceFilter;
 
 @EnableWebSecurity
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
+	
+	@Autowired  
+    private SecurityFilter securityFilter; 
 	
 	@Override
  	public void configure(WebSecurity web) throws Exception {
@@ -41,19 +42,45 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 		
 		http.cors().configurationSource(getCorsConfigureSource());
 		
-		http.antMatcher("/**")
-	      .authorizeRequests()
-	      .antMatchers("/", "/login**", "/webjars/**")
-	      .permitAll()
-	      .anyRequest()
-	      .authenticated();
-		
-		http.sessionManagement()
+		http.addFilterBefore(securityFilter, FilterSecurityInterceptor.class)
+			.antMatcher("/**")
+			.authorizeRequests()
+			.antMatchers("/", "/login**", "/webjars/**").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.formLogin()  
+	        .loginPage("/login")//指定登录页是”/login”  
+	        .permitAll()  
+	        .successHandler(logonSuccessHandler())
+	        .and()
+	        .logout()  
+	        .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”  
+	        .permitAll()  
+	        .logoutSuccessHandler(logoffSuccessHandler())
+	        .invalidateHttpSession(true)  
+	        .and()
+			.sessionManagement()
 			.sessionFixation().migrateSession()
-        	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-        	.invalidSessionUrl("/invalidSession.html")
-        	.maximumSessions(2);
+			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+			.invalidSessionUrl("/invalidSession.html")
+			.maximumSessions(2);
 	}
+	
+	/**
+	 * Declare a logon success handler 
+	 **/
+	@Bean  
+    public LogonSuccessHandler logonSuccessHandler(){  
+        return new LogonSuccessHandler();  
+    }  
+	
+	/**
+	 * Declare a logoff success handler 
+	 **/
+	@Bean  
+    public LogoffSuccessHandler logoffSuccessHandler(){  
+        return new LogoffSuccessHandler();  
+    } 
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -61,14 +88,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 			.userDetailsService(new PrincipalsService())
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
-
-	@Override
- 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
- 		auth
- 		// enable in memory based authentication with a user named "user" and "admin"
- 		.inMemoryAuthentication().withUser("user").password("password").roles("USER")
- 				.and().withUser("admin").password("password").roles("USER", "ADMIN");
- 	}
 	
 	@Bean
 	protected CsrfTokenRepository csrfTokenRepository()

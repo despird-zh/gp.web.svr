@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.servlet.MultipartConfigElement;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -17,15 +16,11 @@ import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
-import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 
 /**

@@ -15,7 +15,6 @@ import com.gp.exception.WebException;
 import com.gp.web.BaseController;
 
 @Controller
-@RequestMapping("/test")
 public class Test2Controller extends BaseController{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(Test2Controller.class);
