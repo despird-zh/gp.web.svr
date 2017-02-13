@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -44,6 +45,11 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	      .anyRequest()
 	      .authenticated();
 		
+		http.sessionManagement()
+			.sessionFixation().migrateSession()
+        	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+        	.invalidSessionUrl("/invalidSession.html")
+        	.maximumSessions(2);
 	}
 	
 	@Autowired
