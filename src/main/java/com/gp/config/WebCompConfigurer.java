@@ -14,7 +14,6 @@ import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
@@ -101,9 +100,7 @@ public class WebCompConfigurer {
         return registerBean;
 	}*/
 	
-	/**
-	 * @Bean
-	 **/
+	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -114,7 +111,6 @@ public class WebCompConfigurer {
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
-		bean.setAsyncSupported(true);
 		bean.setOrder(2);
 		return bean;
 	}
