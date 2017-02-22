@@ -3,6 +3,8 @@ package com.gp.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -34,15 +36,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	@Autowired
 	MetadataSourceService metadataSourceService;
 	
-	@Bean  
-    public SecurityInterceptor securityInterceptor(){
-		return new SecurityInterceptor();
-	}
-	
-	@Bean  
-    public SecurityDecisionManager accessDecisionManager(){
-		return new SecurityDecisionManager();
-	}
+	@Autowired
+	private SecurityDecisionManager accessDecisionManager;
 	
 	@Override
  	public void configure(WebSecurity web) throws Exception {
@@ -58,28 +53,21 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 		
 		http.cors().configurationSource(getCorsConfigureSource());
 		
-		http.addFilterBefore(securityInterceptor(), FilterSecurityInterceptor.class)
+		http//.addFilterBefore(securityInterceptor(), FilterSecurityInterceptor.class)
 			.antMatcher("/**")
 			.authorizeRequests()
 			.antMatchers("/", "/login**", "/webjars/**").permitAll()
 			.anyRequest().authenticated()
-			.and()
-			.formLogin()  
-	        .loginPage("/login")//指定登录页是”/login”  
-	        .permitAll()  
-	        .successHandler(logonSuccessHandler())
-	        .and()
-	        .logout()  
-	        .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”  
-	        .permitAll()  
-	        .logoutSuccessHandler(logoffSuccessHandler())
-	        .invalidateHttpSession(true)  
-	        .and()
-			.sessionManagement()
-			.sessionFixation().migrateSession()
-			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-			.invalidSessionUrl("/invalidSession.html")
-			.maximumSessions(2);
+			.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+				public <O extends FilterSecurityInterceptor> O postProcess(
+						O fsi) {
+					fsi.setPublishAuthorizationSuccess(true);
+					fsi.setSecurityMetadataSource(metadataSourceService);
+					fsi.setAccessDecisionManager(accessDecisionManager);
+					return fsi;
+				}
+			});
+		
 	}
 	
 	/**
@@ -100,9 +88,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-			.userDetailsService(new PrincipalsService())
-				.passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(new PrincipalsService());
 	}
 	
 	@Bean

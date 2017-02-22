@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
-import com.gp.web.util.CustomWebUtils;
+import com.gp.web.util.ExWebUtils;
 
 
 /**
@@ -73,7 +73,7 @@ public abstract class BaseController implements MessageSourceAware{
 	 **/
 	public static AccessPoint getAccessPoint(HttpServletRequest request){
 		
-		return CustomWebUtils.getAccessPoint(request);
+		return ExWebUtils.getAccessPoint(request);
 	}
 	
 	/**

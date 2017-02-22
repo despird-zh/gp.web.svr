@@ -4,6 +4,8 @@
  */
 package com.gp.web.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,10 +15,14 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -30,9 +36,9 @@ import com.gp.util.ConfigSettingUtils;
  * @author Gary Diao 
  * @version V0.1 2012-07-01
  * */
-public abstract class CustomWebUtils extends WebUtils{
+public abstract class ExWebUtils extends WebUtils{
 	
-	static Logger LOGGER = LoggerFactory.getLogger(CustomWebUtils.class);
+	static Logger LOGGER = LoggerFactory.getLogger(ExWebUtils.class);
 	
 	/**
 	 * Dump the attributes in session to facilitate the development
@@ -114,7 +120,7 @@ public abstract class CustomWebUtils extends WebUtils{
 		ServletServerHttpRequest req = new ServletServerHttpRequest(request);
 		try {
 			LOGGER.info("Start Dumping the request body content ----" );
-			String text = CustomWebUtils.getRequestBody(req.getBody());
+			String text = ExWebUtils.getRequestBody(req.getBody());
 			LOGGER.info(text);
 			LOGGER.info("End Dumping the request body content ----" );
 		} catch (IOException e) {
@@ -237,18 +243,112 @@ public abstract class CustomWebUtils extends WebUtils{
 		return ap;
 	}
 	
+	/**
+	 * Get the ip address of request
+	 * @param request the Http Servlet Request from client 
+	 **/
     public static String getIpAddr(HttpServletRequest request) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknow".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
-        }
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
+    	String ip = request.getHeader("x-forwarded-for");      
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {      
+            ip = request.getHeader("Proxy-Client-IP");      
+        }      
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {      
+            ip = request.getHeader("WL-Proxy-Client-IP");      
+        }      
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {      
+            ip = request.getHeader("HTTP_CLIENT_IP");      
+        }      
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {      
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");      
+        }      
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {      
+            ip = request.getRemoteAddr();      
+        }      
+        return ip; 
     }
 
+	
+	/**
+	 * Returns the URL (including query parameters) minus the
+	 * scheme, host, and context path. This method probably be moved to a more
+	 * general purpose class.
+	 */
+	public static String getRelativeUrl(HttpServletRequest request) {
+
+		String baseUrl = null;
+
+		if ((request.getServerPort() == 80) || (request.getServerPort() == 443))
+			baseUrl = request.getScheme() + "://" + request.getServerName() + request.getContextPath();
+		else
+			baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+					+ request.getContextPath();
+
+		StringBuffer buf = request.getRequestURL();
+
+		if (request.getQueryString() != null) {
+			buf.append("?");
+			buf.append(request.getQueryString());
+		}
+
+		return buf.substring(baseUrl.length());
+	}
+
+	/**
+	 * NOT UNIT TESTED Returns the base url (e.g,
+	 * <tt>http://myhost:8080/myapp</tt>) suitable for using in a base tag or
+	 * building reliable urls.
+	 */
+	public static String getBaseUrl(HttpServletRequest request) {
+		if ((request.getServerPort() == 80) || (request.getServerPort() == 443))
+			return request.getScheme() + "://" + request.getServerName() + request.getContextPath();
+		else
+			return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+					+ request.getContextPath();
+	}
+
+	/**
+	 * Returns the file specified by <tt>path</tt> as returned by
+	 * <tt>ServletContext.getRealPath()</tt>.
+	 */
+	public static File getRealFile(HttpServletRequest request, String path) {
+
+		return new File(request.getSession().getServletContext().getRealPath(path));
+	}
+
+	/**
+	 * Returns the path specified by <tt>path</tt> as returned by
+	 * <tt>ServletContext.getRealPath()</tt>.
+	 */
+	public static String getRealPath(HttpServletRequest request, String path){
+		return request.getSession().getServletContext().getRealPath(path);
+	}
+
+	/**
+	 * Write the image back directly. 
+	 * @param response the http response
+	 * @param image the the image file 
+	 **/
+	public static void writeImage(ServletResponse response, File image) throws IOException{
+
+        ByteArrayInputStream iStream = new ByteArrayInputStream(FileUtils.readFileToByteArray(image));
+        long length = image.length();
+        
+        String ext = FilenameUtils.getExtension(image.getPath());
+        // Hard-coded for a GIF image - see text.
+        response.setContentType("image/" + ext);
+        response.setContentLength((int)length);
+
+        ServletOutputStream oStream = response.getOutputStream();
+        try{
+	        byte [] buffer = new byte[1024];
+	        int len;
+	        while ((len = iStream.read(buffer)) != -1) {
+	            oStream.write(buffer, 0, len);
+	        }
+	        oStream.flush();
+        }finally{
+	        iStream.close();
+	        oStream.close();
+        }
+	}
 }

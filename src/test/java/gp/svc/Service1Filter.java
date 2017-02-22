@@ -23,7 +23,7 @@ import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
-import com.gp.web.util.CustomWebUtils;
+import com.gp.web.util.ExWebUtils;
 import com.gp.util.JwtTokenUtils;
 
 public class Service1Filter implements Filter{
@@ -63,14 +63,14 @@ public class Service1Filter implements Filter{
 			throws IOException, ServletException {
 		
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
-		CustomWebUtils.dumpRequestAttributes(httpRequest);
-		CustomWebUtils.dumpRequestBody(httpRequest);
+		ExWebUtils.dumpRequestAttributes(httpRequest);
+		ExWebUtils.dumpRequestBody(httpRequest);
 		
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
 		RequestState state = RequestState.UNKNOWN;
 
-		AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
+		AccessPoint accesspoint = ExWebUtils.getAccessPoint(httpRequest);
 		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token)){
 			// don't have token, forward request to authenticate it

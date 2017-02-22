@@ -36,7 +36,7 @@ import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.util.JwtTokenUtils;
-import com.gp.web.util.CustomWebUtils;
+import com.gp.web.util.ExWebUtils;
 
 /**
  * This filter customize as per the CorsFilter, add the authentication process 
@@ -123,13 +123,13 @@ public class ServiceFilter extends OncePerRequestFilter {
 		 
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		if(LOGGER.isDebugEnabled()){
-			CustomWebUtils.dumpRequestAttributes(httpRequest);
+			ExWebUtils.dumpRequestAttributes(httpRequest);
 		}
 		String token = httpRequest.getHeader(AUTH_TOKEN);
 		
 		RequestState state = RequestState.UNKNOWN;
 
-		AccessPoint accesspoint = CustomWebUtils.getAccessPoint(httpRequest);
+		AccessPoint accesspoint = ExWebUtils.getAccessPoint(httpRequest);
 		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token) || StringUtils.equalsIgnoreCase(BLIND_TOKEN, token)){
 			// don't have token, forward request to authenticate it

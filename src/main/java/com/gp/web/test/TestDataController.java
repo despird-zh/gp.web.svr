@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.BaseController;
-import com.gp.web.util.CustomWebUtils;
+import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping("/test")
@@ -23,7 +23,7 @@ public class TestDataController extends BaseController{
 	@RequestMapping("query")
 	public ModelAndView doQuery(HttpServletRequest request){
 		
-		CustomWebUtils.dumpRequestAttributes(request);
+		ExWebUtils.dumpRequestAttributes(request);
 		ModelAndView mav = super.getJsonModelView();
 		ArrayList<demodata> list = new ArrayList<demodata>();
 		for(int i = 1; i<100; i++){

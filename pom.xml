@@ -137,7 +137,7 @@
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- Start Shiro -->
+		<!-- Start session 
 		<dependency>
 		    <groupId>org.springframework.session</groupId>
 		    <artifactId>spring-session</artifactId>
@@ -145,7 +145,7 @@
 		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-redis</artifactId>
-		</dependency>
+		</dependency>-->
 		<dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-security</artifactId>
@@ -187,7 +187,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${upload.version}</version>
 		</dependency>
-		<!-- Embed a redis into Spring-Boot Application -->
+		<!-- Embed a redis into Spring-Boot Application 
 		<dependency>
 		  <groupId>com.github.kstyrc</groupId>
 		  <artifactId>embedded-redis</artifactId>
@@ -202,7 +202,7 @@
 		    <groupId>redis.clients</groupId>
 		    <artifactId>jedis</artifactId>
 		    <version>2.9.0</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 	<build>
 		<plugins>

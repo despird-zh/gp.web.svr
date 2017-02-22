@@ -24,8 +24,7 @@ import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
 import com.gp.util.ConfigSettingUtils;
 import com.gp.web.BaseController;
-import com.gp.web.util.ServletUtils;
-
+import com.gp.web.util.ExWebUtils;
 public class ImageFilter implements Filter{
 
 	Logger LOGGER = LoggerFactory.getLogger(ImageFilter.class);
@@ -44,7 +43,7 @@ public class ImageFilter implements Filter{
 		
 		HttpServletRequest _request = (HttpServletRequest) request;
 		// relative uri : img_cache/39-20160411-150649.png
-		String relativeUri = ServletUtils.getRelativeUrl(_request);
+		String relativeUri = ExWebUtils.getRelativeUrl(_request);
 		String fileName = FilenameUtils.getName(relativeUri);
 		
 		if(Images.isQualifiedName(fileName)){
@@ -62,17 +61,17 @@ public class ImageFilter implements Filter{
 				// load image from database to disk directory.
 				loadImageToCache(_request, imgfile.getParent(), fileName);
 				// write image to browser
-				ServletUtils.writeImage(response, imgfile);
+				ExWebUtils.writeImage(response, imgfile);
 				
 			}else{
-				String webrootpath = ServletUtils.getRealPath(_request, "/");
+				String webrootpath = ExWebUtils.getRealPath(_request, "/");
 				if(StringUtils.startsWith(imgfile.getAbsolutePath(), webrootpath)){
 					// image exist let server to handle it
 					chain.doFilter(request, response);
 				}
 				else{
 					// image exist out of server, write it manually.
-					ServletUtils.writeImage(response, imgfile);
+					ExWebUtils.writeImage(response, imgfile);
 				}
 			}
 		}
