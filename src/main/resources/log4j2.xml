@@ -22,7 +22,6 @@
 			</PatternLayout>
 		</File>
 	</Appenders>
-
 	<Loggers>
 		<Logger name="org.springframework" level="error">
 			<AppenderRef ref="File-Appender" />

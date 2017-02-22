@@ -26,7 +26,6 @@ import com.gp.common.GeneralConfig;
 	RootConfigurer.class, 
 	ServiceConfigurer.class,
 	WebCompConfigurer.class,
-	WebSecurityConfigurer.class
 	})
 public class GPressApplication extends SpringBootServletInitializer{
 

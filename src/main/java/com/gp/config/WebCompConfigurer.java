@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
+import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.servlet.TransferServlet;
 
 /**
@@ -81,7 +84,7 @@ public class WebCompConfigurer {
 	
 	/**
 	 * Register the encoding filter bean 
-	 **/
+	 *
 	@Bean
 	public FilterRegistrationBean encodingFilterBean() {
 		FilterRegistrationBean registerBean = new FilterRegistrationBean();
@@ -96,11 +99,11 @@ public class WebCompConfigurer {
         registerBean.setOrder(1);
         registerBean.setAsyncSupported(true);
         return registerBean;
-	}
+	}*/
 	
 	/**
 	 * @Bean
-	 *
+	 **/
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
@@ -114,7 +117,7 @@ public class WebCompConfigurer {
 		bean.setAsyncSupported(true);
 		bean.setOrder(2);
 		return bean;
-	}*/
+	}
 	
 	/**
 	 * Register the service filter to validate all the rpc request 
@@ -122,7 +125,7 @@ public class WebCompConfigurer {
 	@Bean
 	public FilterRegistrationBean serviceFilterBean() {
 		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		Service1Filter serviceFilter = new Service1Filter();
+		ServiceFilter serviceFilter = new ServiceFilter();
 		registerBean.setName("ServiceFilter");
 		registerBean.setFilter(serviceFilter);
         List<String> urlPatterns = new ArrayList<String>();
