@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import com.gp.audit.AccessPoint;
-import com.gp.web.BaseController;
+import com.gp.web.util.ExWebUtils;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gp.common.GeneralConfig;
+import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.exception.CoreException;
 import com.gp.storage.ContentRange;
@@ -122,9 +124,11 @@ public class TransferServlet extends HttpServlet {
         fmeta.setContentType(part.getContentType());
 
         // parse the access point from request
-        AccessPoint accesspoint = BaseController.getAccessPoint(request);
+        AccessPoint accesspoint = ExWebUtils.getAccessPoint(request);
         fmeta.setAccessPoint(accesspoint);
-
+        Principal principal = ExWebUtils.getPrincipal(request);
+        fmeta.setPrincipal(principal);
+        
         String contentRange = request.getHeader("Content-Range");
         
         if(StringUtils.isNotBlank(contentRange)){

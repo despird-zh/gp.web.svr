@@ -8,10 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.audit.AccessPoint;
 import com.gp.common.Principal;
+import com.gp.web.servlet.ServiceFilter;
 import com.gp.web.util.ExWebUtils;
 
 
@@ -58,9 +58,13 @@ public abstract class BaseController implements MessageSourceAware{
 	
 	public static ObjectMapper JACKSON_MAPPER_NON_NULL = new ObjectMapper();
 	
+	@Autowired
+    protected HttpServletRequest request;
+	
 	static{
 		JACKSON_MAPPER_NON_NULL.setSerializationInclusion(Include.NON_NULL);
 	}
+	
 	private MessageSource messageSource;
 	
 	public void setMessageSource(MessageSource messageSource) {
@@ -249,9 +253,9 @@ public abstract class BaseController implements MessageSourceAware{
 	/**
 	 * Get the principal from the security context 
 	 **/
-	public static Principal getPrincipal(){
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		return (Principal)authentication.getPrincipal();
+	public Principal getPrincipal(){
+		
+		return ExWebUtils.getPrincipal(request);
 	}
 	
 	/**

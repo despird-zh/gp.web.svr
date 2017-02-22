@@ -90,7 +90,7 @@ public class ImageFilter implements Filter{
 	 **/
 	public void loadImageToCache(HttpServletRequest request, String parent, String fileName){
 		
-		Principal principal = BaseController.getPrincipal();
+		Principal principal = ExWebUtils.getPrincipal(request);
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
 		try {

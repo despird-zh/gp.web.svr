@@ -28,6 +28,7 @@ import com.gp.audit.AccessPoint;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
+import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.MasterFacade;
 import com.gp.core.SecurityFacade;
@@ -53,6 +54,7 @@ public class ServiceFilter extends OncePerRequestFilter {
 	public static final String BLIND_TOKEN = "__blind_token__";
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
+	
 	
 	/**
 	 * the patter will be /p1/p2, remember it will be applied to controller annotation.
@@ -159,6 +161,9 @@ public class ServiceFilter extends OncePerRequestFilter {
 							state = RequestState.VALID_TOKEN;
 							// attach the state to request
 							request.setAttribute(FILTER_STATE, state);
+							// attach principal to request
+							Principal principal = SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
+							ExWebUtils.setPrincipal(httpRequest, principal);
 							// a valid token, continue the further process
 							filterChain.doFilter(request, response);
 							return;

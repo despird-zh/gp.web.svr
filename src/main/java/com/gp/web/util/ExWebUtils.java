@@ -29,6 +29,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.util.WebUtils;
 
 import com.gp.audit.AccessPoint;
+import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;
 
@@ -39,6 +40,9 @@ import com.gp.util.ConfigSettingUtils;
 public abstract class ExWebUtils extends WebUtils{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(ExWebUtils.class);
+	
+	/** the principa request attribute key */
+	public static final String REQ_ATTR_PRINCIPAL = "_gp_principal_";
 	
 	/**
 	 * Dump the attributes in session to facilitate the development
@@ -350,5 +354,30 @@ public abstract class ExWebUtils extends WebUtils{
 	        iStream.close();
 	        oStream.close();
         }
+	}
+	
+	/**
+	 * Append the principal object in request
+	 * 
+	 * @param request the request from client
+	 * @param principal the user principal 
+	 * 
+	 **/
+	public static void setPrincipal(HttpServletRequest request, Principal principal){
+		
+		if(null == request) return;
+		
+		request.setAttribute(REQ_ATTR_PRINCIPAL, principal);
+	}
+	
+	/**
+	 * Fetch the principal object out of request attribute.
+	 * 
+	 * @param request the request from client
+	 * 
+	 **/
+	public static Principal getPrincipal(HttpServletRequest request){
+		
+		return (Principal) request.getAttribute(REQ_ATTR_PRINCIPAL);
 	}
 }

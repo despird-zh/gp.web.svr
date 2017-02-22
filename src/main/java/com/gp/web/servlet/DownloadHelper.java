@@ -23,6 +23,7 @@ import com.gp.dao.info.CabFileInfo;
 import com.gp.info.InfoId;
 import com.gp.storage.ContentRange;
 import com.gp.web.BaseController;
+import com.gp.web.util.ExWebUtils;
 
 public class DownloadHelper {
 
@@ -53,7 +54,7 @@ public class DownloadHelper {
 		String sourceId = requestedFile.substring(1,requestedFile.indexOf('.'));
 		String fid = requestedFile.substring(requestedFile.indexOf('.') + 1, requestedFile.lastIndexOf('.'));
 		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(Long.valueOf(fid));
-		Principal principal = BaseController.getPrincipal();
+		Principal principal = ExWebUtils.getPrincipal(request);
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);
 		CabFileInfo cabfile = CabinetFacade.findCabinetFile(accesspoint, principal, fileid);
