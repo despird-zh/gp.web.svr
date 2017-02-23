@@ -42,7 +42,7 @@ public class WebCompConfigurer {
 	}
 	
 	/**
-	 * The Request Context Listener,
+	 * The Request Context Listener, currently comment it off
 	 * This help to access the request binded to certain thread 
 	 * RequestContextHolder.getRequestAttributes() to get request and locale etc.
 	 *
