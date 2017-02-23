@@ -8,6 +8,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.i18n.AbstractLocaleResolver;
 import com.gp.common.Principal;
 import com.gp.web.util.ExWebUtils;
+
+/**
+ * Parse the locale information out of request
+ * 
+ * @author diaogc
+ * @version 0.1 2016-11-12
+ * 
+ **/
 public class PrincipalLocaleResolver extends AbstractLocaleResolver{
 
 	@Override

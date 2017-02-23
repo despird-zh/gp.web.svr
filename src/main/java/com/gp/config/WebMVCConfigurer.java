@@ -1,27 +1,18 @@
 package com.gp.config;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.gp.web.DatabaseMessageSource;
 import com.gp.web.PrincipalLocaleResolver;
-import com.gp.web.view.GenericFileView;
-import com.gp.web.view.GenericFileViewResolver;
-import com.gp.web.view.MultipleViewResolver;
 
 @EnableWebMvc
 @ComponentScan(basePackages = { 
@@ -44,23 +35,18 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 
 		return mpresolver;
 	}
-
-	/**
-	 * Create multiple view resolver bean instance
-	 **/
-	@Bean MultipleViewResolver custViewResolver() {
-		   MultipleViewResolver rtv = new MultipleViewResolver();
-		   Map<String, ViewResolver> resolvers = new HashMap<String, ViewResolver>();
-		   resolvers.put("config", getConfigResolver());
-		   resolvers.put("swf", getConfigResolver());
-		   return rtv;
-	}
 	
+	/**
+	 * Create locale resolver to extract locale from request. 
+	 **/
 	@Bean
 	public LocaleResolver localeResolver() {
 	    return new PrincipalLocaleResolver();
 	}
 	
+	/**
+	 * Create the message source to inject it into Controller. 
+	 **/
     @Bean
     public MessageSource messageSource() {
     	
@@ -68,24 +54,32 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
         return source;
     }
     
-	public GenericFileViewResolver getConfigResolver(){
+
+	/**
+	 * Create multiple view resolver bean instances 
+	 * to support multiple view rendering.
+	 * 
+	@Bean 
+	MultipleViewResolver custViewResolver() {
+		MultipleViewResolver rtv = new MultipleViewResolver();
+		Map<String, ViewResolver> resolvers = new HashMap<String, ViewResolver>();
 		
 		GenericFileViewResolver config = new GenericFileViewResolver();
 		config.setViewName("configFileView");
 		config.setLocation("/WEB-INF/config/");
 		config.setCache(false);
 		
-		return config;
-	}
-	
-	public GenericFileViewResolver getSWFResolver(){
+		resolvers.put("config", config);
+	   
+		GenericFileViewResolver swf = new GenericFileViewResolver();
+		swf.setViewName("swfFileView");
+		swf.setLocation("/WEB-INF/swf/");
+		swf.setCache(false);
 		
-		GenericFileViewResolver config = new GenericFileViewResolver();
-		config.setViewName("swfFileView");
-		config.setLocation("/WEB-INF/swf/");
-		config.setCache(false);
-		
-		return config;
+		resolvers.put("swf", swf);
+	   
+		rtv.setResolvers(resolvers);
+		return rtv;
 	}
 	
 	@Scope("prototype")
@@ -104,8 +98,11 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 		fv.setContentType("text/plain");
 		fv.setUrl("");
 		return fv;
-	}
+	}*/
 	
+    /**
+     * Define the internal view resolver 
+     **/
 	@Bean
 	public InternalResourceViewResolver jspViewResolver(){
 		
