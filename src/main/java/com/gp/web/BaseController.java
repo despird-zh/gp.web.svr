@@ -125,16 +125,7 @@ public abstract class BaseController implements MessageSourceAware{
 	 **/
 	protected String readRequestParam(String parameterName) {
 		
-		String value = null;
-		
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			
-			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-			HttpServletRequest request = servletRequestAttributes.getRequest();
-			value = request.getParameter(parameterName);
-		}
+		String value =  request.getParameter(parameterName);
 
 		return value;
 	}
@@ -145,27 +136,10 @@ public abstract class BaseController implements MessageSourceAware{
 	 * @param datawrapper the data wrapper.
 	 **/
 	protected void readRequestData(Object dataWrapper){
-		
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			
-			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-			HttpServletRequest request = servletRequestAttributes.getRequest();			
-			ServletRequestDataBinder binder = new ServletRequestDataBinder(dataWrapper);
-			binder.bind(request); 
-		}
-	}
-	
-	/**
-	 * Read the request parameters into certain data wrapper.
-	 * @param request the HTTP request
-	 * @param datawrapper the data wrapper.
-	 **/
-	protected void readRequestData(HttpServletRequest request, Object dataWrapper){
-		
+				
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(dataWrapper);
 		binder.bind(request); 
+		
 	}
 	
 	/**
@@ -176,15 +150,8 @@ public abstract class BaseController implements MessageSourceAware{
 	 * @param clazz The class of target bean 
 	 **/
 	protected <T> T readRequestJson(String parameterName, Class<T> clazz){
-		
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		String value = null;
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			
-			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-			HttpServletRequest request = servletRequestAttributes.getRequest();
-			value = request.getParameter(parameterName);
-		}
+
+		String value =  request.getParameter(parameterName);
 		
 		if(null == value)
 			return null;

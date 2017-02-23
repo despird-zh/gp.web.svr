@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.cors.CorsConfiguration;
@@ -41,15 +42,17 @@ public class WebCompConfigurer {
 	}
 	
 	/**
-	 * The Request Context Listener 
-	 **/
+	 * The Request Context Listener,
+	 * This help to access the request binded to certain thread 
+	 * RequestContextHolder.getRequestAttributes() to get request and locale etc.
+	 *
 	@Bean ServletListenerRegistrationBean<RequestContextListener> requestContextListener(){
 		ServletListenerRegistrationBean<RequestContextListener> listenerReg = new ServletListenerRegistrationBean<RequestContextListener>();
 		
 		listenerReg.setListener(new RequestContextListener());
-		
+		RequestContextHolder.getRequestAttributes()
 		return listenerReg;
-	}
+	}*/
 	
 	/**
 	 * The dispatcher servlet to handle all the request. 
@@ -81,25 +84,6 @@ public class WebCompConfigurer {
 	    return registerBean;
 	}
 	
-	/**
-	 * Register the encoding filter bean 
-	 *
-	@Bean
-	public FilterRegistrationBean encodingFilterBean() {
-		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		CharacterEncodingFilter encodeingFilter = new CharacterEncodingFilter();
-		registerBean.setName("EncodingFilter");
-		registerBean.setFilter(encodeingFilter);
-        List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("*.do");
-        registerBean.addInitParameter("encoding", "UTF-8");
-        registerBean.addInitParameter("forceEncoding", "true");
-        registerBean.setUrlPatterns(urlPatterns);
-        registerBean.setOrder(1);
-        registerBean.setAsyncSupported(true);
-        return registerBean;
-	}*/
-	
 	@Bean
 	public FilterRegistrationBean corsFilter() {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -110,46 +94,11 @@ public class WebCompConfigurer {
 		config.addAllowedHeader("content-type");// required, otherwise the preflight not work
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
+		
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
 		bean.setOrder(2);
 		return bean;
 	}
-	
-	/**
-	 * Register the service filter to validate all the rpc request 
-	 *
-	@Bean
-	public FilterRegistrationBean serviceFilterBean() {
-		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		ServiceFilter serviceFilter = new ServiceFilter();
-		registerBean.setName("ServiceFilter");
-		registerBean.setFilter(serviceFilter);
-        List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/gpapi/*");
-        registerBean.setUrlPatterns(urlPatterns);
-        registerBean.setOrder(2);
-        return registerBean;
-	}*/
-	
-	/**
-	 * Register the shiro filter 
-	 **
-	@Bean
-	public FilterRegistrationBean shiroFilterFilterBean() {
-		FilterRegistrationBean registerBean = new FilterRegistrationBean();
-		registerBean.setName("shiroFilter");
-		DelegatingFilterProxy serviceFilter = new DelegatingFilterProxy();
-		serviceFilter.setTargetBeanName("shiroFilter");
-		registerBean.setFilter(serviceFilter);
-        List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add("/*");
-        
-        registerBean.setUrlPatterns(urlPatterns);
-        registerBean.addInitParameter("targetFilterLifecycle", "true");
-        registerBean.setAsyncSupported(true);
-        registerBean.setOrder(3);
-        return registerBean;
-	}*/
 	
 	/**
 	 * Register the image filter 

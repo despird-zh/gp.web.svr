@@ -38,6 +38,7 @@ public class AuthenticateController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// the model and view
 		ModelAndView mav = super.getJsonModelView();
+		
 		Map<String, String> map = JACKSON_MAPPER.readValue(payload, new TypeReference<Map<String, String>>(){});
 		String account = map.get("principal");
 		String password = map.get("credential");
@@ -56,7 +57,7 @@ public class AuthenticateController extends BaseController{
 		// the model and view
 		ModelAndView mav = super.getJsonModelView();
 		
-		String account = request.getParameter("principal");
+		String account = readRequestParam("principal");
 		String password = request.getParameter("credential");
 		String audience = request.getParameter("audience");
 		
