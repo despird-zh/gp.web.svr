@@ -58,8 +58,8 @@ public class AuthenticateController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		
 		String account = readRequestParam("principal");
-		String password = request.getParameter("credential");
-		String audience = request.getParameter("audience");
+		String password = readRequestParam("credential");
+		String audience = readRequestParam("audience");
 		
 		ActionResult result = authenAccount(accesspoint, audience, account, password);
 		
