@@ -35,7 +35,7 @@ public class AuthenticateController extends BaseController{
 		    value = "authenticate.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doAuthenticate(HttpServletRequest request, @RequestBody String payload) throws Exception {
+	public ModelAndView doAuthenticate(@RequestBody String payload) throws Exception {
 		
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// the model and view
@@ -52,7 +52,7 @@ public class AuthenticateController extends BaseController{
 	@RequestMapping(
 			value = "authenticate.do",
 			method = RequestMethod.GET)
-	public ModelAndView doAuthenticate(HttpServletRequest request){	
+	public ModelAndView doAuthenticate(){	
 		// the access point
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// the model and view

@@ -22,7 +22,7 @@ public class TrapAllController extends BaseController{
 	 * trap all the illegal process 
 	 **/
 	@RequestMapping("trap")
-	public ModelAndView doTrap(HttpServletRequest request){	
+	public ModelAndView doTrap(){	
 		
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = null;
@@ -36,7 +36,7 @@ public class TrapAllController extends BaseController{
 	 * Process the bad token request. 
 	 **/
 	@RequestMapping("bad_token")
-	public ModelAndView doBadToken(HttpServletRequest request){	
+	public ModelAndView doBadToken(){	
 		
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
