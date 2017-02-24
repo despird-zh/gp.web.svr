@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
 
-    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
 	
 	<property name="LOG_FILE" value="gp.logs/gpress"/>
     
@@ -24,11 +24,13 @@
         </triggeringPolicy>
     </appender>
 
+	<logger name="ch.qos" level="ERROR"/>
+	<logger name="com.gp" level="DEBUG"/>
 	<logger name="com.gp.dao.impl.AuditDAOImpl" level="ERROR"/>
 	<logger name="com.gp.dao.impl.IdSettingDAOImpl" level="ERROR"/>
 	<logger name="com.gp.svc.impl.CommonServiceImpl" level="ERROR"/>
 	
-    <root level="INFO">
+    <root level="ERROR">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>
