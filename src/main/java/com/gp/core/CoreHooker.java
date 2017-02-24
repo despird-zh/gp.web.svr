@@ -1,7 +1,15 @@
 package com.gp.core;
 
+import com.gp.audit.AuditConverter;
+import com.gp.common.AccessPoint;
 import com.gp.common.Operations;
+import com.gp.dao.info.AuditInfo;
 import com.gp.exception.CoreException;
+
+import java.io.IOException;
+import java.util.Date;
+
+import org.apache.commons.lang.mutable.MutableObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +41,7 @@ public class CoreHooker extends EventHooker<CoreEventLoad>{
 		}
 
 		CoreEventLoad coreload = (CoreEventLoad) payload;
-
+		persistLocal(coreload);
 		Operations operation = Operations.valueOf(coreload.getOperation());
 		try {
 			switch (operation) {
@@ -49,4 +57,51 @@ public class CoreHooker extends EventHooker<CoreEventLoad>{
 		}
 	}
 
+
+	/**
+	 * Persist the audit data locally to database directly. 
+	 **/
+	private void persistLocal(CoreEventLoad payload) throws RingEventException {
+
+		// prepare access point
+		AccessPoint apt = payload.getAccessPoint();
+
+		// prepare the operation primary audit
+		AuditInfo operaudit = new AuditInfo();	
+		operaudit.setSubject(payload.getOperator());
+		
+		if(null != payload.getObjectId())
+			operaudit.setTarget(payload.getObjectId().toString());
+		
+		operaudit.setOperation(payload.getOperation());
+		MutableObject pjson;
+		try {
+			pjson = AuditConverter.mapToJson(payload.getPredicates());
+			operaudit.setPredicates((String)pjson.getValue());
+		} catch (IOException e) {
+			LOGGER.error("error to convert predicate map");
+		}
+		
+		operaudit.setApp(apt.getApp());
+		operaudit.setClient(apt.getClient());
+		operaudit.setHost(apt.getHost());
+		operaudit.setVersion(apt.getVersion());
+		
+		if(payload.getWorkgroupId() != null)
+			operaudit.setWorkgroupId(payload.getWorkgroupId().getId());
+		
+		operaudit.setState(payload.getState());
+		operaudit.setMessage(payload.getMessage());
+		operaudit.setAuditDate(new Date(payload.getTimestamp()));
+		operaudit.setElapseTime(payload.getElapsedTime());
+		
+		try {
+			// store data to database.
+			CoreFacade.auditOperation(operaudit);
+		} catch (CoreException e) {
+			
+			LOGGER.error("Fail to persist audit to database.",e);
+			throw new RingEventException("Fail to persist audit to database.",e);
+		}
+	}
 }

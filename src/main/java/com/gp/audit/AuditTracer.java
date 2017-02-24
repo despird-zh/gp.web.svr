@@ -10,7 +10,7 @@ import com.gp.info.InfoId;
  * 
  * @author despird
  **/
-public class AuditVerb {
+public class AuditTracer {
 	
 	/** the time stamp */
 	private Long timestamp;	
@@ -24,14 +24,18 @@ public class AuditVerb {
 	/** predicateMap */
 	private Map<String, String> predicateMap = null;
 
-	public AuditVerb(){
+	/**
+	 * Default constructor 
+	 **/
+	public AuditTracer(){
 		this.timestamp = System.currentTimeMillis();
 		predicateMap = new HashMap<String, String>();
 	}
+	
 	/**
 	 * Constructor with verb 
 	 **/
-	public AuditVerb(String verb){
+	public AuditTracer(String verb){
 		this.verb = verb;
 		this.timestamp = System.currentTimeMillis();
 		predicateMap = new HashMap<String, String>();
@@ -40,7 +44,7 @@ public class AuditVerb {
 	/**
 	 * Constructor with verb and target 
 	 **/
-	public AuditVerb(String verb, InfoId<?> objectId){
+	public AuditTracer(String verb, InfoId<?> objectId){
 		this(verb);
 		this.objectId = objectId;
 	}
@@ -83,16 +87,34 @@ public class AuditVerb {
 
 	}
 	
+	/**
+	 * Set the elapse time
+	 **/
+	public void setElapsedTime(){
+		
+		long currTimestamp = System.currentTimeMillis();
+		this.elapse = currTimestamp - this.timestamp;
+	}
+	
+	/**
+	 * Set the elapse time 
+	 **/
 	public void setElapsedTime(Long elapse){
 		
 		this.elapse = elapse;
 	}
 
+	/**
+	 * Get time stamp 
+	 **/
 	public Long getTimestamp(){
 		
 		return this.timestamp;
 	}
 	
+	/**
+	 * Set time stamp 
+	 **/
 	public void setTimestamp(Long timestamp){
 		
 		this.timestamp = timestamp;

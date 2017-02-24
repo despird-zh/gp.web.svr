@@ -6,7 +6,6 @@ import java.util.ServiceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.audit.AuditHooker;
 import com.gp.disruptor.EventDispatcher;
 import com.gp.exception.BaseException;
 import com.gp.launcher.CoreInitializer;
@@ -147,10 +146,7 @@ public class CoreEngine{
 			
 			// fire up the Lifecycle event to trigger process
 			fireEvent(LifeState.INITIAL);
-			
-			// register audit event hooker
-			AuditHooker auditHooker = new AuditHooker();
-			EventDispatcher.getInstance().regEventHooker(auditHooker);
+
 			// register the core event hooker
 			CoreHooker coreHooker = new CoreHooker();
 			EventDispatcher.getInstance().regEventHooker(coreHooker);

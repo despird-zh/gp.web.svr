@@ -24,7 +24,7 @@ import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;

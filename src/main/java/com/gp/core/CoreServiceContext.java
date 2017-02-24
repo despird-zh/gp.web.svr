@@ -2,13 +2,12 @@ package com.gp.core;
 
 import java.util.Map;
 
-import com.gp.audit.AuditEventLoad;
-import com.gp.audit.AuditVerb;
+import com.gp.audit.AuditTracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.audit.AccessPoint;
 import com.gp.audit.AuditConverter;
+import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.disruptor.EventDispatcher;
@@ -28,12 +27,24 @@ public class CoreServiceContext extends ServiceContext{
 	/**
 	 * audit data holder 
 	 **/
-	private CoreEventLoad coreload = null;
+	//private CoreEventLoad coreload = null;
 
 	/**
 	 * AuditState
 	 **/
 	private ExecState execstate = ExecState.UNKNOWN;
+	
+	/**
+	 * Audit verb tracker 
+	 **/
+	private AuditTracer verbTracer = null;
+	
+	/**
+	 * The access point 
+	 **/
+	private AccessPoint accessPoint = null;
+	
+	private String message;
 	
 	/**
 	 * constructor with principal 
@@ -42,7 +53,8 @@ public class CoreServiceContext extends ServiceContext{
 		
 		super(principal);
 		setAuditable(true);
-		coreload = new CoreEventLoad();
+
+		verbTracer = new AuditTracer();
 	}
 	
 	/**
@@ -51,7 +63,8 @@ public class CoreServiceContext extends ServiceContext{
 	public CoreServiceContext(Principal principal, AccessPoint accesspoint){
 		
 		this(principal);
-		this.coreload.setAccessPoint(accesspoint);
+
+		this.accessPoint = accesspoint;
 	}
 	
 	/**
@@ -60,26 +73,25 @@ public class CoreServiceContext extends ServiceContext{
 	@Override
 	public void setAccessPoint(String client, String host, String app, String version){
 		
-		this.coreload.setAccessPoint(new AccessPoint(client, host, app, version));
+		this.accessPoint = new AccessPoint(client, host, app, version);
 	}
 	
 	@Override
 	public void beginOperation(String subject,String operation, InfoId<?> object, Object predicate){
 
-		coreload.setOperator(subject);
-		coreload.setOperation(operation);
-		coreload.setObjectId(object);
+		verbTracer.setVerb(operation);
+		verbTracer.setObjectId(object);
 
 		// convert object to map object so as to save as json
 		Map<String,String> predicates = AuditConverter.beanToMap(predicate);		
-		coreload.addPredicates(predicates);
+		verbTracer.addPredicates(predicates);
 
 	}
 	
 	@Override
 	public void addOperationPredicate(String predicateKey, Object predicate){
 
-		coreload.addPredicate(predicateKey, predicate.toString());
+		verbTracer.addPredicate(predicateKey, predicate.toString());
 	}
 	
 	@Override
@@ -87,17 +99,20 @@ public class CoreServiceContext extends ServiceContext{
 
 		Map<String,String> predicates = AuditConverter.beanToMap(predicate);
 		// set operation primary verb predicates
-		coreload.addPredicates(predicates);
+		verbTracer.addPredicates(predicates);
 	}
 	
 	@Override 
 	public void setOperationObject(InfoId<?> objectId){
 		
-		coreload.setObjectId(objectId);
+		verbTracer.setObjectId(objectId);
 	}
 	
 	/**
 	 * endOperation will only be called once. 
+	 * 
+	 * @param state the execution state
+	 * @param message the message
 	 **/
 	@Override
 	public void endOperation(ExecState state, String message){
@@ -106,58 +121,46 @@ public class CoreServiceContext extends ServiceContext{
 		if(execstate != ExecState.UNKNOWN && state == ExecState.SUCCESS)
 			return ;
 		
+		verbTracer.setElapsedTime();
 		execstate = state;
-		coreload.setState(state.name());
-		coreload.setStarted(false);
-		coreload.setMessage(message);
+		this.message = message;
 
-	}
-
-	/**
-	 * Set the work group key of current context
-	 **/
-	public void setWorkgroupId(InfoId<Long> workgroupId){
-		
-		super.setWorkgroupId(workgroupId);
-		coreload.setWorkgroupId(workgroupId);
-	}
-	
-	/**
-	 * Get the work group key of current context.
-	 **/
-	public InfoId<Long> getWorkgroupId(){
-		
-		return super.getWorkgroupId();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <A> A getOperationData(Class<A> clazz){
 
-		return (A)coreload;
+		if(clazz.isAssignableFrom(CoreEventLoad.class)){
+			
+			CoreEventLoad coreEvent = new CoreEventLoad();
+			coreEvent.setWorkgroupId(this.getWorkgroupId());
+			coreEvent.setMessage(this.message);
+			coreEvent.setAccessPoint(this.accessPoint);
+			coreEvent.setOperation(verbTracer.getVerb());
+			coreEvent.setObjectId(verbTracer.getObjectId());
+			coreEvent.setState(this.execstate.name());
+			coreEvent.setOperator(this.getPrincipal().getAccount());
+			coreEvent.setTimestamp(verbTracer.getTimestamp());
+			coreEvent.addPredicates(verbTracer.getPredicates());
+			
+			return (A)coreEvent;
+			
+		}else{
+			LOGGER.debug("Cannot assign CoreEventLoad to {}", clazz.getName());
+			return null;
+		}
 	}
 	
 	@Override 
 	public void handleOperationData(){
+		
 		// trigger the audit event with audit load
 		if(this.isAuditable()) {
-			AuditEventLoad auditload = new AuditEventLoad();
-			auditload.setState(coreload.getState());
-			auditload.setMessage(coreload.getMessage());
-			auditload.setAccessPoint(coreload.getAccessPoint());
-			auditload.setSubject(coreload.getOperator());
-			auditload.setWorkgroupId(this.getWorkgroupId());
-
-			AuditVerb verb = new AuditVerb();
-			verb.setObjectId(coreload.getObjectId());
-			verb.setElapsedTime(coreload.getElapsedTime());
-			verb.setTimestamp(coreload.getTimestamp());
-			verb.setVerb(coreload.getOperation());
-			auditload.setAuditVerb(verb);
-
-			EventDispatcher.getInstance().sendPayload(auditload);
+			CoreEventLoad coreload = this.getOperationData(CoreEventLoad.class);
+			EventDispatcher.getInstance().sendPayload(coreload);
 		}
-		EventDispatcher.getInstance().sendPayload(coreload);
+		
 	}
 	
 	/**

@@ -4,8 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.gp.audit.AccessPoint;
 import com.gp.common.GeneralContext.ExecState;
+import com.gp.common.AccessPoint;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
@@ -66,7 +66,7 @@ public class ContextHelper {
 		String audit = ConfigSettingUtils.getSystemOption(SystemOptions.AUDIT_ENABLE);
 		//GeneralConfig.getString(GeneralConstants.ENV_AUDIT_ENABLE);
 		
-		audit = StringUtils.isBlank(audit)? "true" : audit;
+		audit = StringUtils.isBlank(audit) ? "true" : audit;
 		Boolean auditenable = Boolean.valueOf(audit);
 		
 		ServiceContext svcctx = null;

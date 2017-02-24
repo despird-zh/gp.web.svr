@@ -1,6 +1,5 @@
 package com.gp.core;
 
-import com.gp.audit.AccessPoint;
 import com.gp.common.*;
 import com.gp.dao.info.FavoriteInfo;
 import com.gp.dao.info.ImageInfo;

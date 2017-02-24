@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.util.WebUtils;
 
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.util.ConfigSettingUtils;

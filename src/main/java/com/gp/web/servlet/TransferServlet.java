@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.gp.audit.AccessPoint;
 import com.gp.web.util.ExWebUtils;
 
 import org.apache.commons.io.FilenameUtils;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;

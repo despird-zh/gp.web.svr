@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.JwtPayload;
 import com.gp.common.Principal;
 import com.gp.core.SecurityFacade;

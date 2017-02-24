@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.acl.Ace;
 import com.gp.acl.Acl;
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;

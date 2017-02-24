@@ -1,6 +1,6 @@
 package com.gp.core;
 
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.GeneralContext;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
@@ -29,9 +29,6 @@ public class CoreEventLoad implements EventPayload{
 
 	/** operation time consuming */
 	private Long elapse = 0L;
-
-	/** start flag */
-	private boolean started = false;
 
 	/** the operation predicates */
 	private Map<String, String> predicates = null;
@@ -120,47 +117,17 @@ public class CoreEventLoad implements EventPayload{
 	}
 
 	/**
-	 * Set state on/off
-	 * @param start true:begin; false:end
-	 **/
-	public void setStarted(boolean started){
-
-		if(started){
-			timestamp = System.currentTimeMillis();// reset start point
-		}else{
-
-			elapse = System.currentTimeMillis() - timestamp;
-		}
-		this.started = started;
-	}
-
-	/**
 	 * Get elapse time
 	 **/
 	public long getElapsedTime(){
 
-		if(!started){
+		return elapse;
 
-			return elapse;
-		}else{
-
-			long tempelapse = System.currentTimeMillis() - timestamp;
-			return tempelapse;
-		}
 	}
 
 	public void setElapsedTime(Long elapse){
 
 		this.elapse = elapse;
-	}
-
-	/**
-	 * state check
-	 * @return true:audit on; false :audit off
-	 **/
-	public boolean isStarted(){
-
-		return this.started;
 	}
 
 	/**

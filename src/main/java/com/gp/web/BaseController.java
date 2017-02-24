@@ -22,7 +22,7 @@ import org.springframework.web.util.UriUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.web.util.ExWebUtils;
 

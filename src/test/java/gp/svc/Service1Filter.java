@@ -15,7 +15,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.gp.audit.AccessPoint;
+
+import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
 import com.gp.config.WebMVCConfigurer;

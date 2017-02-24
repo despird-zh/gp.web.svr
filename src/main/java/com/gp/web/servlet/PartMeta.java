@@ -2,7 +2,7 @@ package com.gp.web.servlet;
 
 import java.io.InputStream;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.gp.audit.AccessPoint;
+import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.storage.ContentRange;
 
