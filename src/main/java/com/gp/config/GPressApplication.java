@@ -2,10 +2,6 @@ package com.gp.config;
 
 import java.io.InputStream;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.config.ConfigurationSource;
-import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -33,7 +29,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 	 * The main entrance of application 
 	 **/
 	public static void main(String[] args) {
-		initialLogger();
+		//initialLogger();
 		
         SpringApplication.run(new Class[] { GPressApplication.class}, args);
     }
@@ -48,7 +44,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 	
 	/**
 	 * Initial the logger setting 
-	 **/
+	 *
 	private static void initialLogger(){
 	
 		try{
@@ -61,6 +57,6 @@ public class GPressApplication extends SpringBootServletInitializer{
 			//
 			ce.printStackTrace();
 		}
-	}
+	}*/
 
 }
