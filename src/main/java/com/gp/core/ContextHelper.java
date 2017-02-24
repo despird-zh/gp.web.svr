@@ -186,6 +186,7 @@ public class ContextHelper {
 			// matched the getCode return the message, otherwise return error code directly
 			excpcode = ((BaseException)e).getCode();
 		}
+		
 		if(e instanceof CoreException){
 			if(LOGGER.isDebugEnabled())
 				LOGGER.debug("Audit collector stamp on the exception", e);

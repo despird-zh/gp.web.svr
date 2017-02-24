@@ -94,9 +94,15 @@ public class WebCompConfigurer {
 		config.addAllowedHeader("content-type");// required, otherwise the preflight not work
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
-		
+        
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
+		
+		List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add(ServiceFilter.FILTER_PREFIX + "/**");
+        
+        bean.setUrlPatterns(urlPatterns);
 		bean.setOrder(2);
+		
 		return bean;
 	}
 	

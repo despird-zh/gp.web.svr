@@ -3,7 +3,6 @@ package com.gp.core;
 import java.util.List;
 import java.util.Map;
 
-import com.gp.svc.info.UserLiteInfo;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;

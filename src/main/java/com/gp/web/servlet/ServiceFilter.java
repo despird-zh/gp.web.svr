@@ -126,13 +126,12 @@ public class ServiceFilter extends OncePerRequestFilter {
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		if(LOGGER.isDebugEnabled()){
 			ExWebUtils.dumpRequestAttributes(httpRequest);
+			LOGGER.debug("Filter URL:{}", request.getRequestURI());
 		}
 		String token = httpRequest.getHeader(AUTH_TOKEN);
-		
 		RequestState state = RequestState.UNKNOWN;
 
 		AccessPoint accesspoint = ExWebUtils.getAccessPoint(httpRequest);
-		LOGGER.debug(httpRequest.getRequestURI());
 		if(StringUtils.isBlank(token) || StringUtils.equalsIgnoreCase(BLIND_TOKEN, token)){
 			// don't have token, forward request to authenticate it
 			state = RequestState.NEED_AUTHC;
