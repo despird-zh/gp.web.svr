@@ -1,14 +1,10 @@
 package com.gp.config;
 
-import java.io.InputStream;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
-
-import com.gp.common.GeneralConfig;
 
 /**
  * The the start point the Spring-Boot Applicaiton
@@ -29,8 +25,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 	 * The main entrance of application 
 	 **/
 	public static void main(String[] args) {
-		//initialLogger();
-		
+			
         SpringApplication.run(new Class[] { GPressApplication.class}, args);
     }
 
@@ -41,22 +36,5 @@ public class GPressApplication extends SpringBootServletInitializer{
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
       return application.sources(GPressApplication.class);
     }
-	
-	/**
-	 * Initial the logger setting 
-	 *
-	private static void initialLogger(){
-	
-		try{
-			InputStream log4jIS = GeneralConfig.class.getClassLoader().getResourceAsStream("log4j2.xml");
-	        final LoggerContext loggerCtx = (LoggerContext) LogManager.getContext(false);
-	        ConfigurationSource cs = new ConfigurationSource(log4jIS);
-	        XmlConfiguration config = new XmlConfiguration(loggerCtx, cs);
-	        loggerCtx.updateLoggers(config);
-		}catch(Exception ce){
-			//
-			ce.printStackTrace();
-		}
-	}*/
 
 }
