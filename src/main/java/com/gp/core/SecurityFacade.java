@@ -519,6 +519,8 @@ public class SecurityFacade {
 					new KVPair<String, String>("account",account));
 			
 			uinfo = securityservice.getAccountLite(svcctx, userId, account, type);
+			if(null == uinfo)
+				throw new CoreException("excp.find.account");
 			
 			principal = new Principal(uinfo.getInfoId());
 			principal.setSourceId(uinfo.getSourceId());
