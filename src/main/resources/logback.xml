@@ -24,6 +24,10 @@
         </triggeringPolicy>
     </appender>
 
+	<logger name="com.gp.dao.impl.AuditDAOImpl" level="ERROR"/>
+	<logger name="com.gp.dao.impl.IdSettingDAOImpl" level="ERROR"/>
+	<logger name="com.gp.svc.impl.CommonServiceImpl" level="ERROR"/>
+	
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
