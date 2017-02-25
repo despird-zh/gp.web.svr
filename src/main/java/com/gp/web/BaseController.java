@@ -1,8 +1,11 @@
 package com.gp.web;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +23,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.util.UriUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.common.AccessPoint;
@@ -120,7 +124,7 @@ public abstract class BaseController implements MessageSourceAware{
 	}
 	
 	/**
-	 * Get the request parameter, it's used for method without request arguments. 
+	 * Get the request parameter, it's used for request with content type [application/x-www-form-urlencoded]. 
 	 **/
 	protected String readRequestParam(String parameterName) {
 		
@@ -131,14 +135,33 @@ public abstract class BaseController implements MessageSourceAware{
 	
 	/**
 	 * Read the request parameters into certain data wrapper.
-	 * This method will retrieve the request from RequestContextHolder.
+	 *
 	 * @param datawrapper the data wrapper.
 	 **/
-	protected void readRequestData(Object dataWrapper){
+	protected void readRequestParams(Object dataWrapper){
 				
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(dataWrapper);
-		binder.bind(request); 
+		HttpServletRequest origin = ExWebUtils.getNativeRequest(request, HttpServletRequest.class);
+		binder.bind(origin); 
 		
+	}
+	
+	/**
+	 * Read the request JSON data, the request body expect to be JSON string
+	 *
+	 * @return Map<String, String> the request JSON
+	 **/
+	protected Map<String, String> readRequestJson(String requestBody){
+
+		try {
+			
+			Map<String, String> map = JACKSON_MAPPER.readValue(requestBody, new TypeReference<Map<String, String>>(){});
+			
+			return map;
+		} catch (IOException e) {
+			LOGGER.debug("fail read the json data from request body", e);
+		}
+		return null;
 	}
 	
 	/**
@@ -173,14 +196,7 @@ public abstract class BaseController implements MessageSourceAware{
 	 **/
 	protected <T> List<T> readRequestJsonArray(String parameterName, Class<T> clazz){
 		
-		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-		String value = null;
-		if (requestAttributes instanceof ServletRequestAttributes) {
-			
-			ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
-			HttpServletRequest request = servletRequestAttributes.getRequest();
-			value = request.getParameter(parameterName);
-		}
+		String value = request.getParameter(parameterName);
 		
 		if(null == value)
 			return null;

@@ -98,7 +98,7 @@ public class WebCompConfigurer {
 		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
 		
 		List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add(ServiceFilter.FILTER_PREFIX + "/**");
+        urlPatterns.add(ServiceFilter.FILTER_PREFIX + "/*");
         
         bean.setUrlPatterns(urlPatterns);
 		bean.setOrder(2);

@@ -117,12 +117,16 @@ public class ServiceFilter extends OncePerRequestFilter {
 				}
 			}
 		}
-
+		
+		/**
+		 * Set the buffer size of response 
+		 **/
+		HttpServletResponse origin = ExWebUtils.getNativeResponse(response, HttpServletResponse.class);
+		origin.setBufferSize(402800);
 		/**
 		 * filterChain.doFilter(request, response);
 		 * append further authentication here.
 		 **/
-		 
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 		if(LOGGER.isDebugEnabled()){
 			ExWebUtils.dumpRequestAttributes(httpRequest);

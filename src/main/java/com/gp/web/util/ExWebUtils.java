@@ -380,4 +380,5 @@ public abstract class ExWebUtils extends WebUtils{
 		
 		return (Principal) request.getAttribute(REQ_ATTR_PRINCIPAL);
 	}
+	
 }
