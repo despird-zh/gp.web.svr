@@ -6,6 +6,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
 
+import com.gp.core.AppContextListener;
+
 /**
  * The the start point the Spring-Boot Applicaiton
  * 
@@ -25,8 +27,9 @@ public class GPressApplication extends SpringBootServletInitializer{
 	 * The main entrance of application 
 	 **/
 	public static void main(String[] args) {
-			
-        SpringApplication.run(new Class[] { GPressApplication.class}, args);
+		SpringApplication app = new SpringApplication(GPressApplication.class);
+		app.addListeners(new AppContextListener());
+        app.run( args);
     }
 
 	/**
