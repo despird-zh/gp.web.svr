@@ -26,7 +26,6 @@
         </triggeringPolicy>
     </appender>
 
-	<logger name="ch.qos" level="ERROR"/>
 	<logger name="com.gp" level="DEBUG">
 		<appender-ref ref="CONSOLE" />
 	</logger>
