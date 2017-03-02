@@ -44,6 +44,7 @@ public class SysOptionController extends BaseController{
 			for(SysOptionInfo opt : opts){
 				
 				SysOption item = new SysOption();
+				item.setOptionId(opt.getId());
 				item.setGroup(opt.getOptionGroup());
 				item.setOption(opt.getOptionKey());
 				item.setValue(opt.getOptionValue());

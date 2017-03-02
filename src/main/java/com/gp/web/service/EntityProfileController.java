@@ -18,6 +18,7 @@ import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
+import com.gp.web.model.Source;
 import com.gp.web.servlet.ServiceFilter;
 /**
  *  
@@ -40,14 +41,29 @@ public class EntityProfileController extends BaseController{
 				
 		Map<String,String> paramap = this.readRequestJson(payload);
 		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
-		InfoId<Integer> sourceId = (entityId < 0) ? Sources.LOCAL_INST_ID : IdKey.SOURCE.getInfoId(entityId);
-		SourceInfo source = null;
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKey.SOURCE.getInfoId(entityId);
+		Source source = new Source();
 		ActionResult result = null;
 		
 		try {
 			
-			source = SourceFacade.findSource(accesspoint, this.getPrincipal(), sourceId);
+			SourceInfo instinfo = SourceFacade.findSource(accesspoint, this.getPrincipal(), sourceId);
+
+			source.setAbbr(instinfo.getAbbr());
+			source.setAdmin(instinfo.getAdmin());
+			source.setBinaryUrl(instinfo.getBinaryUrl());
+			source.setServiceUrl(instinfo.getServiceUrl());
+			source.setDescription(instinfo.getDescription());
+			source.setEmail(instinfo.getEmail());
+			source.setEntityCode(instinfo.getEntityCode());
+			source.setNodeCode(instinfo.getNodeCode());
+			source.setShortName(instinfo.getShortName());
+			source.setName(instinfo.getSourceName());
+			source.setSourceId(instinfo.getInfoId().getId());
+			source.setGlobalId(instinfo.getHashKey());
+			
 			result = ActionResult.success(getMessage("mesg.find.instance"));
+
 			result.setData(source);
 			
 		} catch (CoreException ce) {
@@ -55,7 +71,7 @@ public class EntityProfileController extends BaseController{
 			result = ActionResult.error(ce.getMessage());
 		}
 		
-		return mav;
+		return mav.addAllObjects(result.asMap());
 				
 	}
 }
