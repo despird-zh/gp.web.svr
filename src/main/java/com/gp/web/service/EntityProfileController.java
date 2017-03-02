@@ -19,7 +19,10 @@ import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceFilter;
-
+/**
+ *  
+ * @author 
+ **/
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
 public class EntityProfileController extends BaseController{
