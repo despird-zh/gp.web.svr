@@ -147,6 +147,26 @@ public abstract class BaseController implements MessageSourceAware{
 	}
 	
 	/**
+	 * Read the request body into certain data wrapper class object.
+	 *
+	 * @param requestBody the data json string.
+	 * @param clazz the class object
+	 **/
+	protected <T> T readRequestBody(String requestBody, Class<T> clazz){
+				
+		try {
+			
+			T result = JACKSON_MAPPER.readValue(requestBody, clazz);
+			return result;
+			
+		} catch (IOException e) {
+			LOGGER.debug("fail read the json data from request body", e);
+		}
+		return null;
+		
+	}
+	
+	/**
 	 * Read the request JSON data, the request body expect to be JSON string
 	 *
 	 * @return Map<String, String> the request JSON

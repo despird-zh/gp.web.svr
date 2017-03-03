@@ -32,6 +32,7 @@
 	<logger name="com.gp.dao.impl.AuditDAOImpl" level="ERROR"/>
 	<logger name="com.gp.dao.impl.IdSettingDAOImpl" level="ERROR"/>
 	<logger name="com.gp.svc.impl.CommonServiceImpl" level="ERROR"/>
+	<logger name="com.gp.web.servlet.ServiceFilter" level="ERROR"/>
 	
     <root level="ERROR">
         <appender-ref ref="FILE" />

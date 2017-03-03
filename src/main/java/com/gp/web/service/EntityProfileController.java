@@ -80,4 +80,46 @@ public class EntityProfileController extends BaseController{
 		return mav.addAllObjects(result.asMap());
 				
 	}
+	
+	@RequestMapping(
+			value = "ent-profile-save.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doProfileSave(@RequestBody String payload){
+		
+		// the access point
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		// the model and view
+		ModelAndView mav = getJsonModelView();
+		Source data = readRequestBody(payload, Source.class);
+		
+		ActionResult result = null;
+		try {
+			
+			Principal principal = this.getPrincipal();
+			SourceInfo instinfo = new SourceInfo();
+			instinfo.setInfoId(Sources.LOCAL_INST_ID);
+			instinfo.setAbbr(data.getAbbr());
+			instinfo.setAdmin(data.getAdmin());
+			instinfo.setBinaryUrl(data.getBinaryUrl());
+			instinfo.setServiceUrl(data.getServiceUrl());
+			instinfo.setDescription(data.getDescription());
+			instinfo.setEmail(data.getEmail());
+			instinfo.setEntityCode(data.getEntityCode());
+			instinfo.setNodeCode(data.getNodeCode());
+			instinfo.setShortName(data.getShortName());
+			instinfo.setSourceName(data.getName());
+			instinfo.setHashKey(data.getGlobalId());
+			
+			boolean done = SourceFacade.saveSource(accesspoint, principal, instinfo);
+			
+			result = done ? ActionResult.success(getMessage("mesg.find.instance")) 
+					: ActionResult.success(getMessage("excp.save.instance")) ;
+			
+		} catch (CoreException ce) {
+			
+			result = ActionResult.error(ce.getMessage());
+		}
+		return mav.addAllObjects(result.asMap());
+	}
 }
