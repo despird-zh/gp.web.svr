@@ -28,6 +28,10 @@ public class Source {
 
 	private String state;
 	
+	private String lastModified;
+	
+	private String modifier;
+	
 	public Integer getSourceId() {
 		return sourceId;
 	}
@@ -130,5 +134,21 @@ public class Source {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public String getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(String lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
 	}	
 }

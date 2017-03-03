@@ -1,5 +1,6 @@
 package com.gp.web.service;
 
+import java.text.DateFormat;
 import java.util.Map;
 
 import org.apache.commons.lang.math.NumberUtils;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.Principal;
 import com.gp.common.Sources;
 import com.gp.core.SourceFacade;
 import com.gp.dao.info.SourceInfo;
@@ -46,8 +48,8 @@ public class EntityProfileController extends BaseController{
 		ActionResult result = null;
 		
 		try {
-			
-			SourceInfo instinfo = SourceFacade.findSource(accesspoint, this.getPrincipal(), sourceId);
+			Principal principal = this.getPrincipal();
+			SourceInfo instinfo = SourceFacade.findSource(accesspoint, principal, sourceId);
 
 			source.setAbbr(instinfo.getAbbr());
 			source.setAdmin(instinfo.getAdmin());
@@ -61,6 +63,10 @@ public class EntityProfileController extends BaseController{
 			source.setName(instinfo.getSourceName());
 			source.setSourceId(instinfo.getInfoId().getId());
 			source.setGlobalId(instinfo.getHashKey());
+			
+			DateFormat datefmt = principal.getDateFormat();
+			source.setModifier(instinfo.getModifier());
+			source.setLastModified(datefmt.format(instinfo.getModifyDate()));
 			
 			result = ActionResult.success(getMessage("mesg.find.instance"));
 
