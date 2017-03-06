@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceFilter.AuthTokenState;
 
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
@@ -26,6 +27,7 @@ public class TrapAllController extends BaseController{
 		ActionResult result = null;
 		
 		result = ActionResult.failure(this.getMessage("excp.invalid.token"));
+		result.getMeta().setCode(AuthTokenState.VALID_TOKEN.name());
 		
 		return mav.addAllObjects(result.asMap());
 	}
@@ -38,9 +40,11 @@ public class TrapAllController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
+		AuthTokenState state = (AuthTokenState)request.getAttribute(ServiceFilter.FILTER_STATE);
 		
 		result = ActionResult.failure(this.getMessage("excp.invalid.token"));
-
+		result.getMeta().setCode(state.name());
+		
 		return mav.addAllObjects(result.asMap());
 	}
 }

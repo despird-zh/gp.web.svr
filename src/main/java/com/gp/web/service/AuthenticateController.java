@@ -22,6 +22,7 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceFilter.AuthTokenState;
 
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
@@ -79,6 +80,7 @@ public class AuthenticateController extends BaseController{
 				String mesg = super.getMessage("excp.param.miss");
 				result = ActionResult.failure(mesg);
 			}
+			
 			Principal principal = SecurityFacade.findPrincipal(accesspoint, null, account, null);
 			if(null == principal){
 				String mesg = super.getMessage("excp.no.principal");
@@ -101,18 +103,19 @@ public class AuthenticateController extends BaseController{
 					
 					String token = SecurityFacade.newToken(accesspoint, payload);
 					result = ActionResult.success(mesg);
+					result.getMeta().setCode(AuthTokenState.VALID_TOKEN.name());
 					result.setData(token);
 					
 				}else{
 					String mesg = super.getMessage("excp.pwd.wrong");
 					result = ActionResult.failure(mesg);
-					
+					result.getMeta().setCode(AuthTokenState.FAIL_AUTHC.name());
 				}
 			}
 			
 		}catch(CoreException ce){
 			result = ActionResult.error(ce.getLocalizedMessage());
-		
+			result.getMeta().setCode(AuthTokenState.FAIL_AUTHC.name());
 		}
 
 		return result;

@@ -64,16 +64,17 @@ public class ServiceFilter extends OncePerRequestFilter {
 	
 	/**
 	 * Define the state of request 
+	 * 
 	 **/
-	public static enum RequestState{
+	public static enum AuthTokenState{
 		
-		NEED_AUTHC,
-		FAIL_AUTHC,
-		BAD_TOKEN,
-		GHOST_TOKEN,
-		INVALID_TOKEN,
-		VALID_TOKEN,
-		NEED_FORWARD,
+		NEED_AUTHC, // need authenticate
+		FAIL_AUTHC, // fail authenticate
+		BAD_TOKEN,  // bad token 
+		GHOST_TOKEN, // ghost token, token not exist in db
+		INVALID_TOKEN, // invalid token
+		VALID_TOKEN, // valid token 
+		EXPIRE_TOKEN,
 		UNKNOWN;
 	}
 	
@@ -133,17 +134,18 @@ public class ServiceFilter extends OncePerRequestFilter {
 			LOGGER.debug("Filter URL:{}", request.getRequestURI());
 		}
 		String token = httpRequest.getHeader(AUTH_TOKEN);
-		RequestState state = RequestState.UNKNOWN;
+		AuthTokenState state = AuthTokenState.UNKNOWN;
 
 		AccessPoint accesspoint = ExWebUtils.getAccessPoint(httpRequest);
 		if(StringUtils.isBlank(token) || StringUtils.equalsIgnoreCase(BLIND_TOKEN, token)){
 			// don't have token, forward request to authenticate it
-			state = RequestState.NEED_AUTHC;
+			state = AuthTokenState.NEED_AUTHC;
 		}else{
 			JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
+			
 			if(null == jwtPayload){
 				// can not parse the payload
-				state = RequestState.BAD_TOKEN;
+				state = AuthTokenState.BAD_TOKEN;
 				
 			}else{
 
@@ -153,27 +155,40 @@ public class ServiceFilter extends OncePerRequestFilter {
 					// check if the token record exists
 					if(tokenInfo == null){
 						// not find any token in db
-						state = RequestState.GHOST_TOKEN;
+						state = AuthTokenState.GHOST_TOKEN;
 					}else{
 						SysOptionInfo secret = MasterFacade.findSystemOption(accesspoint, GroupUsers.PSEUDO_USER, SystemOptions.SECURITY_JWT_SECRET);
-						if(!StringUtils.equals(tokenInfo.getJwtToken(), token)
-							|| !JwtTokenUtils.verifyHS256(secret.getOptionValue(), token, jwtPayload)){
-							state = RequestState.INVALID_TOKEN;
+						
+						if(!StringUtils.equals(tokenInfo.getJwtToken(), token)){
+							
+							state = AuthTokenState.INVALID_TOKEN;
 						}
 						else{
-							state = RequestState.VALID_TOKEN;
-							// attach the state to request
-							request.setAttribute(FILTER_STATE, state);
-							// attach principal to request
-							Principal principal = SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
-							ExWebUtils.setPrincipal(httpRequest, principal);
-							// a valid token, continue the further process
-							filterChain.doFilter(request, response);
-							return;
+							int valid =  JwtTokenUtils.verifyHS256(secret.getOptionValue(), token, jwtPayload);
+							if(valid < 0){
+								
+								state = AuthTokenState.INVALID_TOKEN;
+							}
+							else if(valid == JwtTokenUtils.EXPIRED){
+								
+								state = AuthTokenState.EXPIRE_TOKEN;
+							}
+							else{
+								
+								state = AuthTokenState.VALID_TOKEN;
+								// attach the state to request
+								request.setAttribute(FILTER_STATE, state);
+								// attach principal to request
+								Principal principal = SecurityFacade.findPrincipal(accesspoint, null, jwtPayload.getSubject(), null);
+								ExWebUtils.setPrincipal(httpRequest, principal);
+								// a valid token, continue the further process
+								filterChain.doFilter(request, response);
+								return;
+							}
 						}
 					}
 				}catch(CoreException ce){
-					state = RequestState.BAD_TOKEN;
+					state = AuthTokenState.BAD_TOKEN;
 					LOGGER.error("Fail to get the jwt token record",ce);
 				}
 			}
@@ -191,19 +206,20 @@ public class ServiceFilter extends OncePerRequestFilter {
 	 * @param state 
 	 * 
 	 **/
-	private void forward(ServletRequest request, ServletResponse response, RequestState state){
+	private void forward(ServletRequest request, ServletResponse response, AuthTokenState state){
 		RequestDispatcher dispatcher = null;
 		
 		FilterConfig filterConfig = this.getFilterConfig();
 		
 		try {
-			if(RequestState.NEED_AUTHC == state){
+			if(AuthTokenState.NEED_AUTHC == state){
 			
 				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/authenticate.do");
 			
-			}else if(RequestState.BAD_TOKEN == state ||
-					RequestState.GHOST_TOKEN == state ||
-					RequestState.INVALID_TOKEN == state){
+			}else if(AuthTokenState.BAD_TOKEN == state ||
+					AuthTokenState.GHOST_TOKEN == state ||
+					AuthTokenState.INVALID_TOKEN == state ||
+					AuthTokenState.EXPIRE_TOKEN == state){
 			
 				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/bad_token.do");
 			
