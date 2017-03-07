@@ -14,7 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -614,6 +614,54 @@ public class SecurityFacade {
 		}catch (ServiceException e) {
 			
 			ContextHelper.stampContext(e, "excp.find.token");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return token;
+	}
+	
+	/**
+	 * Reissue a new token by JWT payload, there will be a token per subject & audience.
+	 * 
+	 * @param payload the JWT payload
+	 * @return String the JWT token string 
+	 **/
+	public static String reissueToken(AccessPoint accesspoint, JwtPayload payload) 
+			throws CoreException{
+		
+		String token = null;
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(GroupUsers.PSEUDO_USER, accesspoint)){
+			
+			svcctx.beginOperation(Operations.REISSUE_TOKEN.name(),  null,
+					payload);
+			
+			SysOptionInfo option = systemservice.getOption(svcctx, SystemOptions.SECURITY_JWT_SECRET);
+			Long jwtid = NumberUtils.toLong(payload.getJwtId());
+			if(jwtid < 0){
+				throw new CoreException("excp.reissue.token");
+			}
+			InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(jwtid);
+			
+			TokenInfo tokenInfo = new TokenInfo();
+			
+			tokenInfo.setInfoId(tokenId);
+
+			tokenInfo.setIssueAt(payload.getIssueAt());
+			tokenInfo.setExpireTime(payload.getExpireTime());
+			tokenInfo.setNotBefore(payload.getNotBefore());
+			
+			svcctx.setTraceInfo(tokenInfo);
+			
+			token = JwtTokenUtils.signHS256(option.getOptionValue(), payload);
+			tokenInfo.setJwtToken(token);
+			
+			securityservice.refreshToken(svcctx, tokenInfo);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.reissue.token");
 		}finally{
 			
 			ContextHelper.handleContext();

@@ -35,7 +35,7 @@ public class TrapAllController extends BaseController{
 	/**
 	 * Process the bad token request. 
 	 **/
-	@RequestMapping("bad_token")
+	@RequestMapping("bad-token")
 	public ModelAndView doBadToken(){	
 		
 		ModelAndView mav = super.getJsonModelView();

@@ -90,7 +90,7 @@ public class WebCompConfigurer {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(false);
 		config.addAllowedOrigin("*");
-		config.addAllowedHeader(ServiceFilter.AUTH_TOKEN);
+		config.addAllowedHeader(ServiceFilter.AUTH_HEADER);
 		config.addAllowedHeader("content-type");// required, otherwise the preflight not work
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);

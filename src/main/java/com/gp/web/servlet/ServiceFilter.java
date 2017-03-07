@@ -49,12 +49,16 @@ public class ServiceFilter extends OncePerRequestFilter {
 
 	Logger LOGGER = LoggerFactory.getLogger(ServiceFilter.class);
 	
-	public static final String AUTH_TOKEN = "Auth-Token";
+	public static final String AUTH_HEADER = "Auth-Token";
 	
 	public static final String BLIND_TOKEN = "__blind_token__";
 	
 	public static final String FILTER_STATE = "_svc_filter_state";
 	
+	public static final String ACT_AUTH_TOKEN = "/authenticate.do";
+	public static final String ACT_BAD_TOKEN = "/bad-token.do";
+	public static final String ACT_TRAP_ALL = "/trap.do";
+	public static final String ACT_REISSUE_TOKEN = "/reissue.do";
 	
 	/**
 	 * the patter will be /p1/p2, remember it will be applied to controller annotation.
@@ -74,7 +78,8 @@ public class ServiceFilter extends OncePerRequestFilter {
 		GHOST_TOKEN, // ghost token, token not exist in db
 		INVALID_TOKEN, // invalid token
 		VALID_TOKEN, // valid token 
-		EXPIRE_TOKEN,
+		REISSUE_TOKEN,
+		EXPIRE_TOKEN,//
 		UNKNOWN;
 	}
 	
@@ -133,13 +138,15 @@ public class ServiceFilter extends OncePerRequestFilter {
 			ExWebUtils.dumpRequestAttributes(httpRequest);
 			LOGGER.debug("Filter URL:{}", request.getRequestURI());
 		}
-		String token = httpRequest.getHeader(AUTH_TOKEN);
+		String token = httpRequest.getHeader(AUTH_HEADER);
 		AuthTokenState state = AuthTokenState.UNKNOWN;
 
 		AccessPoint accesspoint = ExWebUtils.getAccessPoint(httpRequest);
 		if(StringUtils.isBlank(token) || StringUtils.equalsIgnoreCase(BLIND_TOKEN, token)){
+
 			// don't have token, forward request to authenticate it
 			state = AuthTokenState.NEED_AUTHC;
+
 		}else{
 			JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
 			
@@ -193,7 +200,10 @@ public class ServiceFilter extends OncePerRequestFilter {
 				}
 			}
 		}
-		
+		if(request.getRequestURI().startsWith(FILTER_PREFIX + ACT_REISSUE_TOKEN)){
+			// valid token for refresh, forward it directly.
+			state = AuthTokenState.REISSUE_TOKEN;
+		}
 		// trap all the invalid token request
 		request.setAttribute(FILTER_STATE, state);
 		forward(request, response, state);
@@ -214,18 +224,22 @@ public class ServiceFilter extends OncePerRequestFilter {
 		try {
 			if(AuthTokenState.NEED_AUTHC == state){
 			
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/authenticate.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + ACT_AUTH_TOKEN);
 			
 			}else if(AuthTokenState.BAD_TOKEN == state ||
 					AuthTokenState.GHOST_TOKEN == state ||
 					AuthTokenState.INVALID_TOKEN == state ||
 					AuthTokenState.EXPIRE_TOKEN == state){
 			
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/bad_token.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + ACT_BAD_TOKEN);
 			
-			}else{
+			}else if(AuthTokenState.REISSUE_TOKEN == state){
 				
-				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + "/trap.do");
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + ACT_REISSUE_TOKEN);
+			}
+			else{
+				
+				dispatcher = filterConfig.getServletContext().getRequestDispatcher(FILTER_PREFIX + ACT_TRAP_ALL);
 			}
 			
 			dispatcher.forward(request, response);
