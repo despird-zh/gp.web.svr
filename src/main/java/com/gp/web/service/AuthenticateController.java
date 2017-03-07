@@ -135,7 +135,9 @@ public class AuthenticateController extends BaseController{
 					JwtPayload payload = new JwtPayload();
 					payload.setIssuer("gp.svc.svr");
 					payload.setSubject(account);
-					payload.setAudience(audience);
+					if(StringUtils.isNotBlank(audience))
+						payload.setAudience(audience);
+					
 					payload.setNotBefore(DateTimeUtils.now());
 					payload.setIssueAt(DateTimeUtils.now());
 					payload.setExpireTime(new Date(System.currentTimeMillis() + 60 * 60 * 1000 ));
