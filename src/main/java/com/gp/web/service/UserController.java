@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
+import com.gp.common.Sources;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
 import com.gp.svc.info.UserExtInfo;
@@ -37,11 +38,14 @@ public class UserController extends BaseController{
 		String[] a = new String[0];
 		ActionResult result = null;
 		try{
-			List<UserExtInfo> ulist = SecurityFacade.findAccounts(getAccessPoint(request), principal, 
+			List<UserExtInfo> ulist = SecurityFacade.findAccounts(accesspoint, principal, 
 					"", // name
-					12,  // entity
+					Sources.LOCAL_INST_ID.getId(),  // entity
 					a,  // type
 					a); // state
+			
+			result = ActionResult.success(this.getMessage("mesg.find.account"));
+			result.setData(ulist);
 		}catch(CoreException ce){
 			
 			result = ActionResult.error(ce.getMessage());
