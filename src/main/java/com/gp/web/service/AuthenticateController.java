@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,17 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.gp.common.AccessPoint;
-import com.gp.common.GroupUsers;
-import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
 import com.gp.common.Principal;
-import com.gp.common.SystemOptions;
-import com.gp.core.MasterFacade;
 import com.gp.core.SecurityFacade;
-import com.gp.dao.info.SysOptionInfo;
-import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;
-import com.gp.info.InfoId;
 import com.gp.util.DateTimeUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.web.ActionResult;
@@ -78,14 +70,16 @@ public class AuthenticateController extends BaseController{
 	
 	@RequestMapping(
 		    value = "reissue.do", 
-		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doReissue(@RequestBody String payload) {
+		    consumes = {"text/plain", "application/*"},
+		    method = RequestMethod.GET)
+	public ModelAndView doReissue() {
 		
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// the model and view
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = null;
-		String token = readRequestParam(ServiceFilter.AUTH_HEADER);
+		String token = request.getHeader(ServiceFilter.AUTH_HEADER);
+		token = StringUtils.substringAfter(token, "Bearer: ");
 		JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
 	
 		jwtPayload.setNotBefore(DateTimeUtils.now());
@@ -94,8 +88,9 @@ public class AuthenticateController extends BaseController{
 		
 		try{
 			String mesg = super.getMessage("mesg.reissue.token");
-			SecurityFacade.reissueToken(accesspoint, jwtPayload);
+			String newtoken = SecurityFacade.reissueToken(accesspoint, jwtPayload);
 			result = ActionResult.success(mesg);
+			result.setData(newtoken);
 			result.getMeta().setCode(AuthTokenState.REISSUE_TOKEN.name());
 			
 		}catch(CoreException ce){
