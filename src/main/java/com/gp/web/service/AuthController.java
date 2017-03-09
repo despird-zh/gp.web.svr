@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.gp.common.AccessPoint;
+import com.gp.common.IdKey;
 import com.gp.common.JwtPayload;
 import com.gp.common.Principal;
 import com.gp.core.SecurityFacade;
 import com.gp.exception.CoreException;
+import com.gp.info.InfoId;
 import com.gp.util.DateTimeUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.web.ActionResult;
@@ -27,7 +30,7 @@ import com.gp.web.servlet.ServiceFilter.AuthTokenState;
 
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
-public class AuthenticateController extends BaseController{
+public class AuthController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
 	
@@ -75,6 +78,7 @@ public class AuthenticateController extends BaseController{
 	public ModelAndView doReissue() {
 		
 		AccessPoint accesspoint = super.getAccessPoint(request);
+		Principal principal = super.getPrincipal();
 		// the model and view
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = null;
@@ -88,7 +92,7 @@ public class AuthenticateController extends BaseController{
 		
 		try{
 			String mesg = super.getMessage("mesg.reissue.token");
-			String newtoken = SecurityFacade.reissueToken(accesspoint, jwtPayload);
+			String newtoken = SecurityFacade.reissueToken(accesspoint, principal, jwtPayload);
 			result = ActionResult.success(mesg);
 			result.setData(newtoken);
 			result.getMeta().setCode(AuthTokenState.REISSUE_TOKEN.name());
@@ -101,6 +105,35 @@ public class AuthenticateController extends BaseController{
 		return mav.addAllObjects(result.asMap());
 	}
 	
+	@RequestMapping(
+		    value = "logoff.do", 
+		    consumes = {"text/plain", "application/*"},
+		    method = RequestMethod.GET)
+	public ModelAndView doLogoff() {
+		
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		// the model and view
+		ModelAndView mav = super.getJsonModelView();
+		Principal principal = super.getPrincipal();
+		ActionResult result = null;
+		
+		String token = request.getHeader(ServiceFilter.AUTH_HEADER);
+		token = StringUtils.substringAfter(token, "Bearer: ");
+		JwtPayload jwtPayload = JwtTokenUtils.parsePayload(token);
+		
+		try{
+			Long jwtid = NumberUtils.toLong(jwtPayload.getJwtId());
+			InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(jwtid);
+			String mesg = super.getMessage("mesg.remove.token");
+			boolean done = SecurityFacade.removeToken(accesspoint, principal, tokenId);
+			
+			result = done? ActionResult.success(mesg) : ActionResult.failure(getMessage("excp.remove.token"));
+
+		}catch(CoreException ce){
+			result = ActionResult.error(ce.getLocalizedMessage());
+		}
+		return mav.addAllObjects(result.asMap());
+	}
 	/**
 	 * Verify the password and return the Result 
 	 **/

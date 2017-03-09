@@ -628,11 +628,11 @@ public class SecurityFacade {
 	 * @param payload the JWT payload
 	 * @return String the JWT token string 
 	 **/
-	public static String reissueToken(AccessPoint accesspoint, JwtPayload payload) 
+	public static String reissueToken(AccessPoint accesspoint,Principal principal, JwtPayload payload) 
 			throws CoreException{
 		
 		String token = null;
-		try (ServiceContext svcctx = ContextHelper.buildServiceContext(GroupUsers.PSEUDO_USER, accesspoint)){
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
 			
 			svcctx.beginOperation(Operations.REISSUE_TOKEN.name(),  null,
 					payload);
@@ -668,5 +668,29 @@ public class SecurityFacade {
 		}
 		
 		return token;
+	}
+	
+	/**
+	 * Log off system meant to remove the token
+	 * 
+	 * @param tokenId the id of token
+	 **/
+	public static boolean removeToken(AccessPoint accesspoint,Principal principal, InfoId<Long> tokenId) 
+			throws CoreException{
+		
+		try (ServiceContext svcctx = ContextHelper.buildServiceContext(principal, accesspoint)){
+			
+			svcctx.beginOperation(Operations.LOGOFF.name(), tokenId,null);
+			
+			return securityservice.removeToken(svcctx, tokenId);
+			
+		}catch (ServiceException e) {
+			
+			ContextHelper.stampContext(e, "excp.reissue.token");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return true;
 	}
 }
