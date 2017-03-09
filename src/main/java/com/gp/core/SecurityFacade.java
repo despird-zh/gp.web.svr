@@ -291,6 +291,7 @@ public class SecurityFacade {
 	 * @param principal the principal object
 	 * @param accountname the account name filter
 	 * @param instance the instance filter, i.e. user original source
+	 * 		  -9999 -> local ; null -> all ; 0 -> all external
 	 * @param type the type filter
 	 **/
 	public static List<UserExtInfo> findAccounts(AccessPoint accesspoint,

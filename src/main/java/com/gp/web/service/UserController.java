@@ -3,6 +3,9 @@ package com.gp.web.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,8 @@ import com.gp.web.servlet.ServiceFilter;
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
 public class UserController extends BaseController{
 
+	static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+	
 	@RequestMapping(
 			value = "users-query.do",
 			method = RequestMethod.POST,
@@ -35,14 +40,23 @@ public class UserController extends BaseController{
 		// the model and view
 		ModelAndView mav = getJsonModelView();
 		Map<String,String> paramap = this.readRequestJson(payload);
-		String[] a = new String[0];
+		LOGGER.debug("params {}" , paramap);
+		
+		String[] states = new String[]{paramap.get("state")};
+		if("ALL".equals(paramap.get("state")))
+			states = new String[0];
+		
+		Integer sourceId = null;
+		if(!"ALL".equals(paramap.get("type")))
+			sourceId = NumberUtils.toInt(paramap.get("type"));
+		
 		ActionResult result = null;
 		try{
 			List<UserExtInfo> ulist = SecurityFacade.findAccounts(accesspoint, principal, 
-					"", // name
-					Sources.LOCAL_INST_ID.getId(),  // entity
-					a,  // type
-					a); // state
+					paramap.get("filterkey"), // name
+					sourceId,  // entity
+					new String[0],  // type
+					states); // state
 			
 			result = ActionResult.success(this.getMessage("mesg.find.account"));
 			result.setData(ulist);
