@@ -9,23 +9,14 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.TransformerUtils;
 import org.apache.commons.collections.map.TransformedMap;
 import org.apache.commons.lang.mutable.MutableObject;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.gp.common.AccessPoint;
-import com.gp.common.GeneralConstants;
-import com.gp.common.IdKey;
-import com.gp.info.Identifier;
-import com.gp.info.InfoId;
 
 /**
  * this class helps to convert AuditData object between json, as for different 
