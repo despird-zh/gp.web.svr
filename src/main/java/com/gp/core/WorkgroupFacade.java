@@ -21,7 +21,6 @@ import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.dao.info.OperLogInfo;
-import com.gp.info.CombineInfo;
 import com.gp.dao.info.GroupInfo;
 import com.gp.dao.info.GroupMemberInfo;
 import com.gp.dao.info.GroupUserInfo;
@@ -553,6 +552,27 @@ public class WorkgroupFacade {
 			// amend the operation information
 			svcctx.addOperationPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
 			gresult = workgroupservice.getLocalWorkgroups(svcctx, wgroupname);
+		}catch(ServiceException e){
+			ContextHelper.stampContext(e, "excp.find.wgroups");
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		
+		return gresult;
+	}
+	
+	public static List<WorkgroupExtInfo> findWorkgroups(AccessPoint accesspoint,
+			Principal principal,
+			String wgroupname)throws CoreException{
+		
+		List<WorkgroupExtInfo> gresult = null;
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_WORKGROUPS)){
+
+			// amend the operation information
+			svcctx.addOperationPredicates(new DefaultKeyValue("workgroup_name", wgroupname));
+			gresult = workgroupservice.getWorkgroups(svcctx, wgroupname);
 		}catch(ServiceException e){
 			ContextHelper.stampContext(e, "excp.find.wgroups");
 		}finally{
