@@ -32,7 +32,7 @@ import com.gp.web.servlet.ServiceFilter.AuthTokenState;
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
 public class AuthController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
 	
 	@RequestMapping(
 		    value = "authenticate.do", 
