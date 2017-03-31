@@ -1,8 +1,5 @@
 package com.gp.web.model;
 
-import com.gp.dao.info.PostInfo;
-import com.gp.info.CombineInfo;
-import com.gp.svc.info.PostExt;
 import com.gp.svc.info.UserLiteInfo;
 
 import java.util.List;

@@ -22,7 +22,6 @@ import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
-import com.gp.util.ConfigSettingUtils;
 import com.gp.web.BaseController;
 import com.gp.web.util.ExWebUtils;
 public class ImageFilter implements Filter{
