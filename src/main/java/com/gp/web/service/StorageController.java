@@ -1,9 +1,11 @@
 package com.gp.web.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Storage;
 import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
@@ -106,5 +109,52 @@ public class StorageController extends BaseController{
 		}
 		
 		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping(
+		    value = "storage-save.do", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doNewStorage(@RequestBody String payload){
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+
+		// read trace information
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		// prepare result
+		ActionResult result = null;
+		ModelAndView mav = super.getJsonModelView();
+
+		// read parameter
+		Storage storage = super.readRequestBody(payload, Storage.class);
+		
+		StorageInfo sinfo = new StorageInfo();
+		Long cap = StringUtils.isNotBlank(storage.getCapacity()) ? Long.valueOf(storage.getCapacity()):0l;
+		sinfo.setCapacity(cap);
+		sinfo.setDescription(storage.getDescription());
+		// convert setting into json string
+		Map<String, Object> setting = new HashMap<String, Object>();
+		setting.put(StoreSetting.StorePath.name(), storage.getStorePath());
+		setting.put(StoreSetting.HdfsHost.name(), storage.getHdfsHost());
+		setting.put(StoreSetting.HdfsPort.name(), storage.getHdfsPort());
+		// try to save setting
+		sinfo.setSettingJson(Storages.wrapSetting(setting));
+		sinfo.setState(storage.getState());
+		sinfo.setStorageType(storage.getType());
+		sinfo.setStorageName(storage.getName());
+		sinfo.setUsed(0l);
+		
+		try{
+			StorageFacade.newStorage(accesspoint, principal, sinfo);
+			result = ActionResult.success(getMessage("mesg.new.storage"));
+		}catch(CoreException ce){
+
+			result = ActionResult.failure(ce.getMessage());
+		}
+		
+		mav.addAllObjects(result.asMap());
+		return mav;
 	}
 }
