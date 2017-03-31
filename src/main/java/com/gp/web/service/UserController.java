@@ -3,6 +3,7 @@ package com.gp.web.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,14 +14,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
+import com.gp.common.GroupUsers;
+import com.gp.common.IdKey;
 import com.gp.common.Principal;
-import com.gp.common.Sources;
 import com.gp.core.SecurityFacade;
+import com.gp.dao.info.UserInfo;
 import com.gp.exception.CoreException;
+import com.gp.exception.WebException;
+import com.gp.info.InfoId;
 import com.gp.svc.info.UserExtInfo;
+import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
+import com.gp.web.model.Account;
 import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceFilter.FILTER_PREFIX)
@@ -65,5 +73,151 @@ public class UserController extends BaseController{
 			result = ActionResult.error(ce.getMessage());
 		}
 		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping(
+			value = "user-save.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doUserSave(@RequestBody String payload) {
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+		
+		Account account = super.readRequestBody(payload, Account.class);
+		
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		UserInfo uinfo = new UserInfo();
+		InfoId<Long> uid = IdKey.USER.getInfoId(Long.valueOf(account.getUserId()));
+		uinfo.setInfoId(uid);
+		uinfo.setAccount(account.getAccount());
+		uinfo.setFullName(account.getName());
+		uinfo.setLanguage(account.getLanguage());
+		uinfo.setEmail(account.getEmail());
+		uinfo.setPassword(account.getPassword());
+		uinfo.setPhone(account.getPhone());
+		uinfo.setMobile(account.getMobile());
+		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setType(account.getType());
+		uinfo.setStorageId(account.getStorageId());
+		uinfo.setState(account.getState());
+		
+		Long pubcapacity = account.getPubcapacity();
+		Long pricapacity = account.getPricapacity();
+		
+		try{
+			SecurityFacade.saveAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
+			result = ActionResult.success(getMessage("mesg.save.account"));
+			
+		}catch(CoreException ce){
+			
+			result = ActionResult.failure(ce.getMessage());
+
+		}
+		
+		ModelAndView mav = getJsonModelView();		
+		mav.addAllObjects(result.asMap());
+
+		return mav;
+	}
+	
+	@RequestMapping(
+			value = "user-add.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doNewAccount(@RequestBody String payload) throws WebException {
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+		
+		Account account = super.readRequestBody(payload, Account.class);
+		
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();		
+		ModelAndView mav = getJsonModelView();		
+		
+		String confirmPwd = super.readRequestParam("confirm");
+		UserInfo uinfo = new UserInfo();
+		uinfo.setAccount(account.getAccount());
+		uinfo.setFullName(account.getName());
+		uinfo.setLanguage(account.getLanguage());
+		uinfo.setEmail(account.getEmail());
+		uinfo.setPassword(account.getPassword());
+		uinfo.setPhone(account.getPhone());
+		uinfo.setMobile(account.getMobile());
+		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setType(account.getType());
+		uinfo.setStorageId(account.getStorageId());
+		uinfo.setState(GroupUsers.UserState.ACTIVE.name());
+	
+		Long pubcapacity = account.getPubcapacity();
+		Long pricapacity = account.getPricapacity();
+		
+		// password not consistent
+		if(!StringUtils.equals(confirmPwd, account.getPassword())){
+		
+			result = ActionResult.failure(getMessage("mesg.pwd.diff.cfm"));
+			mav.addAllObjects(result.asMap());
+
+		}else{
+			try{
+				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
+				result = ActionResult.success(getMessage("mesg.save.account"));
+			}catch(CoreException ce){
+				result = ActionResult.error(ce.getMessage());
+			}
+			mav.addAllObjects(result.asMap());
+		}
+
+		return mav;
+	}
+	
+	@RequestMapping(
+			value = "user-remove.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doAccountDelete(@RequestBody String payload){
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+		
+		Map<String,String> paramap = this.readRequestJson(payload);
+		
+		String account = paramap.get("account");
+		String uid = paramap.get("user_id");
+		
+		ModelAndView mav = getJsonModelView();	
+		ActionResult result = new ActionResult();
+		
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		Long userId = null;
+		InfoId<Long> userkey = null;
+		if(StringUtils.isNotBlank(uid) && CommonUtils.isNumeric(uid)){
+			userId = Long.valueOf(uid);
+			userkey = IdKey.USER.getInfoId(userId);
+		}
+		
+		if(userId == GroupUsers.ADMIN_USER.getUserId().getId()){
+			
+			result = ActionResult.failure(getMessage("mesg.rsrv.admin"));
+			mav.addAllObjects(result.asMap());
+			return mav;
+		}
+		
+		try{
+			SecurityFacade.removeAccount(accesspoint, principal, userkey, account);
+			result = ActionResult.success(getMessage("mesg.remove.account"));
+		}catch(CoreException ce){
+			result = ActionResult.error(ce.getMessage());
+		}
+			
+		mav.addAllObjects(result.asMap());
+
+		return mav;
 	}
 }

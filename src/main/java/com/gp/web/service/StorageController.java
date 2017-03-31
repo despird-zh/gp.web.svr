@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
+import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StorageState;
@@ -23,6 +24,7 @@ import com.gp.common.Storages.StoreSetting;
 import com.gp.core.StorageFacade;
 import com.gp.dao.info.StorageInfo;
 import com.gp.exception.CoreException;
+import com.gp.info.InfoId;
 import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -112,7 +114,7 @@ public class StorageController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "storage-save.do", 
+		    value = "storage-add.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doNewStorage(@RequestBody String payload){
@@ -154,6 +156,86 @@ public class StorageController extends BaseController{
 			result = ActionResult.failure(ce.getMessage());
 		}
 		
+		mav.addAllObjects(result.asMap());
+		return mav;
+	}
+	
+	@RequestMapping(
+		    value = "storage-save.do", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doSaveStorage(@RequestBody String payload){
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+
+		// read trace information
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		// prepare result
+		ActionResult result = null;
+		ModelAndView mav = super.getJsonModelView();
+		
+		// read parameter
+		Storage storage = super.readRequestBody(payload, Storage.class);
+		StorageInfo sinfo = new StorageInfo();
+		
+		InfoId<Integer> infoid = IdKey.STORAGE.getInfoId(storage.getStorageId());
+		sinfo.setInfoId(infoid);
+		Long cap = StringUtils.isNotBlank(storage.getCapacity()) ? Long.valueOf(storage.getCapacity()):0l;
+		sinfo.setCapacity(cap);
+		sinfo.setDescription(storage.getDescription());
+		// convert setting into json string
+		Map<String, Object> setting = new HashMap<String, Object>();
+		setting.put(StoreSetting.StorePath.name(), storage.getStorePath());
+		setting.put(StoreSetting.HdfsHost.name(), storage.getHdfsHost());
+		setting.put(StoreSetting.HdfsPort.name(), storage.getHdfsPort());
+		// try to save setting
+		sinfo.setSettingJson(Storages.wrapSetting(setting));
+		
+		sinfo.setState(storage.getState());
+		sinfo.setStorageType(storage.getType());
+		sinfo.setStorageName(storage.getName());
+		try{
+			
+			StorageFacade.saveStorage(accesspoint, principal, sinfo);
+			result = ActionResult.success(getMessage("mesg.save.storage"));
+			
+		}catch(CoreException ce){
+			result = ActionResult.failure(ce.getMessage());
+		}
+		
+		mav.addAllObjects(result.asMap());
+		return mav;
+	}
+	
+	@RequestMapping(
+		    value = "storage-remove.do", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doRemoveStorage(@RequestBody String payload){
+		
+		String storageId = super.readRequestParam("storage_id");
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult result = new ActionResult();
+		
+		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
+		if(Storages.DEFAULT_STORAGE_ID == sid.getId()){
+			
+			result = ActionResult.failure(getMessage("mesg.rsrv.storage"));
+			mav.addAllObjects(result.asMap());
+			return mav;
+		}
+		try{
+			StorageFacade.removeStorage(accesspoint, principal, sid);
+			result = ActionResult.success(getMessage("mesg.remove.storage"));
+		}catch(CoreException ce){
+		
+			result = ActionResult.failure(ce.getMessage());
+		
+		}
 		mav.addAllObjects(result.asMap());
 		return mav;
 	}
