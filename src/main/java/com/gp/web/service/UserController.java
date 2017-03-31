@@ -1,5 +1,6 @@
 package com.gp.web.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,16 +15,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
+import com.gp.common.Cabinets;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
+import com.gp.core.CabinetFacade;
 import com.gp.core.SecurityFacade;
+import com.gp.dao.info.CabinetInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.WebException;
 import com.gp.info.InfoId;
 import com.gp.svc.info.UserExtInfo;
 import com.gp.util.CommonUtils;
+import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
@@ -66,8 +71,30 @@ public class UserController extends BaseController{
 					new String[0],  // type
 					states); // state
 			
+			List<Account> list = new ArrayList<Account>();
+			for(UserExtInfo info: ulist){
+				
+				Account ui = new Account();
+				ui.setSourceId(info.getSourceId());
+				ui.setUserId(info.getInfoId().getId());
+				ui.setAccount(info.getAccount());
+				ui.setEmail(info.getEmail());
+				ui.setMobile(info.getMobile());
+				ui.setPhone(info.getPhone());
+				ui.setType(info.getType());
+				if(info.getCreateDate() != null)
+					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
+				
+				ui.setStorageName(info.getStorageName());
+				ui.setName(info.getFullName());
+				ui.setSourceName(info.getSourceName());
+				ui.setState(info.getState());
+	
+				list.add(ui);
+			}		
+
 			result = ActionResult.success(this.getMessage("mesg.find.account"));
-			result.setData(ulist);
+			result.setData(list);
 		}catch(CoreException ce){
 			
 			result = ActionResult.error(ce.getMessage());
@@ -100,7 +127,7 @@ public class UserController extends BaseController{
 		uinfo.setPassword(account.getPassword());
 		uinfo.setPhone(account.getPhone());
 		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setTimezone(account.getTimezone());
 		uinfo.setType(account.getType());
 		uinfo.setStorageId(account.getStorageId());
 		uinfo.setState(account.getState());
@@ -149,7 +176,7 @@ public class UserController extends BaseController{
 		uinfo.setPassword(account.getPassword());
 		uinfo.setPhone(account.getPhone());
 		uinfo.setMobile(account.getMobile());
-		uinfo.setTimeZone(account.getTimezone());
+		uinfo.setTimezone(account.getTimezone());
 		uinfo.setType(account.getType());
 		uinfo.setStorageId(account.getStorageId());
 		uinfo.setState(GroupUsers.UserState.ACTIVE.name());
@@ -216,6 +243,65 @@ public class UserController extends BaseController{
 			result = ActionResult.error(ce.getMessage());
 		}
 			
+		mav.addAllObjects(result.asMap());
+
+		return mav;
+	}
+	
+	@RequestMapping(value = "user-info.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doAccountInfo(@RequestBody String payload){
+
+		Map<String,String> paramap = this.readRequestJson(payload);
+		
+		String account = paramap.get("account");
+		String type = paramap.get("type");
+		String uidStr = paramap.get("user_id");
+
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		Principal principal = super.getPrincipal();
+		Long userId = null;
+
+		InfoId<Long> userkey = null;
+		if(StringUtils.isNotBlank(uidStr) && CommonUtils.isNumeric(uidStr) ){
+			userId = Long.valueOf(uidStr);
+			userkey = IdKey.USER.getInfoId(userId);
+		}
+
+		ActionResult result = null;
+		
+		try{
+			UserExtInfo info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
+			Account ui = new Account();
+			ui.setUserId(info.getInfoId().getId());
+			ui.setSourceId(info.getSourceId());
+			ui.setAccount(info.getAccount());
+			ui.setEmail(info.getEmail());
+			ui.setMobile(info.getMobile());
+			ui.setType(info.getType());
+			ui.setPhone(info.getPhone());
+			ui.setName(info.getFullName());
+			ui.setState(info.getState());
+			ui.setStorageId(info.getStorageId());
+			ui.setLanguage(info.getLanguage());
+			ui.setTimezone(info.getTimezone());
+			ui.setStorageName(info.getStorageName());
+			
+			List<CabinetInfo> cabs = CabinetFacade.findPersonalCabinets(accesspoint,GroupUsers.PSEUDO_USER,info.getAccount());
+			for(CabinetInfo cinfo: cabs){
+				if(Cabinets.CabinetType.NETDISK.name().equals(cinfo.getCabinetType()))
+					ui.setPricapacity(cinfo.getCapacity());
+				
+				else if(Cabinets.CabinetType.PUBLISH.name().equals(cinfo.getCabinetType()))
+					ui.setPubcapacity(cinfo.getCapacity());
+			}
+			result = ActionResult.success(getMessage("mesg.find.account"));
+			result.setData(ui);
+		}catch(CoreException ce){
+			result = ActionResult.error(ce.getMessage());
+		}
+		ModelAndView mav = getJsonModelView();		
 		mav.addAllObjects(result.asMap());
 
 		return mav;

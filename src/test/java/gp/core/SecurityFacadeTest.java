@@ -34,7 +34,7 @@ public class SecurityFacadeTest  extends AbstractJUnit4SpringContextTests{
 		admin.setEmail("admin@cnet.com");
 		admin.setFullName("Administrator");
 		admin.setLanguage("en_US");
-		admin.setTimeZone("GMT+08:00");
+		admin.setTimezone("GMT+08:00");
 		admin.setPassword("1");
 		admin.setMobile("18601253554");
 		admin.setPhone("52436454");

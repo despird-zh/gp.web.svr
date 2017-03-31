@@ -537,7 +537,7 @@ public class SecurityFacade {
 	        }
 	        principal.setLocale(locale);
 	         
-	 		principal.setTimeZone(ZoneId.of(uinfo.getTimeZone()));
+	 		principal.setTimeZone(ZoneId.of(uinfo.getTimezone()));
 	 		
 		} catch (ServiceException e) {
 			
