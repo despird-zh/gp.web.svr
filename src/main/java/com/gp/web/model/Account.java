@@ -42,6 +42,10 @@ public class Account {
 	
 	private String imagePath;
 	
+	private String modifier;
+	
+	private String lastModified;
+	
 	public String getAccount() {
 		return account;
 	}
@@ -201,6 +205,22 @@ public class Account {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public String getModifier() {
+		return modifier;
+	}
+
+	public void setModifier(String modifier) {
+		this.modifier = modifier;
+	}
+
+	public String getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(String lastModified) {
+		this.lastModified = lastModified;
 	}
 	
 }

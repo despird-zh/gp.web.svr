@@ -1,5 +1,6 @@
 package com.gp.web.service;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -296,6 +297,11 @@ public class UserController extends BaseController{
 				else if(Cabinets.CabinetType.PUBLISH.name().equals(cinfo.getCabinetType()))
 					ui.setPubcapacity(cinfo.getCapacity());
 			}
+			
+			DateFormat datefmt = principal.getDateFormat();
+			ui.setModifier(info.getModifier());
+			ui.setLastModified(datefmt.format(info.getModifyDate()));
+			
 			result = ActionResult.success(getMessage("mesg.find.account"));
 			result.setData(ui);
 		}catch(CoreException ce){
