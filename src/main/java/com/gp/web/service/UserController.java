@@ -168,7 +168,7 @@ public class UserController extends BaseController{
 		ActionResult result = new ActionResult();		
 		ModelAndView mav = getJsonModelView();		
 		
-		String confirmPwd = super.readRequestParam("confirm");
+		String confirmPwd = super.readRequestJson(payload).get("confirm");
 		UserInfo uinfo = new UserInfo();
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
