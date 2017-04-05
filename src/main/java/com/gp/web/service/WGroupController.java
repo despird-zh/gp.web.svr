@@ -78,7 +78,7 @@ public class WGroupController extends BaseController{
 			
 		} catch (CoreException ce) {
 			
-			result = ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		
 		return mav.addAllObjects(result.asMap());
@@ -134,7 +134,7 @@ public class WGroupController extends BaseController{
 			result= ActionResult.success(getMessage("mesg.new.wgroup"));
 		}catch(CoreException ce){
 			
-			result= ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 			
 		}
 	
@@ -195,7 +195,7 @@ public class WGroupController extends BaseController{
 			result= ActionResult.success(getMessage("mesg.save.wgroup"));
 
 		}catch(CoreException ce){
-			result= ActionResult.error(ce.getMessage());	
+			result = super.wrapResult(ce);
 		}
 	
 		mav.addAllObjects(result.asMap());

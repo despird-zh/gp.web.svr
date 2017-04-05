@@ -58,7 +58,7 @@ public class SysOptionController extends BaseController{
 			
 		}catch(CoreException ce){
 			
-			result = ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		
 		return mav.addAllObjects(result.asMap());

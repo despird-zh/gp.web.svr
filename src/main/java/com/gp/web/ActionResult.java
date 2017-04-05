@@ -2,6 +2,10 @@ package com.gp.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import com.gp.core.CoreConstants;
+import com.gp.validate.ValidateMessage;
 
 /**
  * ActionResult Wrap the result of JSON data.
@@ -26,7 +30,7 @@ public class ActionResult{
 	 **/
     public static ActionResult failure(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(BaseController.FAIL, message);
+        ref.meta = new Meta(CoreConstants.FAIL, message);
         return ref;
     }
     
@@ -38,7 +42,7 @@ public class ActionResult{
 	 **/
     public static ActionResult error(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(BaseController.ERROR, message);
+        ref.meta = new Meta(CoreConstants.ERROR, message);
         return ref;
     }
     
@@ -50,7 +54,22 @@ public class ActionResult{
 	 **/
     public static ActionResult success(String message) {
     	ActionResult ref = new ActionResult();
-        ref.meta = new Meta(BaseController.SUCCESS, message);
+        ref.meta = new Meta(CoreConstants.SUCCESS, message);
+        return ref;
+    }
+    
+	/**
+	 * Build a new success state result with message
+	 * 
+	 * @param message the message string
+	 * @return ActionResult the action result
+	 **/
+    public static ActionResult invalid(String message, Set<ValidateMessage> messages) {
+    	ActionResult ref = new ActionResult();
+        ref.meta = new Meta(CoreConstants.FAIL, message);
+        ref.meta.setCode(CoreConstants.CODE_INVALID);
+        ref.setData(messages);
+        
         return ref;
     }
     
@@ -89,8 +108,8 @@ public class ActionResult{
 	public Map<String, Object> asMap(){
 		
 		Map<String, Object> map = new HashMap<String,Object>();
-		map.put(BaseController.MODEL_KEY_META, this.meta);
-		map.put(BaseController.MODEL_KEY_DATA, data);
+		map.put(CoreConstants.MODEL_KEY_META, this.meta);
+		map.put(CoreConstants.MODEL_KEY_DATA, data);
 		
 		return map;
 	}

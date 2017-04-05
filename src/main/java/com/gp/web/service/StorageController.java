@@ -106,7 +106,7 @@ public class StorageController extends BaseController{
 			result.setData(rows);
 		}catch(CoreException ce){
 			
-			result = ActionResult.failure(ce.getMessage());
+			result = super.wrapResult(ce);
 			
 		}
 		
@@ -153,7 +153,7 @@ public class StorageController extends BaseController{
 			result = ActionResult.success(getMessage("mesg.new.storage"));
 		}catch(CoreException ce){
 
-			result = ActionResult.failure(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		
 		mav.addAllObjects(result.asMap());
@@ -202,7 +202,7 @@ public class StorageController extends BaseController{
 			result = ActionResult.success(getMessage("mesg.save.storage"));
 			
 		}catch(CoreException ce){
-			result = ActionResult.failure(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		
 		mav.addAllObjects(result.asMap());
@@ -233,7 +233,7 @@ public class StorageController extends BaseController{
 			result = ActionResult.success(getMessage("mesg.remove.storage"));
 		}catch(CoreException ce){
 		
-			result = ActionResult.failure(ce.getMessage());
+			result = super.wrapResult(ce);
 		
 		}
 		mav.addAllObjects(result.asMap());

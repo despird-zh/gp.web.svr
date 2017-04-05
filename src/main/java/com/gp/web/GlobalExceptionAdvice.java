@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import com.gp.core.CoreConstants;
 import com.gp.exception.ServiceException;
 import com.gp.exception.WebException;
 
@@ -56,7 +57,7 @@ public class GlobalExceptionAdvice {
 	    mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", BaseController.ERROR);
+		mav.addObject("state", CoreConstants.ERROR);
 
 		return mav;
 	}
@@ -87,7 +88,7 @@ public class GlobalExceptionAdvice {
 		mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", BaseController.ERROR);
+		mav.addObject("state", CoreConstants.ERROR);
 
 		return mav;
 	}
@@ -121,7 +122,7 @@ public class GlobalExceptionAdvice {
 	    mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL());
 		mav.addObject("timestamp", new Date().toString());
-		mav.addObject("state", BaseController.ERROR);
+		mav.addObject("state", CoreConstants.ERROR);
 
 		return mav;
 	}

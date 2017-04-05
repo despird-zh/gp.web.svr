@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
+import com.gp.exception.CoreException;
 import com.gp.web.util.ExWebUtils;
 
 
@@ -36,22 +38,6 @@ import com.gp.web.util.ExWebUtils;
 public abstract class BaseController implements MessageSourceAware{
 
 	static Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
-
-	/** the action operation state : success */ 
-	public static final String SUCCESS = "success";
-	/** the action operation state : error */ 
-	public static final String ERROR = "error";
-	/** the action operation state : error */ 
-	public static final String FAIL = "fail";
-	
-	/** Model key : data */
-	public static final String MODEL_KEY_DATA = "data";
-	/** Model key : meta */
-	public static final String MODEL_KEY_META = "meta";
-	/** Model key : state */
-	public static final String MODEL_KEY_STATE = "state";
-	/** Model key : message */
-	public static final String MODEL_KEY_MESSAGE = "message";
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	
@@ -278,5 +264,21 @@ public abstract class BaseController implements MessageSourceAware{
 		Principal principal = getPrincipal();
 		Locale locale = (null == principal) ? Locale.getDefault() : principal.getLocale();
 		return messageSource.getMessage(code, new String[0], locale);
+	}
+	
+	/**
+	 * Wrap the core exception into an ActionResult
+	 * @param ce the core exception  
+	 * @return the ActionResult with exception
+	 **/
+	public static ActionResult wrapResult(CoreException ce){
+		
+		if(CollectionUtils.isNotEmpty(ce.getValidateMessages())){
+			
+			return ActionResult.invalid(ce.getMessage(), ce.getValidateMessages());
+		}else{
+			
+			return ActionResult.error(ce.getMessage());
+		}
 	}
 }

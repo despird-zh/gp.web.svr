@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -98,7 +99,7 @@ public class UserController extends BaseController{
 			result.setData(list);
 		}catch(CoreException ce){
 			
-			result = ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		return mav.addAllObjects(result.asMap());
 	}
@@ -142,7 +143,7 @@ public class UserController extends BaseController{
 			
 		}catch(CoreException ce){
 			
-			result = ActionResult.failure(ce.getMessage());
+			result = super.wrapResult(ce);
 
 		}
 		
@@ -196,7 +197,11 @@ public class UserController extends BaseController{
 				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result = ActionResult.success(getMessage("mesg.save.account"));
 			}catch(CoreException ce){
-				result = ActionResult.error(ce.getMessage());
+				if(CollectionUtils.isNotEmpty(ce.getValidateMessages())){
+					result = ActionResult.invalid(ce.getMessage(), ce.getValidateMessages());
+				}else{
+					result = ActionResult.error(ce.getMessage());
+				}
 			}
 			mav.addAllObjects(result.asMap());
 		}
@@ -241,7 +246,7 @@ public class UserController extends BaseController{
 			SecurityFacade.removeAccount(accesspoint, principal, userkey, account);
 			result = ActionResult.success(getMessage("mesg.remove.account"));
 		}catch(CoreException ce){
-			result = ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 			
 		mav.addAllObjects(result.asMap());
@@ -305,7 +310,7 @@ public class UserController extends BaseController{
 			result = ActionResult.success(getMessage("mesg.find.account"));
 			result.setData(ui);
 		}catch(CoreException ce){
-			result = ActionResult.error(ce.getMessage());
+			result = super.wrapResult(ce);
 		}
 		ModelAndView mav = getJsonModelView();		
 		mav.addAllObjects(result.asMap());
