@@ -197,11 +197,7 @@ public class UserController extends BaseController{
 				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result = ActionResult.success(getMessage("mesg.save.account"));
 			}catch(CoreException ce){
-				if(CollectionUtils.isNotEmpty(ce.getValidateMessages())){
-					result = ActionResult.invalid(ce.getMessage(), ce.getValidateMessages());
-				}else{
-					result = ActionResult.error(ce.getMessage());
-				}
+				result = super.wrapResult(ce);
 			}
 			mav.addAllObjects(result.asMap());
 		}

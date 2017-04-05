@@ -186,9 +186,7 @@ public class SecurityFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
 			svcctx.addOperationPredicates(uinfo);
-			// encrypt the password
-			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
-			uinfo.setPassword(hashpwd);
+			
 			// set local entity id
 			uinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			// check the validation of user information
@@ -199,6 +197,9 @@ public class SecurityFacade {
 				throw coreexcp;
 			}
 			
+			// encrypt the password
+			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
+			uinfo.setPassword(hashpwd);
 			// amend the information key data
 			if(uinfo.getInfoId() == null){
 				
