@@ -22,6 +22,7 @@ import org.springframework.web.util.UriUtils;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
@@ -47,7 +48,10 @@ public abstract class BaseController implements MessageSourceAware{
     protected HttpServletRequest request;
 	
 	static{
+		
 		JACKSON_MAPPER_NON_NULL.setSerializationInclusion(Include.NON_NULL);
+		JACKSON_MAPPER_NON_NULL.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+		JACKSON_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 	}
 	
 	private MessageSource messageSource;
