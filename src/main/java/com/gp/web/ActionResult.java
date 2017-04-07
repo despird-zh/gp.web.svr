@@ -64,11 +64,11 @@ public class ActionResult{
 	 * @param message the message string
 	 * @return ActionResult the action result
 	 **/
-    public static ActionResult invalid(String message, Set<ValidateMessage> messages) {
+    public static ActionResult invalid(String message, Map<String, String> msgmap) {
     	ActionResult ref = new ActionResult();
         ref.meta = new Meta(CoreConstants.FAIL, message);
         ref.meta.setCode(CoreConstants.CODE_INVALID);
-        ref.setData(messages);
+        ref.setData(msgmap);
         
         return ref;
     }

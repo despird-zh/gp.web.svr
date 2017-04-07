@@ -2,6 +2,7 @@ package com.gp.web;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,10 +24,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.PropertyNamingStrategyBase;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.gp.common.AccessPoint;
 import com.gp.common.Principal;
 import com.gp.exception.CoreException;
+import com.gp.validate.ValidateMessage;
 import com.gp.web.util.ExWebUtils;
 
 
@@ -39,6 +42,8 @@ import com.gp.web.util.ExWebUtils;
 public abstract class BaseController implements MessageSourceAware{
 
 	static Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
+	
+	static PropertyNamingStrategyBase JSON_CASE_BASE = (PropertyNamingStrategyBase)PropertyNamingStrategy.KEBAB_CASE;
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	
@@ -278,8 +283,12 @@ public abstract class BaseController implements MessageSourceAware{
 	public static ActionResult wrapResult(CoreException ce){
 		
 		if(CollectionUtils.isNotEmpty(ce.getValidateMessages())){
-			
-			return ActionResult.invalid(ce.getMessage(), ce.getValidateMessages());
+			Map<String, String> msgmap = new HashMap<String, String>();
+			for(ValidateMessage msg: ce.getValidateMessages()){
+
+				msgmap.put(JSON_CASE_BASE.translate(msg.getProperty()), msg.getMessage());
+			}
+			return ActionResult.invalid(ce.getMessage(), msgmap);
 		}else{
 			
 			return ActionResult.error(ce.getMessage());
