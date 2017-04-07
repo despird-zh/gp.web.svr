@@ -28,7 +28,7 @@ public class TestDataController extends BaseController{
 		ArrayList<demodata> list = new ArrayList<demodata>();
 		for(int i = 1; i<100; i++){
 			demodata dd = new demodata();
-			dd.setFirstname("cliton"+i);
+			dd.setFirstName("cliton"+i);
 			dd.setLastname("bill"+i);
 			dd.setEmail("demo"+i+"@163.com");
 			dd.setSystem("system"+i);
@@ -43,7 +43,7 @@ public class TestDataController extends BaseController{
 	
 	public static class demodata{
 		
-		private String firstname;
+		private String firstName;
 		private String lastname;
 		private String email;
 		private String system;
@@ -52,12 +52,12 @@ public class TestDataController extends BaseController{
 		
 		private String birthday;
 
-		public String getFirstname() {
-			return firstname;
+		public String getFirstName() {
+			return firstName;
 		}
 
-		public void setFirstname(String firstname) {
-			this.firstname = firstname;
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
 		}
 
 		public String getLastname() {

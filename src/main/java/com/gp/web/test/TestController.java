@@ -47,13 +47,22 @@ public class TestController extends BaseController{
 	public static class TestBean{
 		
 		private String attr1;
-
+		private String attrName1;
+		
 		public String getAttr1() {
 			return attr1;
 		}
 
 		public void setAttr1(String attr1) {
 			this.attr1 = attr1;
+		}
+
+		public String getAttrName1() {
+			return attrName1;
+		}
+
+		public void setAttrName1(String attrName1) {
+			this.attrName1 = attrName1;
 		}		
 		
 	}
