@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
+import com.gp.common.Principal;
 import com.gp.core.MasterFacade;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.CoreException;
@@ -62,5 +65,32 @@ public class SysOptionController extends BaseController{
 		}
 		
 		return mav.addAllObjects(result.asMap());
+	}
+	
+	@RequestMapping(value = "sys-opt-save.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doSaveSystemOption(@RequestBody String payload){
+		
+		Principal princ = super.getPrincipal();
+		AccessPoint ap = super.getAccessPoint(request);
+		ActionResult result = new ActionResult();
+		
+		Map<String,String> map = super.readRequestJson(payload);
+		String optkey = map.get("option");
+		String optvalue = map.get("value");
+		ModelAndView mav = super.getJsonModelView();
+		
+		try{
+			MasterFacade.saveSystemOption(ap, princ, optkey, optvalue);
+
+			result = ActionResult.success(getMessage("mesg.save.sysopt"));
+
+		}catch(CoreException ce){
+			
+			result = super.wrapResult(ce);
+		}
+		mav.addAllObjects(result.asMap());
+		return mav;
 	}
 }
