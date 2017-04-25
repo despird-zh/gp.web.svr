@@ -72,8 +72,7 @@ public class CommonController extends BaseController{
 			result.setData(enlist);
 			
 		}catch(CoreException ce){
-			result = ActionResult.failure(ce.getLocalizedMessage());
-			result.setData(enlist);
+			result = super.wrapResult(ce);
 		}
 
 		return mav.addAllObjects(result.asMap());
@@ -113,8 +112,7 @@ public class CommonController extends BaseController{
 			result.setData(stglist);
 
 		}catch(CoreException ce){
-			result = ActionResult.failure(ce.getLocalizedMessage());
-			result.setData(stglist);
+			result = super.wrapResult(ce);
 		}
 	
 		return mav.addAllObjects(result.asMap());
@@ -161,8 +159,7 @@ public class CommonController extends BaseController{
 			ars.setData(list);
 			
 		}catch(CoreException ce){
-			ars = ActionResult.failure(ce.getLocalizedMessage());
-			ars.setData(list);
+			ars = super.wrapResult(ce);
 		}
 		
 		ModelAndView mav = getJsonModelView();		
@@ -225,8 +222,7 @@ public class CommonController extends BaseController{
 			ars.setData(olist);
 			
 		}catch(CoreException ce){
-			ars = ActionResult.failure(ce.getLocalizedMessage());
-			ars.setData(olist);
+			ars = super.wrapResult(ce);
 		}
 		
 		ModelAndView mav = getJsonModelView();
@@ -281,8 +277,7 @@ public class CommonController extends BaseController{
 			ars.setData(list);
 
 		}catch(CoreException ce){
-			ars = ActionResult.failure(ce.getLocalizedMessage());
-			ars.setData(list);
+			ars = super.wrapResult(ce);
 		}
 		
 		return mav.addAllObjects(ars.asMap());	
