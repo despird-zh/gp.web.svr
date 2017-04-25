@@ -126,7 +126,7 @@ public class ImagesController extends BaseController{
 	 * update the image with name and image file
 	 *  
 	 **/
-	@RequestMapping("image-save")
+	@RequestMapping("image-save.do")
 	public ModelAndView doImageSave(HttpServletRequest request, HttpServletResponse response)throws IOException{
 		
 		ModelAndView mav = super.getJsonModelView();
@@ -167,7 +167,7 @@ public class ImagesController extends BaseController{
 	 * update the image with name and image file
 	 *  
 	 **/
-	@RequestMapping("image-remove")
+	@RequestMapping("image-remove.do")
 	public ModelAndView doImageRemove(HttpServletRequest request)throws IOException{
 		
 		ModelAndView mav = super.getJsonModelView();
