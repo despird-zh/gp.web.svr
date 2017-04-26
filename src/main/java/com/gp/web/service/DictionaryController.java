@@ -3,6 +3,7 @@ package com.gp.web.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,10 @@ import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
 import com.gp.core.DictionaryFacade;
+import com.gp.dao.DictionaryDAO;
 import com.gp.dao.info.DictionaryInfo;
 import com.gp.exception.CoreException;
+import com.gp.info.FlatColumn;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -39,20 +42,27 @@ public class DictionaryController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		Principal principal = super.getPrincipal();
-		com.gp.common.AccessPoint accesspoint = super.getAccessPoint(request);
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		Map<String, String> paramap = super.readRequestJson(payload);
+		String language = paramap.get("language");
 		ActionResult ars = new ActionResult();
 		List<DictEntry> list = new ArrayList<DictEntry>();
 
 		try{
-			List<DictionaryInfo> gresult = DictionaryFacade.findDictEntries(accesspoint, principal, "", "");
+			List<DictionaryInfo> gresult = DictionaryFacade.findDictEntries(accesspoint, principal, 
+					paramap.get("group"), 
+					paramap.get("search"));
+			
+			FlatColumn lblcol = DictionaryDAO.getFlatColumn("en_us");
+			
 			for(DictionaryInfo info: gresult){
 				DictEntry de = new DictEntry();
 				de.setEntryId(info.getInfoId().getId());
 				de.setEntryKey(info.getKey());
 				de.setGroupKey(info.getGroup());
 				de.setEntryValue(info.getValue());
-				//de.setLabel(info.getLabel());
-				de.setLanguage(info.getDefaultLang());
+				de.setLabel(info.getLabel(lblcol));
+				de.setLanguage(language);
 				de.setModifier(info.getModifier());
 				de.setModifyDate(MDF_DATE_FORMAT.format(info.getModifyDate()));
 				
@@ -88,7 +98,7 @@ public class DictionaryController extends BaseController{
 		dinfo.setValue(dentry.getEntryValue());
 		dinfo.setGroup(dentry.getGroupKey());
 		//dinfo.setLabel(dentry.getLabel());
-		dinfo.setDefaultLang(dentry.getLanguage());
+		//dinfo.setDefaultLang(dentry.getLanguage());
 
 		try{
 			DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);

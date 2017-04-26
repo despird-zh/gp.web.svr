@@ -47,14 +47,14 @@ public class DictionaryFacade {
 	 * @param language the language expected 
 	 **/
 	public static List<DictionaryInfo> findDictEntries(AccessPoint accesspoint,
-			Principal principal, String groupkey, String language) throws CoreException{
+			Principal principal, String groupkey, String keyFilter) throws CoreException{
 		
 		List<DictionaryInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_DICTS)){
 
-			gresult = dictservice.getDictEntries(svcctx);
+			gresult = dictservice.getDictEntries(svcctx, groupkey, keyFilter);
 			
 		} catch (ServiceException e) {
 			
