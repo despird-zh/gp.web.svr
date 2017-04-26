@@ -53,7 +53,7 @@ public class DictionaryController extends BaseController{
 					paramap.get("group"), 
 					paramap.get("search"));
 			
-			FlatColumn lblcol = DictionaryDAO.getFlatColumn("en_us");
+			FlatColumn lblcol = DictionaryDAO.getFlatColumn(language);
 			
 			for(DictionaryInfo info: gresult){
 				DictEntry de = new DictEntry();
