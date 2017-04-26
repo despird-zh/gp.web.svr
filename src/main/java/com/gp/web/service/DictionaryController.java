@@ -2,6 +2,7 @@ package com.gp.web.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import com.gp.core.DictionaryFacade;
 import com.gp.dao.DictionaryDAO;
 import com.gp.dao.info.DictionaryInfo;
 import com.gp.exception.CoreException;
+import com.gp.info.FlatColLocator;
 import com.gp.info.FlatColumn;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
@@ -93,13 +95,18 @@ public class DictionaryController extends BaseController{
 		
 		DictionaryInfo dinfo = new DictionaryInfo();
 		InfoId<Long> did = IdKey.DICTIONARY.getInfoId(dentry.getEntryId());
+		
+		FlatColumn lblcol = DictionaryDAO.getFlatColumn(dentry.getLanguage());
+		
 		dinfo.setInfoId(did);
 		dinfo.setKey(dentry.getEntryKey());
 		dinfo.setValue(dentry.getEntryValue());
 		dinfo.setGroup(dentry.getGroupKey());
-		//dinfo.setLabel(dentry.getLabel());
-		//dinfo.setDefaultLang(dentry.getLanguage());
 
+		Map<FlatColLocator, String> labels = new HashMap<FlatColLocator, String>();
+		labels.put(lblcol, dentry.getLabel());
+		dinfo.setLabelMap(labels);
+		
 		try{
 			DictionaryFacade.saveDictEntry(accesspoint, principal, dinfo);
 			result = ActionResult.success(getMessage("mesg.save.dict"));
