@@ -36,7 +36,7 @@ public class WGroupController extends BaseController{
 	static Logger LOGGER = LoggerFactory.getLogger(WGroupController.class);
 	
 	@RequestMapping(
-			value = "wgroup-query.do",
+			value = "wgroups-query.do",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doProfileQuery(@RequestBody String payload) {
