@@ -214,7 +214,7 @@ public class CommonController extends BaseController{
 				node.setDescription(orghier.getDescription());
 				node.setEmail(orghier.getEmail());
 				node.setManager(orghier.getManager());
-				node.setChildren((gcnt == null ? 0 : gcnt) > 0);
+				node.setHasChild((gcnt == null ? 0 : gcnt) > 0);
 				olist.add(node);
 			}
 			

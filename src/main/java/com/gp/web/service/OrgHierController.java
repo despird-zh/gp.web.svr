@@ -2,8 +2,7 @@ package com.gp.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ public class OrgHierController extends BaseController{
 	static Logger LOGGER = LoggerFactory.getLogger(OrgHierController.class);
 	
 	@RequestMapping(
-		    value = "orghier-add.do", 
+		    value = "org-node-add.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doAddOrgHier(@RequestBody String payload){
@@ -83,7 +82,7 @@ public class OrgHierController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "orghier-save.do", 
+		    value = "org-node-save.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSaveOrgHier(@RequestBody String payload){
@@ -129,7 +128,7 @@ public class OrgHierController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "orghier-member-add.do", 
+		    value = "org-member-add.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doAddOrgHierMember(@RequestBody String payload){
@@ -167,22 +166,25 @@ public class OrgHierController extends BaseController{
 	}
 
 	@RequestMapping(
-		    value = "orghier-member-remove.do", 
+		    value = "org-member-remove.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doRemoveOrgHierMember(HttpServletRequest request){
+	public ModelAndView doRemoveOrgHierMember(@RequestBody String payload){
 		
 		if(LOGGER.isDebugEnabled()){
 			ExWebUtils.dumpRequestAttributes(request);
 		}
-		String orgIdStr = super.readRequestParam("org_id");
+		
+		Map<String, String > paramap = super.readRequestJson(payload);
+		String orgIdStr = paramap.get("org_id");
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
 			nodeId = IdKey.ORG_HIER.getInfoId( nid);
 		}
-		String account = super.readRequestParam("account");
+		String account = paramap.get("account");
+		
 		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
@@ -200,15 +202,16 @@ public class OrgHierController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "orghier-member-search.do", 
+		    value = "org-member-search.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doOrgHierMemberSearch(HttpServletRequest request){
+	public ModelAndView doOrgHierMemberSearch(@RequestBody String payload){
 		
 		if(LOGGER.isDebugEnabled()){
 			ExWebUtils.dumpRequestAttributes(request);
 		}
-		String orgIdStr = super.readRequestParam("org_id");
+		Map<String, String > paramap = super.readRequestJson(payload);
+		String orgIdStr = paramap.get("org_id");
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
@@ -251,5 +254,67 @@ public class OrgHierController extends BaseController{
 		
 		mav.addAllObjects(aresult.asMap());
 		return mav;
+	}
+	
+	@RequestMapping(
+		    value = "org-nodes-query.do", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doGetOrghierNodes(@RequestBody String payload){
+		
+		ActionResult result = null;
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		Map<String, String > paramap = super.readRequestJson(payload);
+		String orgIdStr = paramap.get("org-id");
+
+		List<OrgNode> olist = new ArrayList<OrgNode>();		
+		Long orgId = null;
+		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
+		
+			orgId = Long.valueOf(orgIdStr);
+		}else if(StringUtils.isNotBlank(orgIdStr) && !CommonUtils.isNumeric(orgIdStr)){
+			
+			orgId = GeneralConstants.ORGHIER_ROOT;
+		}else{
+			result = ActionResult.success(getMessage("mesg.find.orgs"));
+			result.setData(olist);
+			ModelAndView mav = getJsonModelView();
+			return mav.addAllObjects(result.asMap());
+		}		
+
+		try{
+			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
+					oid);
+			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
+					oid);
+			
+			for(OrgHierInfo orghier : gresult){
+				OrgNode node = new OrgNode();
+				Integer gcnt = grandcnt.get(orghier.getInfoId().getId());
+				
+				node.setId(String.valueOf(orghier.getInfoId().getId()));
+				
+				if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
+					node.setParent(String.valueOf(orghier.getParentOrg()));
+				}
+				node.setText(orghier.getOrgName());
+				node.setAdmin(orghier.getAdmin());
+				node.setDescription(orghier.getDescription());
+				node.setEmail(orghier.getEmail());
+				node.setManager(orghier.getManager());
+				node.setHasChild((gcnt == null ? 0 : gcnt) > 0);
+				olist.add(node);
+			}
+			result = ActionResult.success(getMessage("mesg.find.orgs"));
+			result.setData(olist);
+		}catch(CoreException ce){
+			result = super.wrapResult(ce);
+		}
+		
+		ModelAndView mav = getJsonModelView();
+		return mav.addAllObjects(result.asMap());		
 	}
 }

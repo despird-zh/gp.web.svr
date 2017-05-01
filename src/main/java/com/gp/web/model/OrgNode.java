@@ -8,7 +8,7 @@ public class OrgNode {
 	
 	private String text;
 
-	private Boolean children = true;
+	private Boolean hasChild = true;
 	
 	private String admin;
 	
@@ -42,14 +42,6 @@ public class OrgNode {
 		this.text = text;
 	}
 
-	public Boolean getChildren() {
-		return children;
-	}
-
-	public void setChildren(Boolean children) {
-		this.children = children;
-	}
-
 	public String getAdmin() {
 		return admin;
 	}
@@ -80,6 +72,14 @@ public class OrgNode {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Boolean getHasChild() {
+		return hasChild;
+	}
+
+	public void setHasChild(Boolean hasChild) {
+		this.hasChild = hasChild;
 	}
 	
 	
