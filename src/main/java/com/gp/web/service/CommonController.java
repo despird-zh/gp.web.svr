@@ -195,15 +195,11 @@ public class CommonController extends BaseController{
 		ActionResult ars = new ActionResult();
 		try{
 			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
-			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
-					oid);
-			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
+			List<OrgHierInfo> gresult = OrgHierFacade.findAllChildOrgHiers(accesspoint, principal, 
 					oid);
 			
 			for(OrgHierInfo orghier : gresult){
 				OrgNode node = new OrgNode();
-				Integer gcnt = grandcnt.get(orghier.getInfoId().getId());
-				
 				node.setId(String.valueOf(orghier.getInfoId().getId()));
 				
 				if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
@@ -214,11 +210,10 @@ public class CommonController extends BaseController{
 				node.setDescription(orghier.getDescription());
 				node.setEmail(orghier.getEmail());
 				node.setManager(orghier.getManager());
-				node.setHasChild((gcnt == null ? 0 : gcnt) > 0);
 				olist.add(node);
 			}
 			
-			ars = ActionResult.success(getMessage("mesg.find.users"));
+			ars = ActionResult.success(getMessage("mesg.find.orgnodes"));
 			ars.setData(olist);
 			
 		}catch(CoreException ce){

@@ -257,7 +257,7 @@ public class OrgHierController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "org-nodes-query.do", 
+		    value = "org-hier-query.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetOrghierNodes(@RequestBody String payload){

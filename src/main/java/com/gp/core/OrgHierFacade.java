@@ -75,6 +75,34 @@ public class OrgHierFacade {
 		return gresult;
 	}
 	
+	/**
+	 * Find organization hierarchy nodes under parent node
+	 * 
+	 * @param accesspoint the access point
+	 * @param principal the principal
+	 * @param orgNodeId the organization node id 
+	 **/
+	public static List<OrgHierInfo> findAllChildOrgHiers(AccessPoint accesspoint,
+			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
+		
+		List<OrgHierInfo> gresult = null;
+		
+		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_ORGHIERS)){
+
+			gresult = orghierservice.getOrgHierAllNodes(svcctx, orgNodeId);
+	
+		} catch (Exception e) {
+
+			ContextHelper.stampContext(e, "excp.find.orghider");
+
+		}finally{
+			
+			ContextHelper.handleContext();
+		}
+		return gresult;
+	}
+	
 	public static Map<Long, Integer> findOrgHierGrandNodeCount(AccessPoint accesspoint,
 			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
 		
