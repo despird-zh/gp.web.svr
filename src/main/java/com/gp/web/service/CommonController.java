@@ -177,7 +177,7 @@ public class CommonController extends BaseController{
 		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, String> paramMap = super.readRequestJson(payload) ;
-		String orgIdStr = paramMap.get("org_id");
+		String orgIdStr = paramMap.get("org-id");
 
 		List<OrgNode> olist = new ArrayList<OrgNode>();		
 		Long orgId = null;
