@@ -8,9 +8,6 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +27,6 @@ import com.gp.dao.info.CabFileInfo;
 import com.gp.dao.info.CabinetInfo;
 import com.gp.info.InfoId;
 import com.gp.storage.ContentRange;
-import com.gp.web.BaseController;
 
 /**
  * Helper class to facilitate the transfer servlet upload&download processing
