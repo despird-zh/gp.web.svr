@@ -43,7 +43,7 @@ public class ImagesController extends BaseController{
 	public static SimpleDateFormat MODIFY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@RequestMapping(
-		    value = "image-query.do", 
+		    value = "images-query.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doImageSearch(@RequestBody String payload){

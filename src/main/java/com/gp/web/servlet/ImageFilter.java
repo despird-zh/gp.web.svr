@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConfig;
+import com.gp.common.GroupUsers;
 import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
@@ -89,7 +90,7 @@ public class ImageFilter implements Filter{
 	 **/
 	public void loadImageToCache(HttpServletRequest request, String parent, String fileName){
 		
-		Principal principal = ExWebUtils.getPrincipal(request);
+		Principal principal = GroupUsers.PSEUDO_USER;
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
 		try {
