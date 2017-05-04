@@ -20,6 +20,7 @@ import com.gp.common.Principal;
 import com.gp.core.OrgHierFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
+import com.gp.svc.info.UserLiteInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.util.CommonUtils;
@@ -202,7 +203,7 @@ public class OrgHierController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "org-member-search.do", 
+		    value = "org-members-query.do", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doOrgHierMemberSearch(@RequestBody String payload){
@@ -211,7 +212,7 @@ public class OrgHierController extends BaseController{
 			ExWebUtils.dumpRequestAttributes(request);
 		}
 		Map<String, String > paramap = super.readRequestJson(payload);
-		String orgIdStr = paramap.get("org_id");
+		String orgIdStr = paramap.get("org-id");
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
@@ -225,29 +226,10 @@ public class OrgHierController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		
 		try{
-			List<UserInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
-			List<Account> list = new ArrayList<Account>();
-
-			for(UserInfo info: ulist){
-				
-				Account ui = new Account();
-				ui.setSourceId(info.getSourceId());
-				ui.setUserId(info.getInfoId().getId());
-				ui.setAccount(info.getAccount());
-				ui.setEmail(info.getEmail());
-				ui.setMobile(info.getMobile());
-				ui.setType(info.getType());
-				if(info.getCreateDate() != null)
-					ui.setCreateDate(DateTimeUtils.toYearMonthDay(info.getCreateDate()));
-				
-				ui.setName(info.getFullName());
-				ui.setState(info.getState());
-	
-				list.add(ui);
-			}	
+			List<UserLiteInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
 			
 			aresult = ActionResult.success(getMessage("mesg.find.org.mbrs"));
-			aresult.setData(list);
+			aresult.setData(ulist);
 		}catch(CoreException ce){
 			aresult = super.wrapResult(ce);
 		}

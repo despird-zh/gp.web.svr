@@ -25,9 +25,9 @@ import com.gp.exception.ServiceException;
 import com.gp.info.FlatColLocator;
 import com.gp.info.InfoId;
 import com.gp.dao.info.OrgHierInfo;
-import com.gp.dao.info.UserInfo;
 import com.gp.svc.CommonService;
 import com.gp.svc.OrgHierService;
+import com.gp.svc.info.UserLiteInfo;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 
@@ -292,11 +292,11 @@ public class OrgHierFacade {
 		
 	}
 	
-	public static List<UserInfo> findOrgHierMembers(AccessPoint accesspoint,
+	public static List<UserLiteInfo> findOrgHierMembers(AccessPoint accesspoint,
 			Principal principal, 
 			InfoId<Long> orgid)throws CoreException{
 		
-		List<UserInfo> result = null;	
+		List<UserLiteInfo> result = null;	
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_ORGHIER_MEMBER)){
