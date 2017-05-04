@@ -37,14 +37,14 @@ public class ImageFacade {
 	}
 	
 	public static List<ImageInfo> findImages(AccessPoint accesspoint,
-			Principal principal, String format) throws CoreException{
+			Principal principal, String format, String category) throws CoreException{
 		
 		List<ImageInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_IMAGES)){
 			
-			gresult = imageservice.getImages(svcctx, format);
+			gresult = imageservice.getImages(svcctx, format, category);
 
 		} catch (ServiceException e)  {
 			ContextHelper.stampContext(e, "excp.find.images");

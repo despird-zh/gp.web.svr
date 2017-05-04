@@ -25,7 +25,9 @@ import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
+import com.gp.core.MasterFacade;
 import com.gp.dao.info.ImageInfo;
+import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.CoreException;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
@@ -52,10 +54,13 @@ public class ImagesController extends BaseController{
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String format = paramap.get("format");
+		String category = paramap.get("category");
 		ActionResult ars = new ActionResult();
 		try{
+			SysOptionInfo opt = MasterFacade.findSystemOption(accesspoint, principal, SystemOptions.PUBLIC_ACCESS);
+			
 			List<Image> images = new ArrayList<Image>();		
-			List<ImageInfo> gresult = ImageFacade.findImages(accesspoint, principal, format);
+			List<ImageInfo> gresult = ImageFacade.findImages(accesspoint, principal, format, category);
 			String image_cache = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 			for(ImageInfo info: gresult){
 				
@@ -70,7 +75,7 @@ public class ImagesController extends BaseController{
 				
 				String imgfilename = info.getLink();
 				
-				img.setImageUrl("../" + image_cache + '/' + imgfilename);
+				img.setImageUrl(opt.getOptionValue() + "/" + image_cache + '/' + imgfilename);
 				
 				images.add(img);
 			}
