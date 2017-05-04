@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
+import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.SecurityFacade;
@@ -187,12 +190,27 @@ public class UserController extends BaseController{
 		
 		// password not consistent
 		if(!StringUtils.equals(confirmPwd, account.getPassword())){
-		
+			
 			result = ActionResult.failure(getMessage("mesg.pwd.diff.cfm"));
 			mav.addAllObjects(result.asMap());
 
 		}else{
 			try{
+				if(account.getImagePath().startsWith("data:image/")){
+					// process the avatar base64 image
+					String cachedImage = ServiceHelper.cacheImage(account.getImagePath());
+					boolean done = ServiceHelper.saveCachedImage(accesspoint, principal, Images.Category.USER_AVATAR.name(), cachedImage, cachedImage);
+					if(done){
+						Long imgid = Images.parseImageId(cachedImage);
+						uinfo.setAvatarId(imgid);
+					}
+				}else{
+					String imgName = FilenameUtils.getName(account.getImagePath());
+					Long imgid = Images.parseImageId(imgName);
+					if(imgid != null){
+						uinfo.setAvatarId(imgid);
+					}
+				}
 				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
 				result = ActionResult.success(getMessage("mesg.save.account"));
 			}catch(CoreException ce){
@@ -273,6 +291,7 @@ public class UserController extends BaseController{
 		ActionResult result = null;
 		
 		try{
+			
 			UserExtInfo info = SecurityFacade.findAccount(accesspoint,principal, userkey,account, type);
 			Account ui = new Account();
 			ui.setUserId(info.getInfoId().getId());
@@ -312,4 +331,5 @@ public class UserController extends BaseController{
 
 		return mav;
 	}
+	
 }
