@@ -58,10 +58,11 @@ public class ImagesController extends BaseController{
 		ActionResult ars = new ActionResult();
 		try{
 			SysOptionInfo opt = MasterFacade.findSystemOption(accesspoint, principal, SystemOptions.PUBLIC_ACCESS);
+			String image_cache = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 			
 			List<Image> images = new ArrayList<Image>();		
 			List<ImageInfo> gresult = ImageFacade.findImages(accesspoint, principal, format, category);
-			String image_cache = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
+			
 			for(ImageInfo info: gresult){
 				
 				Image img = new Image();

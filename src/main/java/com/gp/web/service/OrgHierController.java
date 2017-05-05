@@ -14,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
+import com.gp.common.GeneralConfig;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
+import com.gp.common.SystemOptions;
+import com.gp.core.MasterFacade;
 import com.gp.core.OrgHierFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.svc.info.UserLiteInfo;
 import com.gp.dao.info.OrgHierInfo;
+import com.gp.dao.info.SysOptionInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.util.CommonUtils;
 import com.gp.util.DateTimeUtils;
@@ -65,7 +69,7 @@ public class OrgHierController extends BaseController{
 		orghier.setDescription(params.getDescription());
 		orghier.setEmail(params.getEmail());
 		orghier.setManager(params.getManager());
-		orghier.setOrgName(params.getText());
+		orghier.setOrgName(params.getTitle());
 		
 		Principal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
@@ -115,7 +119,7 @@ public class OrgHierController extends BaseController{
 				orghier.setDescription(params.getDescription());
 				orghier.setEmail(params.getEmail());
 				orghier.setManager(params.getManager());
-				orghier.setOrgName(params.getText());
+				orghier.setOrgName(params.getTitle());
 				OrgHierFacade.saveOrgHier(accesspoint, principal, orghier);
 				aresult = ActionResult.success(getMessage("mesg.save.orghier"));
 			}else{
@@ -177,7 +181,7 @@ public class OrgHierController extends BaseController{
 		}
 		
 		Map<String, String > paramap = super.readRequestJson(payload);
-		String orgIdStr = paramap.get("org_id");
+		String orgIdStr = paramap.get("org-id");
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
@@ -226,8 +230,13 @@ public class OrgHierController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		
 		try{
-			List<UserLiteInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
+			SysOptionInfo opt = MasterFacade.findSystemOption(accesspoint, principal, SystemOptions.PUBLIC_ACCESS);
 			
+			List<UserLiteInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
+			for(UserLiteInfo uinfo : ulist){
+				String fulllink = opt.getOptionValue() + "/" + ServiceHelper.IMAGE_CACHE_PATH + '/' + uinfo.getAvatarLink();
+				uinfo.setAvatarLink(fulllink);
+			}
 			aresult = ActionResult.success(getMessage("mesg.find.org.mbrs"));
 			aresult.setData(ulist);
 		}catch(CoreException ce){
@@ -282,7 +291,7 @@ public class OrgHierController extends BaseController{
 				if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
 					node.setParent(String.valueOf(orghier.getParentOrg()));
 				}
-				node.setText(orghier.getOrgName());
+				node.setTitle(orghier.getOrgName());
 				node.setAdmin(orghier.getAdmin());
 				node.setDescription(orghier.getDescription());
 				node.setEmail(orghier.getEmail());
@@ -292,6 +301,60 @@ public class OrgHierController extends BaseController{
 			}
 			result = ActionResult.success(getMessage("mesg.find.orgs"));
 			result.setData(olist);
+		}catch(CoreException ce){
+			result = super.wrapResult(ce);
+		}
+		
+		ModelAndView mav = getJsonModelView();
+		return mav.addAllObjects(result.asMap());		
+	}
+	
+	@RequestMapping(
+		    value = "org-node-query.do", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doGetOrghierNode(@RequestBody String payload){
+		
+		ActionResult result = null;
+		Principal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		
+		Map<String, String > paramap = super.readRequestJson(payload);
+		String orgIdStr = paramap.get("org-id");
+
+		Long orgId = null;
+		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
+		
+			orgId = Long.valueOf(orgIdStr);
+		}else if(StringUtils.isNotBlank(orgIdStr) && !CommonUtils.isNumeric(orgIdStr)){
+			
+			orgId = GeneralConstants.ORGHIER_ROOT;
+		}else{
+			result = ActionResult.failure(getMessage("excp.find.orgs"));
+			ModelAndView mav = getJsonModelView();
+			return mav.addAllObjects(result.asMap());
+		}
+
+		try{
+			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, oid);
+
+			OrgNode node = new OrgNode();
+			
+			node.setId(String.valueOf(orghier.getInfoId().getId()));
+			
+			if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
+				node.setParent(String.valueOf(orghier.getParentOrg()));
+			}
+			node.setTitle(orghier.getOrgName());
+			node.setAdmin(orghier.getAdmin());
+			node.setDescription(orghier.getDescription());
+			node.setEmail(orghier.getEmail());
+			node.setManager(orghier.getManager());
+			
+			result = ActionResult.success(getMessage("mesg.find.orgs"));
+			result.setData(node);
+			
 		}catch(CoreException ce){
 			result = super.wrapResult(ce);
 		}

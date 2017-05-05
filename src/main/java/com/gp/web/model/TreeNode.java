@@ -6,7 +6,7 @@ public class TreeNode {
 	
 	private String id ;
 	
-	private String text;
+	private String title;
 
 	private String name;
 	
@@ -22,12 +22,12 @@ public class TreeNode {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setText(String title) {
+		this.title = title;
 	}
 
 	public String getName() {

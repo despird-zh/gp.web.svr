@@ -205,7 +205,7 @@ public class CommonController extends BaseController{
 				if(GeneralConstants.ORGHIER_ROOT != orghier.getParentOrg()){
 					node.setParent(String.valueOf(orghier.getParentOrg()));
 				}
-				node.setText(orghier.getOrgName());
+				node.setTitle(orghier.getOrgName());
 				node.setAdmin(orghier.getAdmin());
 				node.setDescription(orghier.getDescription());
 				node.setEmail(orghier.getEmail());
