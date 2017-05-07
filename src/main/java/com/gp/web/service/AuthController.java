@@ -73,8 +73,7 @@ public class AuthController extends BaseController{
 	
 	@RequestMapping(
 		    value = "reissue.do", 
-		    consumes = {"text/plain", "application/*"},
-		    method = RequestMethod.GET)
+		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doReissue() {
 		
 		AccessPoint accesspoint = super.getAccessPoint(request);

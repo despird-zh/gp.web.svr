@@ -52,7 +52,7 @@ public class StorageController extends BaseController{
 		Map<String,String> paramap = this.readRequestJson(payload);
 		LOGGER.debug("params {}" , paramap);
 		ActionResult result = null;
-		String namecond = paramap.get("name");
+		String namecond = paramap.get("filter");
 		String type = paramap.get("type");
 		String state = paramap.get("state");
 		String[] types = null;
