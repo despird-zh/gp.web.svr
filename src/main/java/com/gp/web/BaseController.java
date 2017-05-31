@@ -43,7 +43,7 @@ public abstract class BaseController implements MessageSourceAware{
 
 	static Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 	
-	static PropertyNamingStrategyBase JSON_CASE_BASE = (PropertyNamingStrategyBase)PropertyNamingStrategy.KEBAB_CASE;
+	static PropertyNamingStrategyBase JSON_CASE_BASE = (PropertyNamingStrategyBase)PropertyNamingStrategy.SNAKE_CASE;
 	
 	public static ObjectMapper JACKSON_MAPPER = new ObjectMapper();
 	
@@ -55,8 +55,8 @@ public abstract class BaseController implements MessageSourceAware{
 	static{
 		
 		JACKSON_MAPPER_NON_NULL.setSerializationInclusion(Include.NON_NULL);
-		JACKSON_MAPPER_NON_NULL.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
-		JACKSON_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
+		JACKSON_MAPPER_NON_NULL.setPropertyNamingStrategy(JSON_CASE_BASE);
+		JACKSON_MAPPER.setPropertyNamingStrategy(JSON_CASE_BASE);
 	}
 	
 	private MessageSource messageSource;
