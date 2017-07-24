@@ -201,8 +201,9 @@ public class EntitySourceController extends BaseController{
 				data.setState(instinfo.getState());
 				list.add(data);
 			}
-			rst.setData(list);
+			
 			rst = ActionResult.success(getMessage("mesg.find.instance"));
+			rst.setData(list);
 		}catch(CoreException ce){
 			
 			rst = super.wrapResult(ce);
