@@ -44,6 +44,11 @@
 			<version>0.1</version>
 		</dependency>
 		<dependency>
+			<groupId>com.gp</groupId>
+			<artifactId>gp-core</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			</dependency>
