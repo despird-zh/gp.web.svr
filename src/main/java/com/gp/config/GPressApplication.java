@@ -28,7 +28,7 @@ public class GPressApplication extends SpringBootServletInitializer{
 	 **/
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(GPressApplication.class);
-		app.addListeners(new AppContextListener());
+		//app.addListeners(new AppContextListener());
         app.run( args);
     }
 
