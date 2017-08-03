@@ -6,7 +6,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+
+import com.gp.core.AppContextHelper;
 import com.gp.core.AppContextListener;
 
 /**
@@ -30,5 +33,11 @@ public class RootConfigurer {
 	AppContextListener initListener(){
 		
 		return new AppContextListener();
-	}	
+	}
+	
+	@Bean
+	@Order(1)
+	public AppContextHelper appContextHelper() {
+		return new AppContextHelper();
+	}
 }
