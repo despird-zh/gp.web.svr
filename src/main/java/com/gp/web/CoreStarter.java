@@ -37,7 +37,7 @@ public class CoreStarter implements ServletContextListener{
 	
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		LOGGER.debug("ContextInitFinishListener:CoreStarter starting");
+		LOGGER.debug("ServletContextListener:CoreStarter starting");
 		try {
 			
 			// register the core event hooker
