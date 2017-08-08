@@ -40,8 +40,8 @@ public class CoreStarter implements ServletContextListener{
 		LOGGER.debug("ServletContextListener:CoreStarter starting");
 		try {
 			
-			// register the core event hooker
-			CoreHooker coreHooker = new CoreHooker();
+			// register the core event hooker with customized one
+			CoreHooker coreHooker = new CoreWebHooker();
 			EventDispatcher.getInstance().regEventHooker(coreHooker);
 			// initialize the engine
 			CoreEngine.initial();
