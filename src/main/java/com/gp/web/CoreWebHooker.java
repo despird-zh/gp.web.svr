@@ -4,6 +4,7 @@ import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
 import com.gp.core.CoreFacade;
 import com.gp.core.CoreHooker;
+import com.gp.core.OperationFacade;
 import com.gp.disruptor.EventPayload;
 import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
@@ -20,7 +21,7 @@ public class CoreWebHooker extends CoreHooker{
 		try {
 			switch (operation) {
 				case UPDATE_BASIC_SETTING:
-					CoreFacade.handleUpdateAccount(coreload);
+					OperationFacade.handleUpdateAccount(coreload);
 					break;
 				default:
 					break;

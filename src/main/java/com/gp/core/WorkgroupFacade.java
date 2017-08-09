@@ -20,7 +20,7 @@ import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
-import com.gp.dao.info.OperLogInfo;
+import com.gp.dao.info.OperationInfo;
 import com.gp.dao.info.GroupInfo;
 import com.gp.dao.info.GroupMemberInfo;
 import com.gp.dao.info.GroupUserInfo;
@@ -30,7 +30,7 @@ import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
-import com.gp.svc.OperLogService;
+import com.gp.svc.OperationService;
 import com.gp.svc.CommonService;
 import com.gp.svc.TagService;
 import com.gp.svc.WorkgroupService;
@@ -50,14 +50,14 @@ public class WorkgroupFacade {
 	
 	private static CommonService idservice;
 	
-	private static OperLogService actlogservice;
+	private static OperationService actlogservice;
 	
 	private static TagService tagservice;
 	
 	@Autowired
 	private WorkgroupFacade(WorkgroupService workgroupservice,
 			CommonService idservice,
-			OperLogService actlogservice,
+			OperationService actlogservice,
 			TagService tagservice){
 		WorkgroupFacade.workgroupservice = workgroupservice;
 		WorkgroupFacade.idservice = idservice;
@@ -635,18 +635,18 @@ public class WorkgroupFacade {
 	 * @param pquery the page query
 	 *  
 	 **/
-	public static PageWrapper<OperLogInfo> findWorkgroupOperLogs(AccessPoint accesspoint,
+	public static PageWrapper<OperationInfo> findWorkgroupOperLogs(AccessPoint accesspoint,
 																 Principal principal,
 																 InfoId<Long> wid, PageQuery pquery)throws CoreException{
 		
-		PageWrapper<OperLogInfo> gresult = null;
+		PageWrapper<OperationInfo> gresult = null;
 		
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.FIND_OPER_LOGS)){
 
 			// amend the operation information
 			svcctx.setOperationObject(wid);
-			gresult = actlogservice.getWorkgroupOperLogs(svcctx, wid, pquery);
+			gresult = actlogservice.getWorkgroupOperations(svcctx, wid, pquery);
 
 		}catch(ServiceException e){
 
