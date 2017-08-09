@@ -23,6 +23,9 @@ public class CoreWebHooker extends CoreHooker{
 				case UPDATE_BASIC_SETTING:
 					OperationFacade.handleUpdateAccount(coreload);
 					break;
+				case UPDATE_SYSOPTION:
+					OperationFacade.handleUpdateSysOption(coreload);
+					break;
 				default:
 					break;
 			}
