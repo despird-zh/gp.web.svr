@@ -10,7 +10,9 @@ public class Source {
 	
 	private String nodeCode;
 	
-	private String name;
+	private String sourceName;
+	
+	private String entityName;
 	
 	private String abbr;
 	
@@ -54,14 +56,6 @@ public class Source {
 
 	public void setNodeCode(String nodeCode) {
 		this.nodeCode = nodeCode;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getAbbr() {
@@ -150,5 +144,21 @@ public class Source {
 
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
+	}
+
+	public String getSourceName() {
+		return sourceName;
+	}
+
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}	
 }

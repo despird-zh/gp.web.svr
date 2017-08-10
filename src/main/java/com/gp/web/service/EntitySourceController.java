@@ -72,9 +72,10 @@ public class EntitySourceController extends BaseController{
 				data.setDescription(instinfo.getDescription());
 				data.setEmail(instinfo.getEmail());
 				data.setEntityCode(instinfo.getEntityCode());
+				data.setSourceName(instinfo.getSourceName());
 				data.setNodeCode(instinfo.getNodeCode());
 				data.setShortName(instinfo.getShortName());
-				data.setName(instinfo.getSourceName());
+				data.setSourceName(instinfo.getSourceName());
 				data.setSourceId(instinfo.getInfoId().getId());
 				data.setGlobalId(instinfo.getHashKey());
 				
@@ -146,9 +147,10 @@ public class EntitySourceController extends BaseController{
 		instinfo.setDescription(data.getDescription());
 		instinfo.setEmail(data.getEmail());
 		instinfo.setEntityCode(data.getEntityCode());
+		instinfo.setEntityName(data.getSourceName());
 		instinfo.setNodeCode(data.getNodeCode());
 		instinfo.setShortName(data.getShortName());
-		instinfo.setSourceName(data.getName());
+		instinfo.setSourceName(data.getSourceName());
 		instinfo.setHashKey(data.getGlobalId());
 
 		try{
@@ -193,9 +195,10 @@ public class EntitySourceController extends BaseController{
 				data.setDescription(instinfo.getDescription());
 				data.setEmail(instinfo.getEmail());
 				data.setEntityCode(instinfo.getEntityCode());
+				data.setEntityName(instinfo.getSourceName());
 				data.setNodeCode(instinfo.getNodeCode());
 				data.setShortName(instinfo.getShortName());
-				data.setName(instinfo.getSourceName());
+				data.setSourceName(instinfo.getSourceName());
 				data.setSourceId(instinfo.getInfoId().getId());
 				data.setGlobalId(instinfo.getHashKey());
 				data.setState(instinfo.getState());

@@ -12,15 +12,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.Measures;
 import com.gp.common.Principal;
 import com.gp.common.Sources;
 import com.gp.core.SourceFacade;
+import com.gp.dao.info.MeasureInfo;
 import com.gp.dao.info.SourceInfo;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Source;
+import com.gp.web.model.SourceSummary;
 import com.gp.web.servlet.ServiceFilter;
 /**
  *  
@@ -58,9 +61,10 @@ public class EntityProfileController extends BaseController{
 			source.setDescription(instinfo.getDescription());
 			source.setEmail(instinfo.getEmail());
 			source.setEntityCode(instinfo.getEntityCode());
+			source.setEntityName(instinfo.getEntityName());
 			source.setNodeCode(instinfo.getNodeCode());
 			source.setShortName(instinfo.getShortName());
-			source.setName(instinfo.getSourceName());
+			source.setSourceName(instinfo.getSourceName());
 			source.setSourceId(instinfo.getInfoId().getId());
 			source.setGlobalId(instinfo.getHashKey());
 			
@@ -79,6 +83,45 @@ public class EntityProfileController extends BaseController{
 		
 		return mav.addAllObjects(result.asMap());
 				
+	}
+	
+	@RequestMapping(
+			value = "ent-profile-sum.do",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doProfileSummaryQuery(@RequestBody String payload){
+		// the access point
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		// the model and view
+		ModelAndView mav = getJsonModelView();
+				
+		Map<String,String> paramap = this.readRequestJson(payload);
+		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKey.SOURCE.getInfoId(entityId);
+		SourceSummary source = new SourceSummary();
+		ActionResult result = null;
+		
+		try {
+			Principal principal = this.getPrincipal();
+			MeasureInfo instinfo = SourceFacade.findSourceSummary(accesspoint, principal, sourceId);
+
+			source.setMembers(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_MEMBER)));
+			source.setExperts(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_EXPERT)));
+			source.setFiles(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_FILE)));
+			source.setGroups(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_GROUP)));
+			source.setPoints(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_POINT)));
+			source.setTopics(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_TOPIC)));
+			
+			result = ActionResult.success(getMessage("mesg.find.instance"));
+
+			result.setData(source);
+			
+		} catch (CoreException ce) {
+			
+			result = super.wrapResult(ce);
+		}
+		
+		return mav.addAllObjects(result.asMap());
 	}
 	
 	@RequestMapping(
@@ -106,9 +149,11 @@ public class EntityProfileController extends BaseController{
 			instinfo.setDescription(data.getDescription());
 			instinfo.setEmail(data.getEmail());
 			instinfo.setEntityCode(data.getEntityCode());
+			instinfo.setEntityName(data.getEntityName());
 			instinfo.setNodeCode(data.getNodeCode());
 			instinfo.setShortName(data.getShortName());
-			instinfo.setSourceName(data.getName());
+			instinfo.setSourceName(data.getSourceName());
+			
 			instinfo.setHashKey(data.getGlobalId());
 			
 			boolean done = SourceFacade.saveSource(accesspoint, principal, instinfo);

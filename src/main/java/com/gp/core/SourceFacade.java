@@ -21,9 +21,11 @@ import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
+import com.gp.dao.info.MeasureInfo;
 import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
+import com.gp.svc.MeasureService;
 import com.gp.svc.SourceService;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
@@ -35,9 +37,12 @@ public class SourceFacade {
 	
 	private static SourceService instanceservice;
 	
+	private static MeasureService measureservice;
+	
 	@Autowired
-	private SourceFacade(SourceService instanceservice){
+	private SourceFacade(SourceService instanceservice, MeasureService measureservice){
 		SourceFacade.instanceservice = instanceservice;
+		SourceFacade.measureservice = measureservice;
 	}
 	
 
@@ -68,6 +73,35 @@ public class SourceFacade {
 			ContextHelper.handleContext();
 		}
 		return rst;
+	}
+	
+	/**
+	 * Get the local instance information 
+	 **/
+	public static MeasureInfo findSourceSummary(AccessPoint accesspoint,
+			Principal principal,
+			InfoId<Integer> instanceid) throws CoreException{
+
+		MeasureInfo result = null;
+		
+		if(!InfoId.isValid(instanceid)){
+			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
+			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
+			throw cexcp;
+		}
+		
+		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
+				Operations.FIND_SOURCE_SUM)){
+			
+			svcctx.setOperationObject(instanceid);
+			
+			result = measureservice.getNodeLatestSummary(instanceid);
+		} catch (ServiceException e)  {
+			ContextHelper.stampContext(e, "excp.find.instance");
+		}finally{
+			ContextHelper.handleContext();
+		}
+		return result;
 	}
 	
 	public static Boolean changeSourceState(AccessPoint accesspoint,
