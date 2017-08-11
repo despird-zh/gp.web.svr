@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
-import com.gp.common.GeneralConfig;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.Principal;
@@ -26,9 +25,7 @@ import com.gp.info.InfoId;
 import com.gp.svc.info.UserLiteInfo;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.dao.info.SysOptionInfo;
-import com.gp.dao.info.UserInfo;
 import com.gp.util.CommonUtils;
-import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
