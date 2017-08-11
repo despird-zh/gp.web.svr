@@ -2,7 +2,6 @@ package com.gp.web;
 
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
-import com.gp.core.CoreFacade;
 import com.gp.core.CoreHooker;
 import com.gp.core.OperationFacade;
 import com.gp.disruptor.EventPayload;
