@@ -24,6 +24,7 @@ import com.gp.exception.ServiceException;
 import com.gp.exception.StorageException;
 import com.gp.dao.info.BinaryInfo;
 import com.gp.info.InfoId;
+import com.gp.info.InfoIdHelper;
 import com.gp.dao.info.StorageInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
@@ -131,7 +132,7 @@ public class StorageFacade {
 				Operations.NEW_STORAGE)){
 
 			svcctx.addOperationPredicates(storage);
-			if(!InfoId.isValid(storage.getInfoId())){
+			if(!InfoIdHelper.isValid(storage.getInfoId())){
 				result = idService.generateId(IdKey.STORAGE, Integer.class);
 				storage.setInfoId(result);				
 				svcctx.setOperationObject(result);
@@ -161,7 +162,7 @@ public class StorageFacade {
     	
     	StorageInfo gresult = null;
     	
-		if(!InfoId.isValid(storageid)){
+		if(!InfoIdHelper.isValid(storageid)){
 
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.storages");
 			cexcp.addValidateMessage("storageid", "mesg.prop.miss");
@@ -189,7 +190,7 @@ public class StorageFacade {
     	
     	Boolean gresult = false;
     	
-		if(!InfoId.isValid(storage.getInfoId())){
+		if(!InfoIdHelper.isValid(storage.getInfoId())){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.storage");
 			cexcp.addValidateMessage("storageid", "mesg.prop.miss");
 			throw cexcp;
@@ -217,7 +218,7 @@ public class StorageFacade {
     	
     	Boolean gresult = false;
     	
-		if(!InfoId.isValid(storageid)){
+		if(!InfoIdHelper.isValid(storageid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.remove.storage");
 			cexcp.addValidateMessage("storageid", "mesg.prop.miss");
 			throw cexcp;
@@ -371,7 +372,7 @@ public class StorageFacade {
 				throw cexcp;
 			}
 			
-			if(!InfoId.isValid(binfo.getInfoId())){
+			if(!InfoIdHelper.isValid(binfo.getInfoId())){
 				result = idService.generateId(IdKey.BINARY, Long.class);
 				binfo.setInfoId(result);				
 				svcctx.setOperationObject(result);

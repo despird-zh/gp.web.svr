@@ -13,6 +13,7 @@ import com.gp.dao.info.OperationInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
+import com.gp.info.InfoIdHelper;
 import com.gp.svc.AuditService;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
@@ -53,7 +54,7 @@ public class OperationFacade {
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());
 			
-			if(InfoId.isValid(coreload.getObjectId()))
+			if(InfoIdHelper.isValid(coreload.getObjectId()))
 				operinfo.setObject(coreload.getObjectId().toString());
 			
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));
@@ -76,7 +77,7 @@ public class OperationFacade {
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());
 			
-			if(InfoId.isValid(coreload.getObjectId()))
+			if(InfoIdHelper.isValid(coreload.getObjectId()))
 				operinfo.setObject(coreload.getObjectId().toString());
 			
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));

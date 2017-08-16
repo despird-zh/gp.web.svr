@@ -12,6 +12,7 @@ import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
+import com.gp.info.InfoIdHelper;
 import com.gp.dao.info.UserSumInfo;
 import com.gp.dao.info.WorkgroupSumInfo;
 import com.gp.svc.MeasureService;
@@ -49,7 +50,7 @@ public class MeasureFacade {
 		
 		WorkgroupSumInfo gresult = null;
 		
-		if(!InfoId.isValid(wid)){
+		if(!InfoIdHelper.isValid(wid)){
 			throw new CoreException(principal.getLocale(), "mesg.prop.miss");
 		}
 		

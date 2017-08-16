@@ -8,6 +8,7 @@ import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
+import com.gp.info.InfoIdHelper;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
@@ -192,7 +193,7 @@ public class PostFacade {
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_POST)){
-            if(!InfoId.isValid(postinfo.getInfoId())){
+            if(!InfoIdHelper.isValid(postinfo.getInfoId())){
 
                 InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
                 postinfo.setInfoId(pid);
@@ -311,7 +312,7 @@ public class PostFacade {
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_COMMENT)){
         	
-        	if(!InfoId.isValid(comment.getInfoId())){
+        	if(!InfoIdHelper.isValid(comment.getInfoId())){
         		InfoId<Long> cid = idservice.generateId(IdKey.POST_COMMENT, Long.class);
         		comment.setInfoId(cid);
         	}
