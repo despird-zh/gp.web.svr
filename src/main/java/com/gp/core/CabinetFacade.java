@@ -21,6 +21,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
@@ -119,7 +120,7 @@ public class CabinetFacade {
 			folderinfo.setSourceId(GeneralConstants.LOCAL_SOURCE);
 			folderinfo.setCreateDate(DateTimeUtils.now());
 			folderinfo.setCreator(principal.getAccount());
-			InfoId<Long> parentkey  = IdKey.CAB_FOLDER.getInfoId(folderinfo.getParentId());
+			InfoId<Long> parentkey  = IdKeys.getInfoId(IdKey.CAB_FOLDER, folderinfo.getParentId());
 			folderinfo.setState(Cabinets.FolderState.READY.name());
 			// check the validation of folder information
 			Set<ValidateMessage> vmsg = ValidateUtils.validate(principal.getLocale(), folderinfo);
@@ -291,7 +292,7 @@ public class CabinetFacade {
 				fileinfo.setInfoId(fileid);
 			}
 			if(fileinfo.getSourceId() == 0){
-				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKey.CABINET.getInfoId(fileinfo.getCabinetId()));
+				CabinetInfo cinfo = cabinetservice.getCabinet(svcctx, IdKeys.getInfoId(IdKey.CABINET, fileinfo.getCabinetId()));
 				fileinfo.setSourceId(cinfo.getSourceId());
 			}
 			svcctx.setOperationObject(fileid);
@@ -385,9 +386,9 @@ public class CabinetFacade {
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
 		for(InfoId<Long> id: entryids){
 			
-			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+			if(IdKey.CAB_FILE.getSchema().equals(id.getIdKey())){
 				files.add(id);
-			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+			}else if(IdKey.CAB_FOLDER.getSchema().equals(id.getIdKey())){
 				folders.add(id);
 			}
 		}
@@ -478,9 +479,9 @@ public class CabinetFacade {
 		List<InfoId<Long>> folders = new ArrayList<InfoId<Long>>();
 		for(InfoId<Long> id: entryids){
 			
-			if(IdKey.CAB_FILE.getTable().equals(id.getIdKey())){
+			if(IdKey.CAB_FILE.getSchema().equals(id.getIdKey())){
 				files.add(id);
-			}else if(IdKey.CAB_FOLDER.getTable().equals(id.getIdKey())){
+			}else if(IdKey.CAB_FOLDER.getSchema().equals(id.getIdKey())){
 				folders.add(id);
 			}
 		}
@@ -599,7 +600,7 @@ public class CabinetFacade {
 						InfoId<Long> newId = folderservice.copyFolder(svcctx, fid, destid);
 						rtv.add(newId);
 					}else
-						rtv.add(IdKey.CAB_FOLDER.getInfoId(-1l));
+						rtv.add(IdKeys.getInfoId(IdKey.CAB_FOLDER,-1l));
 				}
 			}
 		

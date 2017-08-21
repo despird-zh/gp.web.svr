@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
 import com.gp.exception.CoreException;
@@ -53,7 +54,7 @@ public class DownloadHelper {
 		String requestedFile = request.getPathInfo();
 		String sourceId = requestedFile.substring(1,requestedFile.indexOf('.'));
 		String fid = requestedFile.substring(requestedFile.indexOf('.') + 1, requestedFile.lastIndexOf('.'));
-		InfoId<Long> fileid = IdKey.CAB_FILE.getInfoId(Long.valueOf(fid));
+		InfoId<Long> fileid = IdKeys.getInfoId( IdKey.CAB_FILE,Long.valueOf(fid));
 		Principal principal = ExWebUtils.getPrincipal(request);
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);

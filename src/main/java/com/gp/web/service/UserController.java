@@ -20,6 +20,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Images;
 import com.gp.common.Principal;
 import com.gp.core.CabinetFacade;
@@ -121,7 +122,7 @@ public class UserController extends BaseController{
 		ActionResult result = new ActionResult();
 		
 		UserInfo uinfo = new UserInfo();
-		InfoId<Long> uid = IdKey.USER.getInfoId(Long.valueOf(account.getUserId()));
+		InfoId<Long> uid = IdKeys.getInfoId(IdKey.USER,Long.valueOf(account.getUserId()));
 		uinfo.setInfoId(uid);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
@@ -244,7 +245,7 @@ public class UserController extends BaseController{
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uid) && CommonUtils.isNumeric(uid)){
 			userId = Long.valueOf(uid);
-			userkey = IdKey.USER.getInfoId(userId);
+			userkey = IdKeys.getInfoId(IdKey.USER,userId);
 		}
 		
 		if(userId == GroupUsers.ADMIN_USER.getUserId().getId()){
@@ -284,7 +285,7 @@ public class UserController extends BaseController{
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uidStr) && CommonUtils.isNumeric(uidStr) ){
 			userId = Long.valueOf(uidStr);
-			userkey = IdKey.USER.getInfoId(userId);
+			userkey = IdKeys.getInfoId(IdKey.USER,userId);
 		}
 
 		ActionResult result = null;

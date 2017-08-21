@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Images;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
@@ -78,7 +79,7 @@ public class ImageFacade {
 			image.setPersist(Images.Persist.DATABASE.name());
 			image.setLink(filename);
 			
-			image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
+			image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE, imgid));
 			
 			gresult = imageservice.newImage(svcctx, image);
 
@@ -129,7 +130,7 @@ public class ImageFacade {
 				Operations.FIND_IMAGE)){
 
 			Long imgid = Images.parseImageId(fileName);
-			InfoId<Long> infoid = IdKey.IMAGE.getInfoId(imgid);
+			InfoId<Long> infoid = IdKeys.getInfoId(IdKey.IMAGE, imgid);
 			
 			gresult = imageservice.getImage(svcctx, infoid, parentPath);
 		
@@ -169,7 +170,7 @@ public class ImageFacade {
 				image.setFormat(FilenameUtils.getExtension(filename)); // get format
 				image.setModifyDate(Images.parseTouchDate(filename));
 			}
-			image.setInfoId(IdKey.IMAGE.getInfoId(imageId));
+			image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE,imageId));
 			svcctx.setOperationObject(image.getInfoId());// set audit data
 			gresult = imageservice.updateImage(svcctx, image);
 
@@ -192,7 +193,7 @@ public class ImageFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_IMAGE)){
 			
-			InfoId<Long> imgid = IdKey.IMAGE.getInfoId(imageId);
+			InfoId<Long> imgid = IdKeys.getInfoId(IdKey.IMAGE,imageId);
 			svcctx.setOperationObject(imgid);
 			gresult = imageservice.removeImage(svcctx, imgid);			
 			

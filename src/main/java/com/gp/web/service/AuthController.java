@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.JwtPayload;
 import com.gp.common.Principal;
 import com.gp.core.SecurityFacade;
@@ -122,7 +123,7 @@ public class AuthController extends BaseController{
 		
 		try{
 			Long jwtid = NumberUtils.toLong(jwtPayload.getJwtId());
-			InfoId<Long> tokenId = IdKey.TOKEN.getInfoId(jwtid);
+			InfoId<Long> tokenId = IdKeys.getInfoId(IdKey.TOKEN,jwtid);
 			String mesg = super.getMessage("mesg.remove.token");
 			boolean done = SecurityFacade.removeToken(accesspoint, principal, tokenId);
 			

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.dao.info.WorkgroupInfo;
@@ -161,7 +162,7 @@ public class WGroupController extends BaseController{
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
 		
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(group.getWorkgroupId());
+		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.WORKGROUP,group.getWorkgroupId());
 		info.setInfoId(wgroupId);
 		info.setSourceId(GeneralConstants.LOCAL_SOURCE);// set local workgroup id
 		info.setWorkgroupName(group.getWorkgroupName());

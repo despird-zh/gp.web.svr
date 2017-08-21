@@ -17,6 +17,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.common.SpringContextUtil;
 import com.gp.core.CabinetFacade;
@@ -145,7 +146,7 @@ class UploadHelper {
 		AccessPoint accesspoint = filepart.getAccessPoint();
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
-		InfoId<Long> cabid = IdKey.CABINET.getInfoId(cabinetId);
+		InfoId<Long> cabid = IdKeys.getInfoId(IdKey.CABINET,cabinetId);
 		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid);
 
 		BinaryInfo binfo = new BinaryInfo();

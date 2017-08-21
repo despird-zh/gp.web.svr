@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.SecurityFacade;
@@ -194,7 +195,7 @@ public class CommonController extends BaseController{
 		}		
 		ActionResult ars = new ActionResult();
 		try{
-			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
 			List<OrgHierInfo> gresult = OrgHierFacade.findAllChildOrgHiers(accesspoint, principal, 
 					oid);
 			
@@ -245,7 +246,7 @@ public class CommonController extends BaseController{
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKey.WORKGROUP.getInfoId(Long.valueOf(wgroupid));
+			wkey = IdKeys.getInfoId(IdKey.WORKGROUP,Long.valueOf(wgroupid));
 		}
 
 		ActionResult ars = new ActionResult();

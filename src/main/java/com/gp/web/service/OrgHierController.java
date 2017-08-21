@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.common.SystemOptions;
 import com.gp.core.MasterFacade;
@@ -102,7 +103,7 @@ public class OrgHierController extends BaseController{
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(params.getId()) && CommonUtils.isNumeric(params.getId())){
 			Long nid = Long.valueOf(params.getId());
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER, nid);
 		}else {
 			aresult = ActionResult.failure(getMessage("mesg.post.unqualified"));
 			mav.addAllObjects(aresult.asMap());
@@ -143,7 +144,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId(nid);
+			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER,nid);
 		}
 		Account[] users = super.readRequestJson("users", Account[].class);
 		String[] accounts = new String[users.length];
@@ -183,7 +184,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKeys.getInfoId( IdKey.ORG_HIER,nid);
 		}
 		String account = paramap.get("account");
 		
@@ -218,7 +219,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKey.ORG_HIER.getInfoId( nid);
+			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER, nid);
 		}
 
 		Principal principal = super.getPrincipal();
@@ -273,7 +274,7 @@ public class OrgHierController extends BaseController{
 		}		
 
 		try{
-			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
 			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
 					oid);
 			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
@@ -333,7 +334,7 @@ public class OrgHierController extends BaseController{
 		}
 
 		try{
-			InfoId<Long> oid = IdKey.ORG_HIER.getInfoId(orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
 			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, oid);
 
 			OrgNode node = new OrgNode();

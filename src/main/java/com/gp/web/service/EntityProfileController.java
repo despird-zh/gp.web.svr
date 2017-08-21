@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Measures;
 import com.gp.common.Principal;
 import com.gp.common.Sources;
@@ -46,7 +47,7 @@ public class EntityProfileController extends BaseController{
 				
 		Map<String,String> paramap = this.readRequestJson(payload);
 		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
-		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKey.SOURCE.getInfoId(entityId);
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.SOURCE, entityId);
 		Source source = new Source();
 		ActionResult result = null;
 		
@@ -97,7 +98,7 @@ public class EntityProfileController extends BaseController{
 				
 		Map<String,String> paramap = this.readRequestJson(payload);
 		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
-		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKey.SOURCE.getInfoId(entityId);
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.SOURCE,entityId);
 		SourceSummary source = new SourceSummary();
 		ActionResult result = null;
 		

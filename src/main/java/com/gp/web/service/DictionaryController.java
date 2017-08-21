@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.core.DictionaryFacade;
 import com.gp.dao.DictionaryDAO;
@@ -94,7 +95,7 @@ public class DictionaryController extends BaseController{
 		DictEntry dentry = super.readRequestBody(payload, DictEntry.class);
 		
 		DictionaryInfo dinfo = new DictionaryInfo();
-		InfoId<Long> did = IdKey.DICTIONARY.getInfoId(dentry.getEntryId());
+		InfoId<Long> did = IdKeys.getInfoId(IdKey.DICTIONARY,dentry.getEntryId());
 		
 		FlatColumn lblcol = DictionaryDAO.getFlatColumn(dentry.getLanguage());
 		

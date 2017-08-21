@@ -211,7 +211,7 @@ public class PostFacade {
 
                     ImageInfo image = new ImageInfo();
 
-                    image.setInfoId(IdKey.IMAGE.getInfoId(imgid));
+                    image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE,imgid));
                     image.setDataFile(new File(imagePath));
                     image.setFormat(FilenameUtils.getExtension(imagename));
                     image.setModifyDate(touchdate);
@@ -427,7 +427,7 @@ public class PostFacade {
                  postservice.publicPost(svcctx, postId);
              }else {
                  // launch a quick flow
-                 quickflowservice.launchPostPublic(svcctx, descr, IdKey.WORKGROUP.getInfoId(wgroupId), postId);
+                 quickflowservice.launchPostPublic(svcctx, descr, IdKeys.getInfoId(IdKey.WORKGROUP,wgroupId), postId);
              }
          } catch (ServiceException e)  {
 

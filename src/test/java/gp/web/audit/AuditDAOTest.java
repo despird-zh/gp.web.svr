@@ -6,6 +6,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
 import com.gp.dao.AuditDAO;
@@ -26,7 +27,7 @@ public class AuditDAOTest extends AbstractJUnit4SpringContextTests{
 	@Test
 	public void test() throws Exception{
 		
-		InfoId<Long> ukey = IdKey.USER.getInfoId(123l);
+		InfoId<Long> ukey = IdKeys.getInfoId(IdKey.USER,123l);
 		principal.setUserId(ukey);
 		svcctx = new ServiceContext(principal);
 		

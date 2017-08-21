@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Principal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StorageState;
@@ -180,7 +181,7 @@ public class StorageController extends BaseController{
 		Storage storage = super.readRequestBody(payload, Storage.class);
 		StorageInfo sinfo = new StorageInfo();
 		
-		InfoId<Integer> infoid = IdKey.STORAGE.getInfoId(storage.getStorageId());
+		InfoId<Integer> infoid = IdKeys.getInfoId(IdKey.STORAGE,storage.getStorageId());
 		sinfo.setInfoId(infoid);
 		Long cap = StringUtils.isNotBlank(storage.getCapacity()) ? Long.valueOf(storage.getCapacity()):0l;
 		sinfo.setCapacity(cap);
@@ -221,7 +222,7 @@ public class StorageController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 		
-		InfoId<Integer> sid = IdKey.STORAGE.getInfoId(Integer.valueOf(storageId));
+		InfoId<Integer> sid = IdKeys.getInfoId(IdKey.STORAGE,Integer.valueOf(storageId));
 		if(Storages.DEFAULT_STORAGE_ID == sid.getId()){
 			
 			result = ActionResult.failure(getMessage("mesg.rsrv.storage"));

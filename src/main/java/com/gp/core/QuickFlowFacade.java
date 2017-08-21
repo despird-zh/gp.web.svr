@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.ServiceContext;
 import com.gp.dao.info.QuickNodeInfo;
 import com.gp.exception.ServiceException;
@@ -24,7 +25,7 @@ public class QuickFlowFacade {
 	
 	public static void demo(){
 		
-		InfoId<Long> wgroupId = IdKey.WORKGROUP.getInfoId(172l);
+		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.WORKGROUP,172l);
 		try {
 			List<QuickNodeInfo> nodes = quickflowservice.getNodeList(ServiceContext.getPseudoServiceContext(), wgroupId);
 			

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.exception.ServiceException;
 import com.gp.info.Identifier;
 import com.gp.info.InfoId;
@@ -17,7 +18,7 @@ public class CommonFacade {
 	
 	public static Logger LOGGER = LoggerFactory.getLogger(CommonFacade.class);
 	
-	public static final InfoId<Integer> LOCAL_INSTANCE = IdKey.SOURCE.getInfoId(GeneralConstants.LOCAL_SOURCE);
+	public static final InfoId<Integer> LOCAL_INSTANCE = IdKeys.getInfoId(IdKey.SOURCE, GeneralConstants.LOCAL_SOURCE);
 	
 	private static CommonService idService;
 

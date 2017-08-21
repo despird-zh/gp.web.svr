@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.gp.common.AccessPoint;
 import com.gp.common.FlatColumns;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.common.Principal;
 import com.gp.common.ServiceContext;
@@ -331,7 +332,7 @@ public class OrgHierFacade {
 			for(String idstr : oids){
 				Long id = NumberUtils.toLong(idstr);
 				if(id > 0){
-					ids.add(IdKey.ORG_HIER.getInfoId(id));
+					ids.add(IdKeys.getInfoId(IdKey.ORG_HIER,id));
 				}
 			}
 			
