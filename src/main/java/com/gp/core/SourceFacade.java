@@ -21,7 +21,7 @@ import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIdHelper;
+import com.gp.info.InfoIds;
 import com.gp.dao.info.MeasureInfo;
 import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
@@ -56,7 +56,7 @@ public class SourceFacade {
 
 		SourceInfo rst = null;
 		
-		if(!InfoIdHelper.isValid(instanceid)){
+		if(!InfoIds.isValid(instanceid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;
@@ -85,7 +85,7 @@ public class SourceFacade {
 
 		MeasureInfo result = null;
 		
-		if(!InfoIdHelper.isValid(instanceid)){
+		if(!InfoIds.isValid(instanceid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;
@@ -132,7 +132,7 @@ public class SourceFacade {
 			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
-		if(!InfoIdHelper.isValid(instance.getInfoId())){
+		if(!InfoIds.isValid(instance.getInfoId())){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;

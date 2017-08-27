@@ -25,7 +25,7 @@ import com.gp.dao.info.GroupInfo;
 import com.gp.dao.info.GroupMemberInfo;
 import com.gp.dao.info.GroupUserInfo;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIdHelper;
+import com.gp.info.InfoIds;
 import com.gp.dao.info.TagInfo;
 import com.gp.dao.info.UserInfo;
 import com.gp.dao.info.WorkgroupInfo;
@@ -86,7 +86,7 @@ public class WorkgroupFacade {
 				Operations.NEW_WORKGROUP)){
 			
 			// amend the information key data
-			if(!InfoIdHelper.isValid(winfo.getInfoId())){
+			if(!InfoIds.isValid(winfo.getInfoId())){
 				
 				InfoId<Long> wkey = idservice.generateId( IdKey.WORKGROUP, Long.class);
 				winfo.setInfoId(wkey);				
@@ -119,7 +119,7 @@ public class WorkgroupFacade {
 			
 		Boolean gresult = false;	
 		// id not set return directly
-		if(!InfoIdHelper.isValid(winfo.getInfoId())){
+		if(!InfoIds.isValid(winfo.getInfoId())){
 			
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.wgroup");
 			cexcp.addValidateMessage("wrokgroupid", "mesg.prop.miss");
@@ -383,7 +383,7 @@ public class WorkgroupFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_GROUP)){
 
-			if(!InfoIdHelper.isValid(ginfo.getInfoId())){
+			if(!InfoIds.isValid(ginfo.getInfoId())){
 				
 				InfoId<Long> gid = idservice.generateId(IdKey.GROUP, Long.class);
 				ginfo.setInfoId(gid);
@@ -669,7 +669,7 @@ public class WorkgroupFacade {
 			InfoId<Long> wid )throws CoreException{
 		
 		List<TagInfo> gresult = null;
-		if(!InfoIdHelper.isValid(wid)){
+		if(!InfoIds.isValid(wid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.actlogs");
 			cexcp.addValidateMessage("wrokgroupid", "mesg.prop.miss");
 			throw cexcp;

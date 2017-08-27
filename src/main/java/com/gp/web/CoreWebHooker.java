@@ -2,19 +2,22 @@ package com.gp.web;
 
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
-import com.gp.core.CoreHooker;
 import com.gp.core.OperationFacade;
+import com.gp.disruptor.EventHooker;
 import com.gp.disruptor.EventPayload;
+import com.gp.disruptor.EventType;
 import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
 
-public class CoreWebHooker extends CoreHooker{
+public class CoreWebHooker extends EventHooker<EventPayload>{
+
+	public CoreWebHooker(EventType eventType) {
+		super(eventType);
+	}
 
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException{
-		// execute the default procession.
-		super.processPayload(payload);
-		
+
 		CoreEventLoad coreload = (CoreEventLoad) payload;
 		Operations operation = Operations.valueOf(coreload.getOperation());
 		try {
