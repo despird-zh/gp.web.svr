@@ -22,7 +22,7 @@ import com.gp.common.GroupUsers;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.CabinetFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.CabinetInfo;
@@ -36,11 +36,11 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class UserController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
@@ -53,7 +53,7 @@ public class UserController extends BaseController{
 		
 		// the access point
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		// the model and view
 		ModelAndView mav = getJsonModelView();
 		Map<String,String> paramap = this.readRequestJson(payload);
@@ -117,7 +117,7 @@ public class UserController extends BaseController{
 		
 		Account account = super.readRequestBody(payload, Account.class);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		
@@ -166,7 +166,7 @@ public class UserController extends BaseController{
 		
 		Account account = super.readRequestBody(payload, Account.class);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();		
 		ModelAndView mav = getJsonModelView();		
@@ -239,7 +239,7 @@ public class UserController extends BaseController{
 		ModelAndView mav = getJsonModelView();	
 		ActionResult result = new ActionResult();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Long userId = null;
 		InfoId<Long> userkey = null;
@@ -279,7 +279,7 @@ public class UserController extends BaseController{
 		String uidStr = paramap.get("user_id");
 
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		Long userId = null;
 
 		InfoId<Long> userkey = null;

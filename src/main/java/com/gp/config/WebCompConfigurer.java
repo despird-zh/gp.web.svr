@@ -19,7 +19,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.servlet.TransferServlet;
 
 /**
@@ -90,15 +90,15 @@ public class WebCompConfigurer {
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(false);
 		config.addAllowedOrigin("*");
-		config.addAllowedHeader(ServiceFilter.AUTH_HEADER);
+		config.addAllowedHeader(ServiceTokenFilter.AUTH_HEADER);
 		config.addAllowedHeader("content-type");// required, otherwise the preflight not work
 		config.addAllowedMethod("*");
-		source.registerCorsConfiguration( ServiceFilter.FILTER_PREFIX + "/**", config);
+		source.registerCorsConfiguration( ServiceTokenFilter.FILTER_PREFIX + "/**", config);
         
-		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceFilter(source));
+		FilterRegistrationBean bean = new FilterRegistrationBean(new ServiceTokenFilter(source));
 		
 		List<String> urlPatterns = new ArrayList<String>();
-        urlPatterns.add(ServiceFilter.FILTER_PREFIX + "/*");
+        urlPatterns.add(ServiceTokenFilter.FILTER_PREFIX + "/*");
         
         bean.setUrlPatterns(urlPatterns);
 		bean.setOrder(2);

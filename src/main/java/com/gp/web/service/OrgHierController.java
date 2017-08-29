@@ -17,7 +17,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.MasterFacade;
 import com.gp.core.OrgHierFacade;
@@ -31,11 +31,11 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
 import com.gp.web.model.OrgNode;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class OrgHierController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(OrgHierController.class);
@@ -69,7 +69,7 @@ public class OrgHierController extends BaseController{
 		orghier.setManager(params.getManager());
 		orghier.setOrgName(params.getTitle());
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try{
 			
@@ -96,7 +96,7 @@ public class OrgHierController extends BaseController{
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		OrgNode params = super.readRequestBody(payload, OrgNode.class);
@@ -153,7 +153,7 @@ public class OrgHierController extends BaseController{
 			accounts[count] = a.getAccount();
 			count++;
 		}
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		try{
@@ -188,7 +188,7 @@ public class OrgHierController extends BaseController{
 		}
 		String account = paramap.get("account");
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		
@@ -222,7 +222,7 @@ public class OrgHierController extends BaseController{
 			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER, nid);
 		}
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult aresult = new ActionResult();
 		ModelAndView mav = getJsonModelView();
@@ -252,7 +252,7 @@ public class OrgHierController extends BaseController{
 	public ModelAndView doGetOrghierNodes(@RequestBody String payload){
 		
 		ActionResult result = null;
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		Map<String, String > paramap = super.readRequestJson(payload);
@@ -314,7 +314,7 @@ public class OrgHierController extends BaseController{
 	public ModelAndView doGetOrghierNode(@RequestBody String payload){
 		
 		ActionResult result = null;
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		Map<String, String > paramap = super.readRequestJson(payload);

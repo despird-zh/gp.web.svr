@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.dao.AuditDAO;
 import com.gp.info.InfoId;
@@ -16,7 +16,7 @@ import com.gp.svc.CommonService;
 @ContextConfiguration(locations = "/mysql-test.xml")
 public class AuditDAOTest extends AbstractJUnit4SpringContextTests{
 
-	Principal principal = new Principal("demouser");
+	GPrincipal principal = new GPrincipal("demouser");
 	ServiceContext svcctx ;
 	@Autowired
     private AuditDAO auditdao;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.exception.WebException;
 import com.gp.web.BaseController;
 
@@ -21,7 +21,7 @@ public class TestController extends BaseController{
 	
 	@RequestMapping("test")
 	public ModelAndView test(){
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		ModelAndView mav = super.getJspModelView("test/test");
 		String msg = getMessage("excp.demo");
 		mav.addObject("test", msg);

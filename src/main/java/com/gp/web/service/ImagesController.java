@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.core.MasterFacade;
@@ -32,10 +32,10 @@ import com.gp.exception.CoreException;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Image;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class ImagesController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(ImagesController.class);
@@ -50,7 +50,7 @@ public class ImagesController extends BaseController{
 		
 		Map<String,String> paramap = super.readRequestJson(payload);
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		String format = paramap.get("format");
@@ -111,7 +111,7 @@ public class ImagesController extends BaseController{
 		LOGGER.debug(relativeUri);
 		// new operation 
         ActionResult rmsg = new ActionResult();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
 			ImageFacade.saveImage(accesspoint, principal,category, realPath, srcFileName);
@@ -153,7 +153,7 @@ public class ImagesController extends BaseController{
 		
 		LOGGER.debug("the real path : {}", realPath);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try {
 			ImageFacade.updateImage(accesspoint, principal,Long.valueOf(imgId),category, imgName, realPath);
@@ -180,7 +180,7 @@ public class ImagesController extends BaseController{
 		ActionResult rmsg = new ActionResult();
     	String imgId = super.readRequestParam("image_id");// the id of original 
 		
-    	Principal principal = super.getPrincipal();
+    	GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		try{
 			ImageFacade.removeImage(accesspoint, principal,Long.valueOf(imgId));

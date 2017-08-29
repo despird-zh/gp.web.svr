@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.DictionaryFacade;
 import com.gp.dao.DictionaryDAO;
 import com.gp.dao.info.DictionaryInfo;
@@ -28,10 +28,10 @@ import com.gp.info.InfoId;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.DictEntry;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class DictionaryController extends BaseController{
 	
 	static SimpleDateFormat MDF_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -44,7 +44,7 @@ public class DictionaryController extends BaseController{
 	public ModelAndView doEntriesSearch(@RequestBody String payload){
 		
 		ModelAndView mav = super.getJsonModelView();
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, String> paramap = super.readRequestJson(payload);
 		String language = paramap.get("language");
@@ -89,7 +89,7 @@ public class DictionaryController extends BaseController{
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 
 		DictEntry dentry = super.readRequestBody(payload, DictEntry.class);

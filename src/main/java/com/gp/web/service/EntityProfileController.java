@@ -14,7 +14,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Measures;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.Sources;
 import com.gp.core.SourceFacade;
 import com.gp.dao.info.MeasureInfo;
@@ -25,13 +25,13 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Source;
 import com.gp.web.model.SourceSummary;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 /**
  *  
  * @author 
  **/
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class EntityProfileController extends BaseController{
 
 	@RequestMapping(
@@ -52,7 +52,7 @@ public class EntityProfileController extends BaseController{
 		ActionResult result = null;
 		
 		try {
-			Principal principal = this.getPrincipal();
+			GPrincipal principal = this.getPrincipal();
 			SourceInfo instinfo = SourceFacade.findSource(accesspoint, principal, sourceId);
 
 			source.setAbbr(instinfo.getAbbr());
@@ -103,7 +103,7 @@ public class EntityProfileController extends BaseController{
 		ActionResult result = null;
 		
 		try {
-			Principal principal = this.getPrincipal();
+			GPrincipal principal = this.getPrincipal();
 			MeasureInfo instinfo = SourceFacade.findSourceSummary(accesspoint, principal, sourceId);
 
 			source.setMembers(NumberUtils.toInt(instinfo.getColValue(Measures.NODE_MEAS_MEMBER)));
@@ -140,7 +140,7 @@ public class EntityProfileController extends BaseController{
 		ActionResult result = null;
 		try {
 			
-			Principal principal = this.getPrincipal();
+			GPrincipal principal = this.getPrincipal();
 			SourceInfo instinfo = new SourceInfo();
 			instinfo.setInfoId(Sources.LOCAL_INST_ID);
 			instinfo.setAbbr(data.getAbbr());

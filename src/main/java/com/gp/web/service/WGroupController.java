@@ -17,7 +17,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.WorkgroupFacade;
 import com.gp.dao.info.WorkgroupInfo;
 import com.gp.exception.CoreException;
@@ -27,11 +27,11 @@ import com.gp.util.DateTimeUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Workgroup;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class WGroupController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(WGroupController.class);
@@ -54,7 +54,7 @@ public class WGroupController extends BaseController{
 		
 		try {
 			List<Workgroup> list = new ArrayList<Workgroup>();
-			Principal principal = this.getPrincipal();
+			GPrincipal principal = this.getPrincipal();
 			List<WorkgroupExtInfo> ulist = WorkgroupFacade.findWorkgroups(accesspoint, principal, 
 					filterkey);
 			
@@ -97,7 +97,7 @@ public class WGroupController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		Workgroup group = super.readRequestBody(payload, Workgroup.class);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = null;
 		
@@ -157,7 +157,7 @@ public class WGroupController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		Workgroup group = super.readRequestBody(payload, Workgroup.class);
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();

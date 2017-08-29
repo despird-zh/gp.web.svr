@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.Storages;
 import com.gp.common.Storages.StorageState;
 import com.gp.common.Storages.StorageType;
@@ -30,11 +30,11 @@ import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Storage;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class StorageController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(StorageController.class);
@@ -47,7 +47,7 @@ public class StorageController extends BaseController{
 	public ModelAndView doStoragesQuery(@RequestBody String payload) throws Exception {
 		// the access point
 		AccessPoint accesspoint = super.getAccessPoint(request);
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		// the model and view
 		ModelAndView mav = getJsonModelView();
 		Map<String,String> paramap = this.readRequestJson(payload);
@@ -124,7 +124,7 @@ public class StorageController extends BaseController{
 			ExWebUtils.dumpRequestAttributes(request);
 
 		// read trace information
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult result = null;
@@ -171,7 +171,7 @@ public class StorageController extends BaseController{
 			ExWebUtils.dumpRequestAttributes(request);
 
 		// read trace information
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		// prepare result
 		ActionResult result = null;
@@ -217,7 +217,7 @@ public class StorageController extends BaseController{
 	public ModelAndView doRemoveStorage(@RequestBody String payload){
 		
 		String storageId = super.readRequestParam("storage_id");
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();

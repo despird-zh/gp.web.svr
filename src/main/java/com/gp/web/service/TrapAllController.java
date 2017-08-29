@@ -8,11 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
-import com.gp.web.servlet.ServiceFilter;
-import com.gp.web.servlet.ServiceFilter.AuthTokenState;
+import com.gp.web.servlet.ServiceTokenFilter;
+import com.gp.web.servlet.ServiceTokenFilter.AuthTokenState;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class TrapAllController extends BaseController{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(TrapAllController.class);
@@ -40,7 +40,7 @@ public class TrapAllController extends BaseController{
 		
 		ModelAndView mav = super.getJsonModelView();
 		ActionResult result = new ActionResult();
-		AuthTokenState state = (AuthTokenState)request.getAttribute(ServiceFilter.FILTER_STATE);
+		AuthTokenState state = (AuthTokenState)request.getAttribute(ServiceTokenFilter.FILTER_STATE);
 		
 		result = ActionResult.failure(this.getMessage("excp.invalid.token"));
 		result.getMeta().setCode(state.name());

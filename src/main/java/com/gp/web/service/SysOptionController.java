@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.MasterFacade;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.CoreException;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.SysOption;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class SysOptionController extends BaseController{
 
 	
@@ -70,7 +70,7 @@ public class SysOptionController extends BaseController{
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSaveSystemOption(@RequestBody String payload){
 		
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		ActionResult result = new ActionResult();
 		

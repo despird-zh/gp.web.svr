@@ -18,7 +18,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.OrgHierFacade;
 import com.gp.core.SecurityFacade;
 import com.gp.core.SourceFacade;
@@ -37,10 +37,10 @@ import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Account;
 import com.gp.web.model.OrgNode;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class CommonController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(CommonController.class);
@@ -50,7 +50,7 @@ public class CommonController extends BaseController{
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetEntityNodeList(@RequestBody String payload) throws WebException {
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		Map<String, String> paramMap = super.readRequestJson(payload) ;
@@ -87,7 +87,7 @@ public class CommonController extends BaseController{
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetStorageList(@RequestBody String payload){
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		Map<String, String> paramMap = super.readRequestJson(payload) ;
@@ -127,7 +127,7 @@ public class CommonController extends BaseController{
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetUserList(@RequestBody String payload){
 
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, String> paramMap = super.readRequestJson(payload) ;
 		
@@ -175,7 +175,7 @@ public class CommonController extends BaseController{
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetOrghierNodes(@RequestBody String payload){
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		Map<String, String> paramMap = super.readRequestJson(payload) ;
 		String orgIdStr = paramMap.get("org-id");
@@ -233,7 +233,7 @@ public class CommonController extends BaseController{
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetAvailableUserList(@RequestBody String payload){
 		
-		Principal principal = super.getPrincipal();
+		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		
 		Map<String, String> paramMap = super.readRequestJson(payload) ;

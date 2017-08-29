@@ -3,7 +3,7 @@ package com.gp.web.servlet;
 import java.io.InputStream;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gp.common.AccessPoint;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.storage.ContentRange;
 
 /**
@@ -25,7 +25,7 @@ public class PartMeta {
     private InputStream content;
 
 	private AccessPoint accessPoint;
-	private Principal principal;
+	private GPrincipal principal;
 	
 	public AccessPoint getAccessPoint() {
 		return accessPoint;
@@ -101,11 +101,11 @@ public class PartMeta {
 		this.cabinetId = cabinetId;
 	}
 
-	public Principal getPrincipal() {
+	public GPrincipal getPrincipal() {
 		return principal;
 	}
 
-	public void setPrincipal(Principal principal) {
+	public void setPrincipal(GPrincipal principal) {
 		this.principal = principal;
 	}
 

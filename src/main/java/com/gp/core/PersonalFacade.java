@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -87,7 +87,7 @@ public class PersonalFacade {
 	 * @param userId the user id 
 	 **/
 	public static UserInfo findAccountBasic(AccessPoint accesspoint, 
-			Principal principal,
+			GPrincipal principal,
 			InfoId<Long> userId) throws CoreException{
 		
 		UserInfo uinfo = null;
@@ -114,7 +114,7 @@ public class PersonalFacade {
 	 * @param account the account of user
 	 **/
 	public static List<CombineInfo<WorkgroupInfo, Boolean>> findAccountWorkgroups(AccessPoint accesspoint, 
-			Principal principal,
+			GPrincipal principal,
 			String account)throws CoreException{
 		
 		List<CombineInfo<WorkgroupInfo, Boolean>> result = null;
@@ -141,7 +141,7 @@ public class PersonalFacade {
 	 * @param account the account information 
 	 **/
 	public static List<CombineInfo<OrgHierInfo, Boolean>> findUserOrgHierNodes(AccessPoint accesspoint, 
-			Principal principal,
+			GPrincipal principal,
 			String account)throws CoreException{
 		
 		List<CombineInfo<OrgHierInfo, Boolean>> result = null;
@@ -169,7 +169,7 @@ public class PersonalFacade {
 	 * @param imagePath the avatar image path
 	 **/
 	public static boolean saveBasicSetting(AccessPoint accesspoint, 
-			Principal principal,
+			GPrincipal principal,
 			UserInfo uinfo, String imagePath)throws CoreException{
 		
 		boolean result = false;
@@ -210,7 +210,7 @@ public class PersonalFacade {
 	 *
 	 **/
 	public static boolean saveBelongSetting(AccessPoint accesspoint, 
-			Principal principal, Map<InfoId<Long>, Boolean> settings)throws CoreException{
+			GPrincipal principal, Map<InfoId<Long>, Boolean> settings)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,
@@ -240,7 +240,7 @@ public class PersonalFacade {
 	 * @param netdiskcap the capacity of netdisk cabinet
 	 **/
 	public static boolean saveStorageSetting(AccessPoint accesspoint, 
-			Principal principal, 
+			GPrincipal principal, 
 			Long storageId, 
 			Long publishcap,
 			Long netdiskcap)throws CoreException{
@@ -275,7 +275,7 @@ public class PersonalFacade {
 	 * @param language the language setting of user
 	 **/
 	public static boolean saveRegionSetting(AccessPoint accesspoint, 
-			Principal principal, String timezone, String language)throws CoreException{
+			GPrincipal principal, String timezone, String language)throws CoreException{
 		boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal,
 				accesspoint,

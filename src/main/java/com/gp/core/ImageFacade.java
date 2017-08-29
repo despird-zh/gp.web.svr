@@ -16,7 +16,7 @@ import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Images;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -38,7 +38,7 @@ public class ImageFacade {
 	}
 	
 	public static List<ImageInfo> findImages(AccessPoint accesspoint,
-			Principal principal, String format, String category) throws CoreException{
+			GPrincipal principal, String format, String category) throws CoreException{
 		
 		List<ImageInfo> gresult = null;
 		
@@ -59,7 +59,7 @@ public class ImageFacade {
 	}
 	
 	public static Boolean saveImage(AccessPoint accesspoint,
-			Principal principal,String category, String imagePath , String imageName)throws CoreException{
+			GPrincipal principal,String category, String imagePath , String imageName)throws CoreException{
 		
 		Boolean gresult = false;
 		
@@ -97,7 +97,7 @@ public class ImageFacade {
 	 * Find image information without retrieve the image binary data. 
 	 **/
 	public static ImageInfo findImage(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> imageId)throws CoreException{
+			GPrincipal principal, InfoId<Long> imageId)throws CoreException{
 		
 		ImageInfo gresult = null;
 		
@@ -122,7 +122,7 @@ public class ImageFacade {
 	 * Find image information without retrieve the image binary data. 
 	 **/
 	public static ImageInfo findImage(AccessPoint accesspoint,
-			Principal principal, String parentPath, String fileName)throws CoreException{
+			GPrincipal principal, String parentPath, String fileName)throws CoreException{
 		
 		ImageInfo gresult = null;
 		
@@ -150,7 +150,7 @@ public class ImageFacade {
 	 * @param imagePath the image file to save
 	 **/
 	public static Boolean updateImage(AccessPoint accesspoint,
-			Principal principal,Long imageId,String category, String imageName, String imagePath)throws CoreException{
+			GPrincipal principal,Long imageId,String category, String imageName, String imagePath)throws CoreException{
 		
 		Boolean gresult = false;
 		
@@ -186,7 +186,7 @@ public class ImageFacade {
 	}
 	
 	public static Boolean removeImage(AccessPoint accesspoint,
-			Principal principal,Long imageId)throws CoreException{
+			GPrincipal principal,Long imageId)throws CoreException{
 		
 		Boolean gresult = false;
 		

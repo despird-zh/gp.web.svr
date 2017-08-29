@@ -19,7 +19,7 @@ import com.gp.common.FlatColumns;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -57,7 +57,7 @@ public class OrgHierFacade {
 	 * @param orgNodeId the organization node id 
 	 **/
 	public static List<OrgHierInfo> findChildOrgHiers(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
+			GPrincipal principal, InfoId<Long> orgNodeId) throws CoreException{
 		
 		List<OrgHierInfo> gresult = null;
 		
@@ -85,7 +85,7 @@ public class OrgHierFacade {
 	 * @param orgNodeId the organization node id 
 	 **/
 	public static List<OrgHierInfo> findAllChildOrgHiers(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
+			GPrincipal principal, InfoId<Long> orgNodeId) throws CoreException{
 		
 		List<OrgHierInfo> gresult = null;
 		
@@ -106,7 +106,7 @@ public class OrgHierFacade {
 	}
 	
 	public static Map<Long, Integer> findOrgHierGrandNodeCount(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgNodeId) throws CoreException{
+			GPrincipal principal, InfoId<Long> orgNodeId) throws CoreException{
 		
 		Map<Long, Integer> gresult = null;
 		
@@ -127,7 +127,7 @@ public class OrgHierFacade {
 	}
 	
 	public static boolean newOrgHier(AccessPoint accesspoint,
-			Principal principal, OrgHierInfo orghier) throws CoreException{
+			GPrincipal principal, OrgHierInfo orghier) throws CoreException{
 		
 		boolean result = false;
 		
@@ -162,7 +162,7 @@ public class OrgHierFacade {
 	}
 	
 	public static Boolean saveOrgHier(AccessPoint accesspoint,
-			Principal principal, OrgHierInfo orghier) throws CoreException{
+			GPrincipal principal, OrgHierInfo orghier) throws CoreException{
 		
 		boolean result = false;
 		
@@ -198,7 +198,7 @@ public class OrgHierFacade {
 	}
 	
 	public static OrgHierInfo findOrgHier(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgid) throws CoreException{
+			GPrincipal principal, InfoId<Long> orgid) throws CoreException{
 		
 		OrgHierInfo rst = null;
 		
@@ -222,7 +222,7 @@ public class OrgHierFacade {
 	}
 	
 	public static Boolean addOrgHierMember(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgid, String ...accounts)throws CoreException{
+			GPrincipal principal, InfoId<Long> orgid, String ...accounts)throws CoreException{
 
 		Boolean rst = false;
 		
@@ -253,7 +253,7 @@ public class OrgHierFacade {
 	}
 	
 	public static Boolean removeOrgHierMember(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> orgid, String ...accounts)throws CoreException{
+			GPrincipal principal, InfoId<Long> orgid, String ...accounts)throws CoreException{
 
 		Boolean rst = false;
 		
@@ -295,7 +295,7 @@ public class OrgHierFacade {
 	}
 	
 	public static List<UserLiteInfo> findOrgHierMembers(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> orgid)throws CoreException{
 		
 		List<UserLiteInfo> result = null;	
@@ -317,7 +317,7 @@ public class OrgHierFacade {
 	}
 	
 	public static List<OrgHierInfo> findRouteOrgHiers(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> orgid)throws CoreException{
 		
 		List<OrgHierInfo> result = null;

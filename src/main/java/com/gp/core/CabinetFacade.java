@@ -23,7 +23,7 @@ import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Operations;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -84,7 +84,7 @@ public class CabinetFacade {
 	 * Find the Cabinets of an account. include public and private cabinet. 
 	 **/
 	public static List<CabinetInfo> findPersonalCabinets(AccessPoint accesspoint,
-			Principal principal,
+			GPrincipal principal,
 			String account) throws CoreException{
 		
 		List<CabinetInfo> gresult  = null;
@@ -108,7 +108,7 @@ public class CabinetFacade {
 	
 	//
 	public static boolean addCabinetFolder(AccessPoint accesspoint,
-			Principal principal, CabFolderInfo folderinfo) throws CoreException{
+			GPrincipal principal, CabFolderInfo folderinfo) throws CoreException{
 
 		Boolean gresult  = false;
 
@@ -151,7 +151,7 @@ public class CabinetFacade {
 	}
 	
 	public static List<CabFolderInfo> findCabinetFolders(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String namecond) throws CoreException{
@@ -187,7 +187,7 @@ public class CabinetFacade {
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
 	public static List<CabFileInfo> findCabinetFiles(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String filename)throws CoreException{
@@ -223,7 +223,7 @@ public class CabinetFacade {
 	 * @return GeneralResult<List<CabFileInfo>> the matched file information list
 	 **/
 	public static PageWrapper<CabEntryInfo> findCabinetEntries(AccessPoint accesspoint,
-			Principal principal, 
+			GPrincipal principal, 
 			InfoId<Long> cabinetId, 
 			InfoId<Long> parentId, 
 			String filename,
@@ -248,7 +248,7 @@ public class CabinetFacade {
 	
 	
 	public static CabinetInfo findCabinet(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> cabinetId)throws CoreException{
+			GPrincipal principal, InfoId<Long> cabinetId)throws CoreException{
 		
 		CabinetInfo gresult  =  null;
 		
@@ -278,7 +278,7 @@ public class CabinetFacade {
 	 * @return The General Result that wrap the cabinet file id 
 	 **/
 	public static InfoId<Long> addCabinetFile(AccessPoint accesspoint,
-			Principal principal, CabFileInfo fileinfo)throws CoreException{
+			GPrincipal principal, CabFileInfo fileinfo)throws CoreException{
 		
 		InfoId<Long> gresult  =  null;
 		
@@ -322,7 +322,7 @@ public class CabinetFacade {
 	 * @param fileid the id of cabinet file 
 	 **/
 	public static CabFolderInfo findCabinetFolder(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal,InfoId<Long> fileid)throws CoreException{
 		
 		CabFolderInfo gresult  =  null;
 		
@@ -350,7 +350,7 @@ public class CabinetFacade {
 	 * @param fileid the id of cabinet file 
 	 **/
 	public static CabFileInfo findCabinetFile(AccessPoint accesspoint,
-			Principal principal,InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal,InfoId<Long> fileid)throws CoreException{
 		
 		CabFileInfo gresult  =  null;
 		
@@ -375,7 +375,7 @@ public class CabinetFacade {
 	}
 	
 	public static Map<InfoId<Long>, Integer> findCabEntriesFavSummary(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
+			GPrincipal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
 		Map<InfoId<Long>, Integer> gresult = null;
 		
@@ -418,7 +418,7 @@ public class CabinetFacade {
 	 * @param entrytype the cabinet entry type 
 	 **/
 	public static List<TagInfo> findCabEntryAvailTags(AccessPoint accesspoint,
-			Principal principal, String entrytype)throws CoreException{
+			GPrincipal principal, String entrytype)throws CoreException{
 		
 		List<TagInfo> gresult = null;
 
@@ -444,7 +444,7 @@ public class CabinetFacade {
 	 * @param entryid the id of cabinet entry
 	 **/
 	public static List<TagInfo> findCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid)throws CoreException{
 		
 		List<TagInfo> gresult = null;
 		if(!InfoIds.isValid(entryid)){
@@ -469,7 +469,7 @@ public class CabinetFacade {
 	}
 	
 	public static Map<InfoId<Long>, Set<TagInfo>> findCabEntriesTags(AccessPoint accesspoint,
-			Principal principal, List<InfoId<Long>> entryids)throws CoreException{
+			GPrincipal principal, List<InfoId<Long>> entryids)throws CoreException{
 		
 		Map<InfoId<Long>, Set<TagInfo>> gresult = null;
 		if(CollectionUtils.isEmpty(entryids)){
@@ -511,7 +511,7 @@ public class CabinetFacade {
 	 * @param fileid the id of file
 	 **/
 	public static List<CabVersionInfo> findCabinetFileVersions(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> fileid)throws CoreException{
+			GPrincipal principal, InfoId<Long> fileid)throws CoreException{
 		
 		List<CabVersionInfo> gresult = null;
 		
@@ -533,7 +533,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean[] moveCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
+			GPrincipal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
 		Boolean[] rtv = new Boolean[0];
 		if(ArrayUtils.isEmpty(fileids)){
@@ -577,7 +577,7 @@ public class CabinetFacade {
 	
 	
 	public static List<InfoId<Long>> copyCabinetEntries(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
+			GPrincipal principal, InfoId<Long> destid, InfoId<Long>[] fileids)throws CoreException{
 		
 		List<InfoId<Long>> rtv = new ArrayList<InfoId<Long>>();
 		if(ArrayUtils.isEmpty(fileids)){
@@ -616,7 +616,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean attachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
 		boolean gresult = false;
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.ATTACH_TAG)){
@@ -637,7 +637,7 @@ public class CabinetFacade {
 	}
 	
 	public static Boolean detachCabEntryTags(AccessPoint accesspoint,
-			Principal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
+			GPrincipal principal, InfoId<Long> entryid, String ...tags)throws CoreException{
 		
 		boolean gresult = false;
 		

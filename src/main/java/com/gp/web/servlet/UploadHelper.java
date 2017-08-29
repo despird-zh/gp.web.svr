@@ -18,7 +18,7 @@ import com.gp.common.Cabinets;
 import com.gp.common.GeneralConstants;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SpringContextUtil;
 import com.gp.core.CabinetFacade;
 import com.gp.core.StorageFacade;
@@ -142,7 +142,7 @@ class UploadHelper {
 	 **/
 	private static InfoId<Long> createCabFile(TransferCacheInfo tsfinfo, PartMeta filepart) throws CoreException{
 		
-		Principal principal = filepart.getPrincipal();
+		GPrincipal principal = filepart.getPrincipal();
 		AccessPoint accesspoint = filepart.getAccessPoint();
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
@@ -191,7 +191,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinary(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
-		Principal principal = filemeta.getPrincipal();
+		GPrincipal principal = filemeta.getPrincipal();
 		AccessPoint accesspoint = filemeta.getAccessPoint();
 		StorageFacade.storeBinary(accesspoint, principal, binaryId, filemeta.getContent());
 	}
@@ -204,7 +204,7 @@ class UploadHelper {
 	 **/
 	public static void saveBinaryChunk(InfoId<Long> binaryId, PartMeta filemeta)throws CoreException{
 		
-		Principal principal = filemeta.getPrincipal();
+		GPrincipal principal = filemeta.getPrincipal();
 
 		StorageFacade.storeBinaryChunk(filemeta.getAccessPoint(),
 				principal,

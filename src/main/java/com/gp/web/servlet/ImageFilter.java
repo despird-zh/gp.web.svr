@@ -19,7 +19,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.GroupUsers;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.ImageFacade;
 import com.gp.exception.CoreException;
@@ -90,7 +90,7 @@ public class ImageFilter implements Filter{
 	 **/
 	public void loadImageToCache(HttpServletRequest request, String parent, String fileName){
 		
-		Principal principal = GroupUsers.PSEUDO_USER;
+		GPrincipal principal = GroupUsers.PSEUDO_USER;
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		
 		try {

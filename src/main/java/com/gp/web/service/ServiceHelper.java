@@ -8,7 +8,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.GeneralConfig;
 import com.gp.common.IdKey;
 import com.gp.common.Images;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.common.SystemOptions;
 import com.gp.core.CommonFacade;
 import com.gp.core.ImageFacade;
@@ -53,7 +53,7 @@ public class ServiceHelper {
 	 * @param srcFileName the name of file reside in browser client.
 	 *  
 	 **/
-	public static boolean  saveCachedImage(AccessPoint ap, Principal principal, 
+	public static boolean  saveCachedImage(AccessPoint ap, GPrincipal principal, 
 			String category, 
 			String cachedFileName, 
 			String srcFileName )throws CoreException{

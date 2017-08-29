@@ -17,7 +17,7 @@ import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.Sources.State;
-import com.gp.common.Principal;
+import com.gp.common.GPrincipal;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
@@ -26,11 +26,11 @@ import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Source;
-import com.gp.web.servlet.ServiceFilter;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
-@RequestMapping(ServiceFilter.FILTER_PREFIX)
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class EntitySourceController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(EntitySourceController.class);
@@ -56,7 +56,7 @@ public class EntitySourceController extends BaseController{
 		else if(!CommonUtils.isNumeric(instanceId)){
 			rst = ActionResult.error("parameter [instanceid] must be number.");
 		}else{
-			Principal principal = super.getPrincipal();
+			GPrincipal principal = super.getPrincipal();
 			AccessPoint ap = super.getAccessPoint(request);
 			
 			InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE, Integer.valueOf(instanceId));
@@ -107,7 +107,7 @@ public class EntitySourceController extends BaseController{
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
 		InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE,instanceId);
 		
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 
 		try{
@@ -136,7 +136,7 @@ public class EntitySourceController extends BaseController{
 		
 		InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE,data.getSourceId());
 		
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		
 		SourceInfo instinfo = new SourceInfo();
@@ -179,7 +179,7 @@ public class EntitySourceController extends BaseController{
 		Map<String,String> paramap = this.readRequestJson(payload);
 		String name = paramap.get("source_name");
 
-		Principal princ = super.getPrincipal();
+		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
 		List<Source> list = new ArrayList<Source>();
 		ActionResult rst = new ActionResult();
