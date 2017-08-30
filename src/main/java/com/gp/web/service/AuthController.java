@@ -26,6 +26,7 @@ import com.gp.util.DateTimeUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
+import com.gp.web.api.AuthenController;
 import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.servlet.ServiceTokenFilter.AuthTokenState;
 
