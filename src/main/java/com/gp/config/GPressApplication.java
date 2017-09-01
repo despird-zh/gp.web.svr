@@ -16,11 +16,6 @@ import com.gp.core.AppContextListener;
  * @version 0.1 2016-12-20 
  **/
 @SpringBootApplication
-@Import({ 
-	RootConfigurer.class, 
-	ServiceConfigurer.class,
-	WebCompConfigurer.class,
-	})
 public class GPressApplication extends SpringBootServletInitializer{
 
 	/**

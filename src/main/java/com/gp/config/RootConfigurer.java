@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 
@@ -16,6 +17,7 @@ import com.gp.core.AppContextListener;
  *
  */
 @Configuration
+@Order(Ordered.HIGHEST_PRECEDENCE + ServiceConfigurer.SERVICE_PRECEDENCE + 10)
 @PropertySource("classpath:/gpress-context.properties")
 @ImportResource({
 		"classpath:/gpress-datasource.xml",

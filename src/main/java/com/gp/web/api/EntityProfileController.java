@@ -1,4 +1,4 @@
-package com.gp.web.service;
+package com.gp.web.api;
 
 import java.text.DateFormat;
 import java.util.Map;
