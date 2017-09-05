@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.ServiceContext;
 import com.gp.dao.info.OperationInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.svc.AuditService;
 import com.gp.svc.CommonService;
 import com.gp.svc.OperationService;
@@ -54,7 +54,7 @@ public class OperationFacade {
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());
 			
-			if(InfoIds.isValid(coreload.getObjectId()))
+			if(IdKeys.isValidId(coreload.getObjectId()))
 				operinfo.setObject(coreload.getObjectId().toString());
 			
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));
@@ -77,7 +77,7 @@ public class OperationFacade {
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());
 			
-			if(InfoIds.isValid(coreload.getObjectId()))
+			if(IdKeys.isValidId(coreload.getObjectId()))
 				operinfo.setObject(coreload.getObjectId().toString());
 			
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));

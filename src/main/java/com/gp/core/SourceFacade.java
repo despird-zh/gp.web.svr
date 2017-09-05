@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
+import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.common.GPrincipal;
 import com.gp.common.ServiceContext;
@@ -21,7 +22,6 @@ import com.gp.common.Sources.State;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.dao.info.MeasureInfo;
 import com.gp.dao.info.SourceInfo;
 import com.gp.pagination.PageQuery;
@@ -56,7 +56,7 @@ public class SourceFacade {
 
 		SourceInfo rst = null;
 		
-		if(!InfoIds.isValid(instanceid)){
+		if(!IdKeys.isValidId(instanceid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;
@@ -85,7 +85,7 @@ public class SourceFacade {
 
 		MeasureInfo result = null;
 		
-		if(!InfoIds.isValid(instanceid)){
+		if(!IdKeys.isValidId(instanceid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;
@@ -132,7 +132,7 @@ public class SourceFacade {
 			SourceInfo instance)throws CoreException{
 		
 		Boolean result = false;
-		if(!InfoIds.isValid(instance.getInfoId())){
+		if(!IdKeys.isValidId(instance.getInfoId())){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.instance");
 			cexcp.addValidateMessage("prop.instanceid", "mesg.prop.miss");
 			throw cexcp;

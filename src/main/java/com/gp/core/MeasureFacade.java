@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 import com.gp.common.AccessPoint;
 import com.gp.common.Operations;
 import com.gp.common.GPrincipal;
+import com.gp.common.IdKeys;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.dao.info.UserSumInfo;
 import com.gp.dao.info.WorkgroupSumInfo;
 import com.gp.svc.MeasureService;
@@ -50,7 +50,7 @@ public class MeasureFacade {
 		
 		WorkgroupSumInfo gresult = null;
 		
-		if(!InfoIds.isValid(wid)){
+		if(!IdKeys.isValidId(wid)){
 			throw new CoreException(principal.getLocale(), "mesg.prop.miss");
 		}
 		

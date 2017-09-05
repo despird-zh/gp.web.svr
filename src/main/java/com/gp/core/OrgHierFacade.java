@@ -25,7 +25,6 @@ import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.FlatColLocator;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.dao.info.OrgHierInfo;
 import com.gp.svc.CommonService;
 import com.gp.svc.OrgHierService;
@@ -131,7 +130,7 @@ public class OrgHierFacade {
 		
 		boolean result = false;
 		
-		if(!InfoIds.isValid(orghier.getInfoId())){
+		if(!IdKeys.isValidId(orghier.getInfoId())){
 			InfoId<Long> id = CommonFacade.generateId(IdKey.ORG_HIER, Long.class);
 			orghier.setInfoId(id);
 		}
@@ -166,7 +165,7 @@ public class OrgHierFacade {
 		
 		boolean result = false;
 		
-		if(!InfoIds.isValid(orghier.getInfoId())){
+		if(!IdKeys.isValidId(orghier.getInfoId())){
 
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.save.orghier");
 			cexcp.addValidateMessage("orghierid", "mesg.prop.miss");
@@ -202,7 +201,7 @@ public class OrgHierFacade {
 		
 		OrgHierInfo rst = null;
 		
-		if(!InfoIds.isValid(orgid)){
+		if(!IdKeys.isValidId(orgid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.find.orghier");
 			cexcp.addValidateMessage("orghierid", "mesg.prop.miss");
 		}
@@ -226,7 +225,7 @@ public class OrgHierFacade {
 
 		Boolean rst = false;
 		
-		if(!InfoIds.isValid(orgid)){
+		if(!IdKeys.isValidId(orgid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.add.org.mbr");
 			cexcp.addValidateMessage("orghierid", "mesg.prop.miss");
 		}
@@ -257,7 +256,7 @@ public class OrgHierFacade {
 
 		Boolean rst = false;
 		
-		if(!InfoIds.isValid(orgid)){
+		if(!IdKeys.isValidId(orgid)){
 			CoreException cexcp = new CoreException(principal.getLocale(), "excp.remove.org.mbr");
 			cexcp.addValidateMessage("orghierid", "mesg.prop.miss");
 		}

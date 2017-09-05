@@ -8,7 +8,6 @@ import com.gp.dao.info.PostInfo;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
 import com.gp.svc.CommonService;
@@ -193,7 +192,7 @@ public class PostFacade {
 
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_POST)){
-            if(!InfoIds.isValid(postinfo.getInfoId())){
+            if(!IdKeys.isValidId(postinfo.getInfoId())){
 
                 InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
                 postinfo.setInfoId(pid);
@@ -312,7 +311,7 @@ public class PostFacade {
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.NEW_COMMENT)){
         	
-        	if(!InfoIds.isValid(comment.getInfoId())){
+        	if(!IdKeys.isValidId(comment.getInfoId())){
         		InfoId<Long> cid = idservice.generateId(IdKey.POST_COMMENT, Long.class);
         		comment.setInfoId(cid);
         	}
@@ -455,7 +454,7 @@ public class PostFacade {
         	FavoriteInfo finfo = new FavoriteInfo();
         	finfo.setInfoId(fid);
         	finfo.setResourceId(postid.getId());
-        	finfo.setResourceType(postid.getIdKey());
+        	finfo.setResourceType(postid.getIdKey().getSchema());
         	finfo.setFavoriter(principal.getAccount());
         	
             result = favoriteService.addFavorite(svcctx, finfo);

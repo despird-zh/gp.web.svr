@@ -33,7 +33,6 @@ import com.gp.dao.info.CabFolderInfo;
 import com.gp.dao.info.CabVersionInfo;
 import com.gp.dao.info.CabinetInfo;
 import com.gp.info.InfoId;
-import com.gp.info.InfoIds;
 import com.gp.dao.info.TagInfo;
 import com.gp.pagination.PageQuery;
 import com.gp.pagination.PageWrapper;
@@ -138,7 +137,7 @@ public class CabinetFacade {
 				ace.setAceId(tempid);
 			}
 			InfoId<Long> fid = folderservice.newFolder(svcctx, parentkey, folderinfo, acl);
-			gresult = InfoIds.isValid(fid);
+			gresult = IdKeys.isValidId(fid);
 		} catch (ServiceException e)  {
 
 			ContextHelper.stampContext(e, "excp.new.folder");
@@ -286,7 +285,7 @@ public class CabinetFacade {
 				Operations.NEW_FILE)){
 			
 			InfoId<Long> fileid = fileinfo.getInfoId();
-			if(!InfoIds.isValid(fileid)){
+			if(!IdKeys.isValidId(fileid)){
 				fileid = idservice.generateId(IdKey.CAB_FILE, Long.class);
 				LOGGER.debug("the file id : {}", fileid);
 				fileinfo.setInfoId(fileid);
@@ -447,7 +446,7 @@ public class CabinetFacade {
 			GPrincipal principal, InfoId<Long> entryid)throws CoreException{
 		
 		List<TagInfo> gresult = null;
-		if(!InfoIds.isValid(entryid)){
+		if(!IdKeys.isValidId(entryid)){
 			throw new CoreException("excp.entryids.empty");
 		}
 
