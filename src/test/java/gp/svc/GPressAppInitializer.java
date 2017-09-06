@@ -10,9 +10,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.config.WebMVCConfigurer;
 import com.gp.config.RootConfigurer;
 import com.gp.config.ServiceConfigurer;
-import com.gp.config.WebMVCConfigurer;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.AvatarServlet;
 import com.gp.web.servlet.ImageFilter;

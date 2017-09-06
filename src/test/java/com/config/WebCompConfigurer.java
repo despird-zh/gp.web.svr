@@ -1,4 +1,4 @@
-package com.gp.config;
+package com.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.gp.config.ServiceConfigurer;
+import com.gp.config.WebMVCConfigurer;
 import com.gp.web.CoreStarter;
 import com.gp.web.servlet.ImageFilter;
 import com.gp.web.servlet.ServiceTokenFilter;

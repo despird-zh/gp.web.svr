@@ -16,11 +16,11 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.config.WebMVCConfigurer;
 import com.gp.common.AccessPoint;
 import com.gp.common.IdKey;
 import com.gp.common.IdKeys;
 import com.gp.common.JwtPayload;
-import com.gp.config.WebMVCConfigurer;
 import com.gp.core.SecurityFacade;
 import com.gp.dao.info.TokenInfo;
 import com.gp.exception.CoreException;

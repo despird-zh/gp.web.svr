@@ -1,117 +1,140 @@
 package com.gp.config;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.MultipartConfigElement;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import com.gp.web.CoreStarter;
 import com.gp.web.DatabaseMessageSource;
 import com.gp.web.PrincipalLocaleResolver;
+import com.gp.web.servlet.ImageFilter;
+import com.gp.web.servlet.TransferServlet;
 
-@EnableWebMvc
+@Configuration
+@Order(Ordered.HIGHEST_PRECEDENCE + ServiceConfigurer.SERVICE_PRECEDENCE + 20)
 @ComponentScan(basePackages = { 
-	"com.gp.web"
-})
+		"com.gp.web.api",
+		"com.gp.web.view" })
 public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 
 	/**
-	 * Create a multiple resolver to handle the multipart/form-data request.
+	 * The CoreStart listener, it starts the CoreEngine which detect and prepare the CoreInitializer via java serviceloader(SPI).
+	 * assembly the initializer to sort the LifecycleHooker with priority. 
 	 **/
+	@Bean 
+	ServletListenerRegistrationBean<CoreStarter> coreStarterListener(){
+		ServletListenerRegistrationBean<CoreStarter> listenerReg = new ServletListenerRegistrationBean<CoreStarter>();
+		
+		listenerReg.setListener(new CoreStarter());
+		return listenerReg;
+	}
+
 	@Bean
-	public MultipartResolver multipartResolver() throws IOException {
-
-		CommonsMultipartResolver mpresolver = new CommonsMultipartResolver();
-
-		//mpresolver.setUploadTempDir(new FileSystemResource("/WEB-INF/tmp/spittr/uploads"));  
-		mpresolver.setDefaultEncoding("utf-8");
-		mpresolver.setMaxUploadSize(10485760000l);
-		mpresolver.setMaxInMemorySize(40960);
-
-		return mpresolver;
+	public InternalResourceViewResolver viewResolver() {
+		
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setPrefix("/views/");
+		resolver.setSuffix(".jsp");
+		return resolver;
 	}
 	
 	/**
-	 * Create locale resolver to extract locale from request. 
+	 * Create locale resolver to extract locale from request.
 	 **/
 	@Bean
 	public LocaleResolver localeResolver() {
-	    return new PrincipalLocaleResolver();
+		return new PrincipalLocaleResolver();
 	}
-	
-	/**
-	 * Create the message source to inject it into Controller. 
-	 **/
-    @Bean
-    public MessageSource messageSource() {
-    	
-        DatabaseMessageSource source = new DatabaseMessageSource();
-        return source;
-    }
-    
 
 	/**
-	 * Create multiple view resolver bean instances 
-	 * to support multiple view rendering.
-	 * 
-	@Bean 
-	MultipleViewResolver custViewResolver() {
-		MultipleViewResolver rtv = new MultipleViewResolver();
-		Map<String, ViewResolver> resolvers = new HashMap<String, ViewResolver>();
-		
-		GenericFileViewResolver config = new GenericFileViewResolver();
-		config.setViewName("configFileView");
-		config.setLocation("/WEB-INF/config/");
-		config.setCache(false);
-		
-		resolvers.put("config", config);
-	   
-		GenericFileViewResolver swf = new GenericFileViewResolver();
-		swf.setViewName("swfFileView");
-		swf.setLocation("/WEB-INF/swf/");
-		swf.setCache(false);
-		
-		resolvers.put("swf", swf);
-	   
-		rtv.setResolvers(resolvers);
-		return rtv;
-	}
-	
-	@Scope("prototype")
-	@Bean 
-	public GenericFileView swfFileView(){
-		GenericFileView fv = new GenericFileView();
-		fv.setContentType("application/x-shockwave-flash");
-		fv.setUrl("");
-		return fv;
-	}
-	
-	@Scope("prototype")
-	@Bean 
-	public GenericFileView configFileView(){
-		GenericFileView fv = new GenericFileView();
-		fv.setContentType("text/plain");
-		fv.setUrl("");
-		return fv;
-	}*/
-	
-    /**
-     * Define the internal view resolver 
-     **/
+	 * Create the message source to inject it into Controller.
+	 **/
 	@Bean
-	public InternalResourceViewResolver jspViewResolver(){
-		
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".jsp");
-		resolver.setOrder(1);
-		
-		return resolver;
+	public MessageSource messageSource() {
+
+		DatabaseMessageSource source = new DatabaseMessageSource();
+		return source;
 	}
+
+
+	/**
+	 * Register the image filter 
+	 **/
+	@Bean
+	public FilterRegistrationBean imageFilterFilterBean() {
+		
+		FilterRegistrationBean registerBean = new FilterRegistrationBean();
+		ImageFilter serviceFilter = new ImageFilter();
+		registerBean.setName("ImageFilter");
+		registerBean.setFilter(serviceFilter);
+        List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add("/img_cache/*");
+        
+        registerBean.setUrlPatterns(urlPatterns);
+        registerBean.setAsyncSupported(true);
+        registerBean.setOrder(4);
+        return registerBean;
+
+	}
+	
+	/**
+	 * Register the transfer servlet 
+	 **/
+	@Bean
+	public ServletRegistrationBean transferServletBean() {
+		
+		ServletRegistrationBean registerBean = new ServletRegistrationBean(new TransferServlet());
+		registerBean.setName("TransferServlet");
+		registerBean.addInitParameter("upload_path", "d:\\");
+		registerBean.addUrlMappings("/transfer");
+		registerBean.setAsyncSupported(true);
+		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setAsyncSupported(true);
+		registerBean.setLoadOnStartup(2);
+		return registerBean;
+	}
+	
+	/**
+	 * Register the avatar servlet 
+	 **/
+	@Bean
+	public ServletRegistrationBean avatarServletBean() {
+		
+		ServletRegistrationBean registerBean = new ServletRegistrationBean(new TransferServlet());
+		registerBean.setName("AvatarServlet");
+		registerBean.addUrlMappings("/avatar");
+		registerBean.setAsyncSupported(true);
+		registerBean.setMultipartConfig(getMultiPartConfig());
+		registerBean.setAsyncSupported(true);
+		registerBean.setLoadOnStartup(3);
+		return registerBean;
+	}
+
+    /**
+     *  Define the MultipartConfigElement for file transfer servlet
+     */
+    private MultipartConfigElement getMultiPartConfig() {
+        String location = "";
+        long maxFileSize = -1;
+        long maxRequestSize = -1;
+        int fileSizeThreshold = 0;
+        return new MultipartConfigElement(
+            location,
+            maxFileSize,
+            maxRequestSize,
+            fileSizeThreshold
+        );
+    }
 }
