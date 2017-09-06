@@ -1,6 +1,8 @@
 package gp.extra;
 
 import java.io.IOException;
+import java.util.Map;
+
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,5 +27,9 @@ public class JsonPropertyTester {
 		System.out.println("p1 : " + b2.p1);
 		System.out.println("p2 : " + b2.p2);
 		System.out.println("p3 : " + b2.p3);
+		
+		Map<String,Object> props = OMAPPER.convertValue(b1, Map.class);
+
+		System.out.println("b1 map : " + props.toString());
 	}
 }

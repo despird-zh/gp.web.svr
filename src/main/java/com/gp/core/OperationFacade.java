@@ -23,8 +23,6 @@ public class OperationFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(CoreFacade.class);
 	
-	private static AuditService auditservice;
-
 	private static CommonService idService;
 
 	private static OperationService operlogservice;
@@ -34,7 +32,6 @@ public class OperationFacade {
 					   OperationService operlogservice,
 					   CommonService idService){
 		
-		OperationFacade.auditservice = auditservice;
 		OperationFacade.idService = idService;
 		OperationFacade.operlogservice = operlogservice;
 	}
@@ -60,7 +57,7 @@ public class OperationFacade {
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));
 			
 			svcctx.setTraceInfo(operinfo);
-			operlogservice.addOperation(svcctx, operinfo);
+			operlogservice.addOperation(operinfo);
 
 		}catch (ServiceException e) {
 			throw new CoreException("fail to handle the core event payload",e );
@@ -83,7 +80,7 @@ public class OperationFacade {
 			operinfo.setOperationTime(new Date(coreload.getTimestamp()));
 			operinfo.setAuditId(coreload.getAutidId().getId());
 			svcctx.setTraceInfo(operinfo);
-			operlogservice.addOperation(svcctx, operinfo);
+			operlogservice.addOperation(operinfo);
 
 		}catch (ServiceException e) {
 			throw new CoreException("fail to handle the core event payload",e );
