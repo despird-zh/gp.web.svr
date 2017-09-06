@@ -11,6 +11,7 @@ import com.gp.exception.RingEventException;
 
 /**
  * Here generate the operation log for resource, member, workgroup
+ * the trace logs are content of time line.
  * 
  *  @author gdiao 
  *  @version 0.1 2016-08-07
