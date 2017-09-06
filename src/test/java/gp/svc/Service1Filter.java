@@ -86,7 +86,7 @@ public class Service1Filter implements Filter{
 			}else{
 
 				try{
-					InfoId<Long> tokenId = IdKeys.getInfoId(IdKey.TOKEN,NumberUtils.toLong(jwtPayload.getJwtId()));
+					InfoId<Long> tokenId = IdKeys.getInfoId(IdKey.GP_TOKENS,NumberUtils.toLong(jwtPayload.getJwtId()));
 					TokenInfo tokenInfo = SecurityFacade.findToken(accesspoint, tokenId);
 					
 					if(tokenInfo == null){

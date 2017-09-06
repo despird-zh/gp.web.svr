@@ -35,7 +35,7 @@ public class ServiceHelper {
 		String prefix = base64Img.substring(0, pos);
 		pos = prefix.indexOf('/');
 		String ext = prefix.substring(pos + 1);
-		InfoId<Long> imgid = CommonFacade.generateId(IdKey.IMAGE, Long.class);
+		InfoId<Long> imgid = CommonFacade.generateId(IdKey.GP_IMAGES, Long.class);
     	String cacheFileName = Images.getImgFileName(new Date(), imgid.getId(), ext);
     	
     	BufferedImage bufImg = ImageUtils.read(base64Img);

@@ -131,7 +131,7 @@ public class OrgHierFacade {
 		boolean result = false;
 		
 		if(!IdKeys.isValidId(orghier.getInfoId())){
-			InfoId<Long> id = CommonFacade.generateId(IdKey.ORG_HIER, Long.class);
+			InfoId<Long> id = CommonFacade.generateId(IdKey.GP_ORG_HIER, Long.class);
 			orghier.setInfoId(id);
 		}
 		// check the validation of user information
@@ -331,7 +331,7 @@ public class OrgHierFacade {
 			for(String idstr : oids){
 				Long id = NumberUtils.toLong(idstr);
 				if(id > 0){
-					ids.add(IdKeys.getInfoId(IdKey.ORG_HIER,id));
+					ids.add(IdKeys.getInfoId(IdKey.GP_ORG_HIER,id));
 				}
 			}
 			

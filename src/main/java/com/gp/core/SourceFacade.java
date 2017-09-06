@@ -168,7 +168,7 @@ public class SourceFacade {
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_EXT_SOURCE)){
 			
-			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.SOURCE, Integer.class);
+			InfoId<Integer> instanceId = CommonFacade.generateId(IdKey.GP_SOURCES, Integer.class);
 			
 			svcctx.setOperationObject(instanceId);
 			svcctx.addOperationPredicates(instance);

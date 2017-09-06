@@ -39,7 +39,7 @@ public class PublicPostProcess extends BaseFlowProcess {
 	@Override
 	public boolean supportCheck(String resourceType) {
 		
-		return IdKey.POST.getSchema().equalsIgnoreCase(resourceType);
+		return IdKey.GP_POSTS.getSchema().equalsIgnoreCase(resourceType);
 	}
 
 }

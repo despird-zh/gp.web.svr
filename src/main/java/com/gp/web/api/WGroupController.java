@@ -162,7 +162,7 @@ public class WGroupController extends BaseController{
 		ActionResult result = new ActionResult();
 		WorkgroupInfo info = new WorkgroupInfo();
 		
-		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.WORKGROUP,group.getWorkgroupId());
+		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.GP_WORKGROUPS,group.getWorkgroupId());
 		info.setInfoId(wgroupId);
 		info.setSourceId(GeneralConstants.LOCAL_SOURCE);// set local workgroup id
 		info.setWorkgroupName(group.getWorkgroupName());

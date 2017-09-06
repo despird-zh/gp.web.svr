@@ -49,7 +49,7 @@ public class OperationFacade {
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			OperationInfo operinfo = new OperationInfo();
-			InfoId<Long> operid = idService.generateId(IdKey.OPERATION, Long.class);
+			InfoId<Long> operid = idService.generateId(IdKey.GP_OPERATIONS, Long.class);
 			operinfo.setInfoId(operid);
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());
@@ -72,7 +72,7 @@ public class OperationFacade {
 		try {
 			ServiceContext svcctx = ServiceContext.getPseudoServiceContext();
 			OperationInfo operinfo = new OperationInfo();
-			InfoId<Long> operid = idService.generateId(IdKey.OPERATION, Long.class);
+			InfoId<Long> operid = idService.generateId(IdKey.GP_OPERATIONS, Long.class);
 			operinfo.setInfoId(operid);
 			operinfo.setSubject(coreload.getOperator());
 			operinfo.setOperation(coreload.getOperation());

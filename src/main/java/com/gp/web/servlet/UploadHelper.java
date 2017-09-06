@@ -146,7 +146,7 @@ class UploadHelper {
 		AccessPoint accesspoint = filepart.getAccessPoint();
 
 		long cabinetId = Long.valueOf(filepart.getCabinetId());
-		InfoId<Long> cabid = IdKeys.getInfoId(IdKey.CABINET,cabinetId);
+		InfoId<Long> cabid = IdKeys.getInfoId(IdKey.GP_CABINETS,cabinetId);
 		CabinetInfo cabinfo = CabinetFacade.findCabinet(accesspoint, principal, cabid);
 
 		BinaryInfo binfo = new BinaryInfo();

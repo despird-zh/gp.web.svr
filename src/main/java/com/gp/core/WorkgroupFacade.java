@@ -88,7 +88,7 @@ public class WorkgroupFacade {
 			// amend the information key data
 			if(!IdKeys.isValidId(winfo.getInfoId())){
 				
-				InfoId<Long> wkey = idservice.generateId( IdKey.WORKGROUP, Long.class);
+				InfoId<Long> wkey = idservice.generateId( IdKey.GP_WORKGROUPS, Long.class);
 				winfo.setInfoId(wkey);				
 			}
 
@@ -385,7 +385,7 @@ public class WorkgroupFacade {
 
 			if(!IdKeys.isValidId(ginfo.getInfoId())){
 				
-				InfoId<Long> gid = idservice.generateId(IdKey.GROUP, Long.class);
+				InfoId<Long> gid = idservice.generateId(IdKey.GP_GROUPS, Long.class);
 				ginfo.setInfoId(gid);
 			}
 			

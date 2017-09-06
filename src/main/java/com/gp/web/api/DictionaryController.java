@@ -95,7 +95,7 @@ public class DictionaryController extends BaseController{
 		DictEntry dentry = super.readRequestBody(payload, DictEntry.class);
 		
 		DictionaryInfo dinfo = new DictionaryInfo();
-		InfoId<Long> did = IdKeys.getInfoId(IdKey.DICTIONARY,dentry.getEntryId());
+		InfoId<Long> did = IdKeys.getInfoId(IdKey.GP_DICTIONARY,dentry.getEntryId());
 		
 		FlatColumn lblcol = DictionaryDAO.getFlatColumn(dentry.getLanguage());
 		

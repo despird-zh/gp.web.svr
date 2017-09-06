@@ -195,7 +195,7 @@ public class CommonController extends BaseController{
 		}		
 		ActionResult ars = new ActionResult();
 		try{
-			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.GP_ORG_HIER,orgId);
 			List<OrgHierInfo> gresult = OrgHierFacade.findAllChildOrgHiers(accesspoint, principal, 
 					oid);
 			
@@ -246,7 +246,7 @@ public class CommonController extends BaseController{
 		InfoId<Long> wkey = null;
 		if(StringUtils.isNotBlank(wgroupid) && CommonUtils.isNumeric(wgroupid)){
 			
-			wkey = IdKeys.getInfoId(IdKey.WORKGROUP,Long.valueOf(wgroupid));
+			wkey = IdKeys.getInfoId(IdKey.GP_WORKGROUPS,Long.valueOf(wgroupid));
 		}
 
 		ActionResult ars = new ActionResult();

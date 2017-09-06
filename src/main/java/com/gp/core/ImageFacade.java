@@ -79,7 +79,7 @@ public class ImageFacade {
 			image.setPersist(Images.Persist.DATABASE.name());
 			image.setLink(filename);
 			
-			image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE, imgid));
+			image.setInfoId(IdKeys.getInfoId(IdKey.GP_IMAGES, imgid));
 			
 			gresult = imageservice.newImage(svcctx, image);
 
@@ -130,7 +130,7 @@ public class ImageFacade {
 				Operations.FIND_IMAGE)){
 
 			Long imgid = Images.parseImageId(fileName);
-			InfoId<Long> infoid = IdKeys.getInfoId(IdKey.IMAGE, imgid);
+			InfoId<Long> infoid = IdKeys.getInfoId(IdKey.GP_IMAGES, imgid);
 			
 			gresult = imageservice.getImage(svcctx, infoid, parentPath);
 		
@@ -170,7 +170,7 @@ public class ImageFacade {
 				image.setFormat(FilenameUtils.getExtension(filename)); // get format
 				image.setModifyDate(Images.parseTouchDate(filename));
 			}
-			image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE,imageId));
+			image.setInfoId(IdKeys.getInfoId(IdKey.GP_IMAGES,imageId));
 			svcctx.setOperationObject(image.getInfoId());// set audit data
 			gresult = imageservice.updateImage(svcctx, image);
 
@@ -193,7 +193,7 @@ public class ImageFacade {
 		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.REMOVE_IMAGE)){
 			
-			InfoId<Long> imgid = IdKeys.getInfoId(IdKey.IMAGE,imageId);
+			InfoId<Long> imgid = IdKeys.getInfoId(IdKey.GP_IMAGES,imageId);
 			svcctx.setOperationObject(imgid);
 			gresult = imageservice.removeImage(svcctx, imgid);			
 			

@@ -18,7 +18,7 @@ public class CommonFacade {
 	
 	public static Logger LOGGER = LoggerFactory.getLogger(CommonFacade.class);
 	
-	public static final InfoId<Integer> LOCAL_INSTANCE = IdKeys.getInfoId(IdKey.SOURCE, GeneralConstants.LOCAL_SOURCE);
+	public static final InfoId<Integer> LOCAL_INSTANCE = IdKeys.getInfoId(IdKey.GP_SOURCES, GeneralConstants.LOCAL_SOURCE);
 	
 	private static CommonService idService;
 

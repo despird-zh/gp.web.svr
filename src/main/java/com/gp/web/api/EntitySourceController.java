@@ -59,7 +59,7 @@ public class EntitySourceController extends BaseController{
 			GPrincipal principal = super.getPrincipal();
 			AccessPoint ap = super.getAccessPoint(request);
 			
-			InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE, Integer.valueOf(instanceId));
+			InfoId<Integer> id = IdKeys.getInfoId(IdKey.GP_SOURCES, Integer.valueOf(instanceId));
 			
 			
 			try{
@@ -105,7 +105,7 @@ public class EntitySourceController extends BaseController{
 		String instanceIdStr = paramap.get("source_id");
 		String stateStr = paramap.get("source_state");
 		Integer instanceId = StringUtils.isBlank(instanceIdStr) ? -1 : Integer.valueOf(instanceIdStr);
-		InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE,instanceId);
+		InfoId<Integer> id = IdKeys.getInfoId(IdKey.GP_SOURCES,instanceId);
 		
 		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);
@@ -134,7 +134,7 @@ public class EntitySourceController extends BaseController{
 		// read request parameters
 		Source data = this.readRequestBody(payload, Source.class);
 		
-		InfoId<Integer> id = IdKeys.getInfoId(IdKey.SOURCE,data.getSourceId());
+		InfoId<Integer> id = IdKeys.getInfoId(IdKey.GP_SOURCES,data.getSourceId());
 		
 		GPrincipal princ = super.getPrincipal();
 		AccessPoint ap = super.getAccessPoint(request);

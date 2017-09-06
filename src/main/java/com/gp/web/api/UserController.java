@@ -122,7 +122,7 @@ public class UserController extends BaseController{
 		ActionResult result = new ActionResult();
 		
 		UserInfo uinfo = new UserInfo();
-		InfoId<Long> uid = IdKeys.getInfoId(IdKey.USER,Long.valueOf(account.getUserId()));
+		InfoId<Long> uid = IdKeys.getInfoId(IdKey.GP_USERS,Long.valueOf(account.getUserId()));
 		uinfo.setInfoId(uid);
 		uinfo.setAccount(account.getAccount());
 		uinfo.setFullName(account.getName());
@@ -245,7 +245,7 @@ public class UserController extends BaseController{
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uid) && CommonUtils.isNumeric(uid)){
 			userId = Long.valueOf(uid);
-			userkey = IdKeys.getInfoId(IdKey.USER,userId);
+			userkey = IdKeys.getInfoId(IdKey.GP_USERS,userId);
 		}
 		
 		if(userId == GroupUsers.ADMIN_USER.getUserId().getId()){
@@ -285,7 +285,7 @@ public class UserController extends BaseController{
 		InfoId<Long> userkey = null;
 		if(StringUtils.isNotBlank(uidStr) && CommonUtils.isNumeric(uidStr) ){
 			userId = Long.valueOf(uidStr);
-			userkey = IdKeys.getInfoId(IdKey.USER,userId);
+			userkey = IdKeys.getInfoId(IdKey.GP_USERS,userId);
 		}
 
 		ActionResult result = null;

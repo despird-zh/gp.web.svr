@@ -25,7 +25,7 @@ public class QuickFlowFacade {
 	
 	public static void demo(){
 		
-		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.WORKGROUP,172l);
+		InfoId<Long> wgroupId = IdKeys.getInfoId(IdKey.GP_WORKGROUPS,172l);
 		try {
 			List<QuickNodeInfo> nodes = quickflowservice.getNodeList(ServiceContext.getPseudoServiceContext(), wgroupId);
 			

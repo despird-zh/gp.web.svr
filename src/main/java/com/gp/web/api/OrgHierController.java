@@ -103,7 +103,7 @@ public class OrgHierController extends BaseController{
 		InfoId<Long> nodeId = null;
 		if(StringUtils.isNotBlank(params.getId()) && CommonUtils.isNumeric(params.getId())){
 			Long nid = Long.valueOf(params.getId());
-			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER, nid);
+			nodeId = IdKeys.getInfoId(IdKey.GP_ORG_HIER, nid);
 		}else {
 			aresult = ActionResult.failure(getMessage("mesg.post.unqualified"));
 			mav.addAllObjects(aresult.asMap());
@@ -144,7 +144,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER,nid);
+			nodeId = IdKeys.getInfoId(IdKey.GP_ORG_HIER,nid);
 		}
 		Account[] users = super.readRequestJson("users", Account[].class);
 		String[] accounts = new String[users.length];
@@ -184,7 +184,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKeys.getInfoId( IdKey.ORG_HIER,nid);
+			nodeId = IdKeys.getInfoId( IdKey.GP_ORG_HIER,nid);
 		}
 		String account = paramap.get("account");
 		
@@ -219,7 +219,7 @@ public class OrgHierController extends BaseController{
 		if(StringUtils.isNotBlank(orgIdStr) && CommonUtils.isNumeric(orgIdStr)){
 			
 			Long nid = Long.valueOf(orgIdStr);
-			nodeId = IdKeys.getInfoId(IdKey.ORG_HIER, nid);
+			nodeId = IdKeys.getInfoId(IdKey.GP_ORG_HIER, nid);
 		}
 
 		GPrincipal principal = super.getPrincipal();
@@ -274,7 +274,7 @@ public class OrgHierController extends BaseController{
 		}		
 
 		try{
-			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.GP_ORG_HIER,orgId);
 			List<OrgHierInfo> gresult = OrgHierFacade.findChildOrgHiers(accesspoint, principal, 
 					oid);
 			Map<Long, Integer> grandcnt = OrgHierFacade.findOrgHierGrandNodeCount(accesspoint, principal, 
@@ -334,7 +334,7 @@ public class OrgHierController extends BaseController{
 		}
 
 		try{
-			InfoId<Long> oid = IdKeys.getInfoId(IdKey.ORG_HIER,orgId);
+			InfoId<Long> oid = IdKeys.getInfoId(IdKey.GP_ORG_HIER,orgId);
 			OrgHierInfo orghier = OrgHierFacade.findOrgHier(accesspoint, principal, oid);
 
 			OrgNode node = new OrgNode();

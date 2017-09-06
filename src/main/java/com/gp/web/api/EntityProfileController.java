@@ -47,7 +47,7 @@ public class EntityProfileController extends BaseController{
 				
 		Map<String,String> paramap = this.readRequestJson(payload);
 		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
-		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.SOURCE, entityId);
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.GP_SOURCES, entityId);
 		Source source = new Source();
 		ActionResult result = null;
 		
@@ -98,7 +98,7 @@ public class EntityProfileController extends BaseController{
 				
 		Map<String,String> paramap = this.readRequestJson(payload);
 		Integer entityId = NumberUtils.toInt(paramap.get("instance_id"));
-		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.SOURCE,entityId);
+		InfoId<Integer> sourceId = (entityId <= 0) ? Sources.LOCAL_INST_ID : IdKeys.getInfoId(IdKey.GP_SOURCES,entityId);
 		SourceSummary source = new SourceSummary();
 		ActionResult result = null;
 		

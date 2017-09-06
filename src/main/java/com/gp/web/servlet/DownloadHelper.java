@@ -54,7 +54,7 @@ public class DownloadHelper {
 		String requestedFile = request.getPathInfo();
 		String sourceId = requestedFile.substring(1,requestedFile.indexOf('.'));
 		String fid = requestedFile.substring(requestedFile.indexOf('.') + 1, requestedFile.lastIndexOf('.'));
-		InfoId<Long> fileid = IdKeys.getInfoId( IdKey.CAB_FILE,Long.valueOf(fid));
+		InfoId<Long> fileid = IdKeys.getInfoId( IdKey.GP_CAB_FILES,Long.valueOf(fid));
 		GPrincipal principal = ExWebUtils.getPrincipal(request);
 		AccessPoint accesspoint = BaseController.getAccessPoint(request);
 		//GeneralResult<CabFileInfo> gresult = CabinetFacade.findCabinetFile(accesspoint, principal, sourceId,fileid);

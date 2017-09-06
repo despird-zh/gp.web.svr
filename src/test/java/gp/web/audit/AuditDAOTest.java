@@ -27,7 +27,7 @@ public class AuditDAOTest extends AbstractJUnit4SpringContextTests{
 	@Test
 	public void test() throws Exception{
 		
-		InfoId<Long> ukey = IdKeys.getInfoId(IdKey.USER,123l);
+		InfoId<Long> ukey = IdKeys.getInfoId(IdKey.GP_USERS,123l);
 		principal.setUserId(ukey);
 		svcctx = new ServiceContext(principal);
 		

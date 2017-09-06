@@ -194,7 +194,7 @@ public class PostFacade {
                 Operations.NEW_POST)){
             if(!IdKeys.isValidId(postinfo.getInfoId())){
 
-                InfoId<Long> pid = idservice.generateId(IdKey.POST, Long.class);
+                InfoId<Long> pid = idservice.generateId(IdKey.GP_POSTS, Long.class);
                 postinfo.setInfoId(pid);
             }
 
@@ -210,7 +210,7 @@ public class PostFacade {
 
                     ImageInfo image = new ImageInfo();
 
-                    image.setInfoId(IdKeys.getInfoId(IdKey.IMAGE,imgid));
+                    image.setInfoId(IdKeys.getInfoId(IdKey.GP_IMAGES,imgid));
                     image.setDataFile(new File(imagePath));
                     image.setFormat(FilenameUtils.getExtension(imagename));
                     image.setModifyDate(touchdate);
@@ -312,7 +312,7 @@ public class PostFacade {
                 Operations.NEW_COMMENT)){
         	
         	if(!IdKeys.isValidId(comment.getInfoId())){
-        		InfoId<Long> cid = idservice.generateId(IdKey.POST_COMMENT, Long.class);
+        		InfoId<Long> cid = idservice.generateId(IdKey.GP_POST_COMMENTS, Long.class);
         		comment.setInfoId(cid);
         	}
         	
@@ -426,7 +426,7 @@ public class PostFacade {
                  postservice.publicPost(svcctx, postId);
              }else {
                  // launch a quick flow
-                 quickflowservice.launchPostPublic(svcctx, descr, IdKeys.getInfoId(IdKey.WORKGROUP,wgroupId), postId);
+                 quickflowservice.launchPostPublic(svcctx, descr, IdKeys.getInfoId(IdKey.GP_WORKGROUPS,wgroupId), postId);
              }
          } catch (ServiceException e)  {
 
@@ -450,7 +450,7 @@ public class PostFacade {
         try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
                 Operations.FAVORITE_POST)){
 
-        	InfoId<Long> fid = idservice.generateId(IdKey.FAVORITE, Long.class);
+        	InfoId<Long> fid = idservice.generateId(IdKey.GP_FAVORITES, Long.class);
         	FavoriteInfo finfo = new FavoriteInfo();
         	finfo.setInfoId(fid);
         	finfo.setResourceId(postid.getId());

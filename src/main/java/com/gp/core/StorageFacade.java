@@ -133,7 +133,7 @@ public class StorageFacade {
 
 			svcctx.addOperationPredicates(storage);
 			if(!IdKeys.isValidId(storage.getInfoId())){
-				result = idService.generateId(IdKey.STORAGE, Integer.class);
+				result = idService.generateId(IdKey.GP_STORAGES, Integer.class);
 				storage.setInfoId(result);				
 				svcctx.setOperationObject(result);
 			}else{
@@ -373,7 +373,7 @@ public class StorageFacade {
 			}
 			
 			if(!IdKeys.isValidId(binfo.getInfoId())){
-				result = idService.generateId(IdKey.BINARY, Long.class);
+				result = idService.generateId(IdKey.GP_BINARIES, Long.class);
 				binfo.setInfoId(result);				
 				svcctx.setOperationObject(result);
 			}else{
