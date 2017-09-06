@@ -13,7 +13,7 @@ import com.gp.exception.RingEventException;
  * Here generate the operation log for resource, member, workgroup
  * 
  *  @author gdiao 
- *  @version 0.1 2017-08-07
+ *  @version 0.1 2016-08-07
  *  
  **/
 public class CoreOperationHooker extends EventHooker<EventPayload> {
