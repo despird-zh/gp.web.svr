@@ -1,0 +1,314 @@
+/* start -- header search box */
+.navbar-form .form-control {
+    border-radius: 30px;
+    height: 30px;
+    padding: 5px 15px;
+    width: 200px;
+}
+
+.navbar-form .btn-search {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    border-radius: 0 30px 30px 0;
+    height: 30px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    position: absolute;
+    right: 15px;
+}
+
+.navbar-form .form-control:focus {
+    animation: 0.2s ease 0s normal none 1 running expand;
+    width: 300px;	
+}
+/* end -- header search box */
+/* start -- left side bar statistics */
+.personal-lite-statics{
+	color:#ccc;
+	margin: 0 10px 5px 10px;
+}
+
+.personal-lite-statics .statics-bar{
+	width: 30%;
+	margin-right :10px;
+}
+
+.personal-lite-statics .progress{
+	margin-bottom: 5px;
+}
+
+.sidebar-mini.sidebar-collapse .personal-lite-statics {
+    display: none !important;
+}
+/* end -- left side bar statistics */
+/* start -- list view implemented with div*/
+.list-view{
+   display:table;
+}
+.list-view .list-view-item:hover{
+	background-color: #f0f8fd;
+}
+.list-view-item{
+border-bottom: 1px solid #f4f4f4;
+}
+.list-view-header{
+    border-bottom: 1px solid #f4f4f4;
+	border-left: 0px;
+	border-right: 0px;
+	border-top: 0px;
+    color: #888;
+  width:100%;
+  clear:both;
+  height: 41px;
+}
+.list-view .list-view-header .list-view-col {
+    border-left: 1px solid #fff;
+    border-right: 1px solid #e5e5e5;
+    cursor: pointer;
+    height: 41px;
+    line-height: 41px;
+}
+.list-view .list-view-header .c1 {
+    border-left: 0 none;
+}
+.list-view .list-view-header .clast {
+    border-right: 0 none;
+}
+.list-view .list-view-header {
+
+    cursor: pointer;
+    height: 41px;
+    line-height: 41px;
+}
+.list-view .c1 {
+    overflow: visible;
+    position: relative;
+    text-align: left;
+    top: 0;
+}
+
+.list-view .c1 .chkbox {
+    display: inline-block;
+    margin-left: -12px;
+    margin-right: 5px;
+    width: 36px;
+}
+.list-view .c1 .item-icon {
+    margin-left: -8px;
+	margin-right: 5px;
+}
+.list-view .list-view-col {
+    float: left;
+    height: 36px;
+    line-height: 36px;
+    overflow: hidden;
+    text-indent: 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.list-view-body{
+	min-height: 483px;
+	list-style: outside none none;
+	margin: 0;
+    padding: 0;
+}
+/* view toolbar and view path */
+.view-toolbar{
+	margin-bottom:8px;
+	
+}
+
+.view-toolbar > span > button{
+	margin-right:5px;
+	font-size:14px;
+}
+
+.view-toolbar .btn-separator:after {
+    background: #ddd none repeat scroll 0 0;
+    content: '';
+    display: block;
+    float: left;
+    height: 30px;
+    margin: 0 5px 0 0;
+    width: 1px;
+}
+.view-breadcrumb {
+    margin-bottom: 3px;
+	font-size: 14px;
+}
+/* folder hierarchy selector panel */
+.view-breadcrumb > li > .dropdown-menu {
+    right: auto;
+	border-color: #ddd;
+    position: absolute;
+    margin-left: -15px;
+	margin-top: 10px;
+	font-size: 14px;
+    line-height: 18px;
+	width: 400px;
+	height: 350px;
+}
+
+.view-breadcrumb > li > .dropdown-menu .box-header{
+    padding-top: 5px;
+	padding-bottom: 8px;
+}
+
+.view-breadcrumb > li > .dropdown-menu .box-header > h4{
+    font-size: 14px;
+}
+
+.view-breadcrumb > li > .dropdown-menu:before {
+  position: absolute;
+  top: -7px;
+  left: 14px;
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-left: 7px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  content: '';
+}
+
+.view-breadcrumb > li > .dropdown-menu:after {
+  position: absolute;
+  top: -6px;
+  left: 15px;
+  display: inline-block;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  border-left: 6px solid transparent;
+  content: '';
+}
+
+.breadcrumb .path-root::before {
+    content: "| ";
+}
+
+.content-header > .view-mode {
+    background: transparent none repeat scroll 0 0;
+    border-radius: 2px;
+    float: right;
+    font-size: 20px;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 7px 5px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+.view-mode {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    list-style: outside none none;
+    margin-bottom: 20px;
+    padding: 8px 15px;
+}
+.view-mode > li {
+    display: inline-block;
+	margin-left: 10px;
+}
+/* end -- list view implemented with div*/
+.jstree-default .jstree-clicked, .jstree-default .jstree-wholerow-clicked {
+    background: #e4e9ec none repeat scroll 0 0 !important;
+    box-shadow: none !important;
+}
+.jstree-default .jstree-hovered, .jstree-default .jstree-wholerow-hovered {
+    background: #f0f3f4 none repeat scroll 0 0 !important;
+    box-shadow: none !important;
+}
+.jstree-open > .jstree-anchor > .fa-folder::before {
+    color: #242a30;
+    content: "";
+}
+.jstree-default .jstree-checkbox {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+.jstree-default .jstree-checkbox::before {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #b4b6b7;
+    bottom: 4px;
+    content: "";
+    display: block;
+    left: 4px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+.jstree-default .jstree-anchor > .jstree-checkbox.jstree-undetermined::after {
+    background: #b4b6b7 none repeat scroll 0 0;
+    bottom: 7px;
+    content: "";
+    display: block;
+    left: 7px;
+    position: absolute;
+    right: 7px;
+    top: 7px;
+}
+.jstree-default .jstree-checked > .jstree-checkbox::after, .jstree-default.jstree-checkbox-selection .jstree-clicked > .jstree-checkbox::after {
+    bottom: 5px;
+    color: #242a30;
+    content: "";
+    display: block;
+    font-family: FontAwesome;
+    font-size: 12px;
+    font-style: initial;
+    left: 5px;
+    line-height: 16px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
+
+.tab-content .form-group{
+	margin-bottom: 3px;
+}
+.tab-content .box-body{
+	padding: 0px;
+}
+.group-leader{
+	padding-bottom:5px;
+	margin-bottom:5px;
+}
+/* div of group elements leader
+div.group-leader:before{
+    background-color: #ddd;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    left: 0;
+    position: relative;
+    top: -4px;
+    width: 20px;
+}
+div.group-leader:after{
+    background-color: #ddd;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    right: 0;
+    top: -4px;
+    width: 20px;
+}*/
+.filterbar{
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    height: 34px;
+    margin-bottom: 3px;
+    padding: 3px;
+}
+
+.ticket-reply:before{
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    bottom: 7px;
+    content: "";
+    display: inline-block;
+    height: 15px;
+    left: 0;
+    margin-left: 10px;
+    margin-right: 0px;
+    position: relative;
+    top: -4px;
+}

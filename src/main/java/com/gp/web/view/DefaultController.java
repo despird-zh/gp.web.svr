@@ -19,7 +19,7 @@ public class DefaultController extends BaseController{
 	@RequestMapping({ "/", "/index", "/home" })
 	public ModelAndView index () throws Exception {
 		
-		ModelAndView mav = super.getJspModelView("home");
+		ModelAndView mav = super.getJspModelView("sysinfo/dashboard");
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		mav.addObject("user", auth.getName());
