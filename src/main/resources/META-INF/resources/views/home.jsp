@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<jsp:include page="common.jsp" flush="true"/>
 <!-- Static content -->
 <link rel="stylesheet" href="/css/index.css">
 <script type="text/javascript" src="/js/index.js"></script>
@@ -11,7 +12,7 @@
 <title>Spring Boot</title>
 </head>
 <body>
-  <h1>Spring Boot - MVC web application home example</h1>
+  <h1>Spring Boot - MVC wgeb application home example</h1>
   <hr>
 
   <div class="form">
