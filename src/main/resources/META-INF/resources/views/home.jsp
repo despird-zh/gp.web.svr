@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="./common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<jsp:include page="common.jsp" flush="true"/>
-<!-- Static content -->
-<link rel="stylesheet" href="/css/index.css">
-<script type="text/javascript" src="/js/index.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="${path_bmd}/dist/css/bootstrap-material-design.min.css">
 
 <title>Spring Boot</title>
 </head>
@@ -39,6 +37,8 @@
       </table>
     </form>
   </div>
-
+  <script src="${path_vendor}/jquery-slim.min.js" type="text/javascript"></script>
+  <script src="${path_vendor}/popper.min.js" type="text/javascript"></script>
+  <script src="${path_bmd}/dist/js/bootstrap-material-design.js" type="text/javascript"></script>
 </body>
 </html>
