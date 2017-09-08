@@ -727,7 +727,8 @@ function _init() {
 GPContext = (function ($) {
 
     'use strict';
-
+    var _principal = {};
+    
     var _context = {
 
         initial : function(){
@@ -750,7 +751,19 @@ GPContext = (function ($) {
                     }
                 }
             });
-        }
+        },
+        
+        initial_princ: function(){
+			$.ajax({
+	            contentType: "application/json",
+	            url: "principal-context",
+	            dataType: 'json',
+	            async: false ,
+	            success: function(result) {
+	            		$.extend(_principal, result);
+	            }
+	        });
+		}
     };
 
     /*
@@ -790,7 +803,7 @@ GPContext = (function ($) {
 
         $.ajax({
             contentType: "application/json",
-            url: "../main/authenticate.do",
+            url: "gpapi/authenticate",
             data: {"account" : username, "password": password},
             dataType: 'json',
             success: function(result) {
@@ -804,7 +817,8 @@ GPContext = (function ($) {
     };
 
     _context.initial();
-
+    _context.initial_princ();
+    
 	/**
 	 * Define the loading process dialog
 	 */
@@ -850,6 +864,7 @@ GPContext = (function ($) {
     };
 
     return {
+    		Principal : _principal,
         Relogon : _context.relogon,
         GenerateUID : _generateUid,
         ShowLoading : $.proxy(_loading.showLoading, _loading),

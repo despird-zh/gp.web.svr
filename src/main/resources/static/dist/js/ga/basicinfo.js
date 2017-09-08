@@ -25,11 +25,16 @@ var PageContext = (function ($, AdminLTE) {
 		$refresh_btn : $('a[gpid=refresh-source-info]'),
 		
 		initial : function(){
+			
 			var _self = this;
+
 			$.ajax({
-				url: "../ga/source-info.do",
+				method: 'POST',
+				headers: {'Authorization': GPContext.Principal.token},
+				url: "gpapi/ent-profile-query",
 				dataType : "json",
-				data: { "source_id" : -9999}, // local instance id
+				contentType: "application/json", 
+				data: JSON.stringify({ "source_id" : -9999}), // local instance id
 				success: function(response)
 				{	
 					if(response.state == 'success'){

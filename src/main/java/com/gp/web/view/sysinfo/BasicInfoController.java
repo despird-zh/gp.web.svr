@@ -1,7 +1,10 @@
 package com.gp.web.view.sysinfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import com.gp.util.CommonUtils;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Source;
+import com.gp.web.util.ExSecurityUtils;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
@@ -33,7 +37,9 @@ public class BasicInfoController extends BaseController{
 	@RequestMapping("basic")
 	public ModelAndView doInitial(){
 		
-		return getJspModelView("sysinfo/basicinfo");
+		ModelAndView mav = getJspModelView("sysinfo/basicinfo");
+		
+		return mav;
 	}
 	
 //	@RequestMapping("source-info")

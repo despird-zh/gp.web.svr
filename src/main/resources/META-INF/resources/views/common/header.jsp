@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 		<!-- Logo -->
-        <a href="../main/mainpage.do" class="logo">
+        <a href="home" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>G</b>PR</span>
           <!-- logo for regular state and mobile devices -->
@@ -15,7 +15,7 @@
 		  <div gpid="message-toggle-container" class="clearfix pull-left">
 			  <div class="message-toggle" data-toggle="dropdown" >
 				<div gpid="message-in-header" role="button" class="text-danger message-abstract">
-					<i class="fa fa-hand-peace-o fa-fw m-r-sm"></i>Welcome to Groupress ECM !!!
+					<i class="fa fa-hand-peace-o fa-fw m-r-sm"></i>Welcome to Groupress ECM !!! 
 				</div>
 			  </div>
 			  <ul class="dropdown-menu warn-err-message">
