@@ -1,4 +1,4 @@
-<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
+c<%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
 <%@include file="../common/taglibs.jsp" %> 
 <!DOCTYPE html>
 <html lang="zh_CN">
@@ -29,17 +29,17 @@
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>Groupress</b> ECM</a>
+        <a href="/"><b>Groupress</b> ECM</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
-        <form action="authenticate.do" method="post">
+        <form action="/authen_form" method="post">
           <div class="form-group has-feedback">
-            <input gpid="username" type="text" value="admin" class="form-control" placeholder="Email">
+            <input name="username" type="text" value="admin" class="form-control" placeholder="Email">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input gpid="password" type="password" value="1" class="form-control" placeholder="Password">
+            <input name="password" type="password" value="1" class="form-control" placeholder="Password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">
@@ -49,7 +49,7 @@
                 </label>
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <a href="javascript:;" gpid="sign-in" class="btn btn-primary btn-block btn-flat">Sign In</a>
+              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
             </div><!-- /.col -->
           </div>
         </form>
