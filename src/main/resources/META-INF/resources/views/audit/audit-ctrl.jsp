@@ -1,5 +1,5 @@
 <%@ page language="java" errorPage="/WEB-INF/view/error.jsp" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
-<%@include file="../../common/taglibs.jsp" %>
+<%@include file="../common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh_CN">
   <head>
@@ -10,7 +10,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<%@include file="../common/include.jsp" %>
   </head>
-  <body class="hold-transition skin-blue sidebar-mini fixed">
+  <body class="sidebar-mini fixed skin-black-light">
     <div class="wrapper">
 
       <header class="main-header">

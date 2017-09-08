@@ -32,12 +32,12 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class WGroupController extends BaseController{
+public class WGroupAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(WGroupController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WGroupAPIController.class);
 	
 	@RequestMapping(
-			value = "wgroups-query.do",
+			value = "wgroups-query",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doProfileQuery(@RequestBody String payload) {
@@ -86,7 +86,7 @@ public class WGroupController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "wgroup-add.do",
+			value = "wgroup-add",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doWorkgroupAdd(@RequestBody String payload){
@@ -146,7 +146,7 @@ public class WGroupController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "wgroup-save.do",
+			value = "wgroup-save",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doWorkgroupUpdate(@RequestBody String payload){

@@ -116,8 +116,8 @@
 	padding-left: 30px;
 }
 .message-toggle .message-abstract:hover {
-  background-color: #367fa9;
-  color: #fff;
+  background-color: #f4f4f5;
+  color: #444;
 }
 
 .message-toggle:focus,

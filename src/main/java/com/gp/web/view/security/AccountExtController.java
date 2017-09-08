@@ -45,7 +45,7 @@ public class AccountExtController extends BaseController{
 	@RequestMapping("account-ext")
 	public ModelAndView doInitial(){
 		
-		ModelAndView mav = getJspModelView("ga/config/account-ext");
+		ModelAndView mav = getJspModelView("config/account-ext");
 		
 		return mav;
 	}

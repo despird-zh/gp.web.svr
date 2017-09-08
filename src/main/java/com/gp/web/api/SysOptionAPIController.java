@@ -22,11 +22,11 @@ import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class SysOptionController extends BaseController{
+public class SysOptionAPIController extends BaseController{
 
 	
 	@RequestMapping(
-			value = "sys-opts-query.do",
+			value = "sys-opts-query",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSysOptionsQuery(@RequestBody String payload){
@@ -65,7 +65,7 @@ public class SysOptionController extends BaseController{
 		return mav.addAllObjects(result.asMap());
 	}
 	
-	@RequestMapping(value = "sys-opt-save.do",
+	@RequestMapping(value = "sys-opt-save",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSaveSystemOption(@RequestBody String payload){

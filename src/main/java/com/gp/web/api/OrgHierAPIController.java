@@ -36,9 +36,9 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class OrgHierController extends BaseController{
+public class OrgHierAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(OrgHierController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(OrgHierAPIController.class);
 	
 	@RequestMapping(
 		    value = "org-node-add.do", 
@@ -232,7 +232,7 @@ public class OrgHierController extends BaseController{
 			
 			List<UserLiteInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
 			for(UserLiteInfo uinfo : ulist){
-				String fulllink = opt.getOptionValue() + "/" + ServiceHelper.IMAGE_CACHE_PATH + '/' + uinfo.getAvatarLink();
+				String fulllink = opt.getOptionValue() + "/" + ServiceAPIHelper.IMAGE_CACHE_PATH + '/' + uinfo.getAvatarLink();
 				uinfo.setAvatarLink(fulllink);
 			}
 			aresult = ActionResult.success(getMessage("mesg.find.org.mbrs"));

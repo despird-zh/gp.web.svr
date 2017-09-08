@@ -36,14 +36,14 @@ import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class ImagesController extends BaseController{
+public class ImagesAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(ImagesController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(ImagesAPIController.class);
 	public static SimpleDateFormat TOUCH_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static SimpleDateFormat MODIFY_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@RequestMapping(
-		    value = "images-query.do", 
+		    value = "images-query", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doImageSearch(@RequestBody String payload){

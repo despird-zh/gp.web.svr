@@ -31,9 +31,9 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class EntitySourceController extends BaseController{
+public class EntitySourceAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(EntitySourceController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(EntitySourceAPIController.class);
 	
 	@RequestMapping(
 			value = "entity-info",

@@ -32,13 +32,13 @@ import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class DictionaryController extends BaseController{
+public class DictionaryAPIController extends BaseController{
 	
 	static SimpleDateFormat MDF_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	static Logger LOGGER = LoggerFactory.getLogger(DictionaryController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(DictionaryAPIController.class);
 	
-	@RequestMapping(value = "dicts-query.do",
+	@RequestMapping(value = "dicts-query",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doEntriesSearch(@RequestBody String payload){
@@ -81,7 +81,7 @@ public class DictionaryController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping(value = "dict-save.do",
+	@RequestMapping(value = "dict-save",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doEntrySave(@RequestBody String payload){

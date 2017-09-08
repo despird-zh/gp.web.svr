@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8" %>
-<%@include file="../../common/taglibs.jsp" %>
+<%@include file="../common/taglibs.jsp" %>
 <!DOCTYPE html>
 <html lang="zh_CN">
   <head>
@@ -12,7 +12,7 @@
 	<%@include file="../common/include.jsp" %>
 	<link rel="stylesheet" href="${path_plugins}/datatables/css/dataTables.bootstrap.css" />
   </head>
-  <body class="hold-transition skin-blue sidebar-mini fixed">
+  <body class="sidebar-mini fixed skin-black-light">
     <div class="wrapper">
 
       <header class="main-header">

@@ -16,7 +16,7 @@ import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.util.ImageUtils;
 
-public class ServiceHelper {
+public class ServiceAPIHelper {
 	
 	public static String IMAGE_CACHE_PATH = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 	public static String FILE_CACHE_PATH = GeneralConfig.getString(SystemOptions.FILE_CACHE_PATH);

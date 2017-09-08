@@ -41,11 +41,11 @@ import com.gp.web.servlet.ServiceTokenFilter;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class CommonController extends BaseController{
+public class CommonAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(CommonController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(CommonAPIController.class);
 	
-	@RequestMapping(value = "common-entity-list.do",
+	@RequestMapping(value = "common-entity-list",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetEntityNodeList(@RequestBody String payload) throws WebException {
@@ -82,7 +82,7 @@ public class CommonController extends BaseController{
 	/**
 	 * Get the storage list,  
 	 **/
-	@RequestMapping(value = "common-storage-list.do",
+	@RequestMapping(value = "common-storage-list",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetStorageList(@RequestBody String payload){
@@ -122,7 +122,7 @@ public class CommonController extends BaseController{
 	/**
 	 * Support Select User Dialog to list all the users in system 
 	 **/
-	@RequestMapping(value = "common-user-list.do",
+	@RequestMapping(value = "common-user-list",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetUserList(@RequestBody String payload){
@@ -170,7 +170,7 @@ public class CommonController extends BaseController{
 		
 	}
 	
-	@RequestMapping(value = "common-org-nodes.do",
+	@RequestMapping(value = "common-org-nodes",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetOrghierNodes(@RequestBody String payload){
@@ -228,7 +228,7 @@ public class CommonController extends BaseController{
 	/**
 	 * This is used in dropdown widget to list available users could be assigned to a given workgroup
 	 **/
-	@RequestMapping(value = "common-avail-user-list.do",
+	@RequestMapping(value = "common-avail-user-list",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetAvailableUserList(@RequestBody String payload){

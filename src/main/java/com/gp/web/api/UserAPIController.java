@@ -41,12 +41,12 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class UserController extends BaseController{
+public class UserAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(UserAPIController.class);
 	
 	@RequestMapping(
-			value = "users-query.do",
+			value = "users-query",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doUsersQuery(@RequestBody String payload){
@@ -107,7 +107,7 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "user-save.do",
+			value = "user-save",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doUserSave(@RequestBody String payload) {
@@ -156,7 +156,7 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "user-add.do",
+			value = "user-add",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doNewAccount(@RequestBody String payload) throws WebException {
@@ -198,8 +198,8 @@ public class UserController extends BaseController{
 			try{
 				if(account.getImagePath().startsWith("data:image/")){
 					// process the avatar base64 image
-					String cachedImage = ServiceHelper.cacheImage(account.getImagePath());
-					boolean done = ServiceHelper.saveCachedImage(accesspoint, principal, Images.Category.USER_AVATAR.name(), cachedImage, cachedImage);
+					String cachedImage = ServiceAPIHelper.cacheImage(account.getImagePath());
+					boolean done = ServiceAPIHelper.saveCachedImage(accesspoint, principal, Images.Category.USER_AVATAR.name(), cachedImage, cachedImage);
 					if(done){
 						Long imgid = Images.parseImageId(cachedImage);
 						uinfo.setAvatarId(imgid);
@@ -223,7 +223,7 @@ public class UserController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "user-remove.do",
+			value = "user-remove",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doAccountDelete(@RequestBody String payload){
@@ -267,7 +267,7 @@ public class UserController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping(value = "user-info.do",
+	@RequestMapping(value = "user-info",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doAccountInfo(@RequestBody String payload){

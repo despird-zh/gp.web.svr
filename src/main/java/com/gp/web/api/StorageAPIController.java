@@ -35,13 +35,13 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class StorageController extends BaseController{
+public class StorageAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(StorageController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(StorageAPIController.class);
 	static final String ALL_OPTION = "ALL";
 	
 	@RequestMapping(
-		    value = "storages-query.do", 
+		    value = "storages-query", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doStoragesQuery(@RequestBody String payload) throws Exception {
@@ -115,7 +115,7 @@ public class StorageController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "storage-add.do", 
+		    value = "storage-add", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doNewStorage(@RequestBody String payload){
@@ -162,7 +162,7 @@ public class StorageController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "storage-save.do", 
+		    value = "storage-save", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSaveStorage(@RequestBody String payload){
@@ -211,7 +211,7 @@ public class StorageController extends BaseController{
 	}
 	
 	@RequestMapping(
-		    value = "storage-remove.do", 
+		    value = "storage-remove", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doRemoveStorage(@RequestBody String payload){

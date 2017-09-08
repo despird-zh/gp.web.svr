@@ -37,55 +37,55 @@ public class AccountAddController extends BaseController{
 		mav.addObject("item",account);
 		return mav;
 	}
-		
-	@RequestMapping("account-add")
-	public ModelAndView doNewAccount(HttpServletRequest request, HttpServletResponse response) throws WebException {
-		
-		if(LOGGER.isDebugEnabled())
-			ExWebUtils.dumpRequestAttributes(request);
-		
-		Account account = new Account();
-		super.readRequestParams( account);
-		
-		GPrincipal principal = super.getPrincipal();
-		AccessPoint accesspoint = super.getAccessPoint(request);
-		ActionResult result = new ActionResult();		
-		ModelAndView mav = getJsonModelView();		
-		
-		String confirmPwd = super.readRequestParam("confirm");
-		UserInfo uinfo = new UserInfo();
-		uinfo.setAccount(account.getAccount());
-		uinfo.setFullName(account.getName());
-		uinfo.setLanguage(account.getLanguage());
-		uinfo.setEmail(account.getEmail());
-		uinfo.setPassword(account.getPassword());
-		uinfo.setPhone(account.getPhone());
-		uinfo.setMobile(account.getMobile());
-		uinfo.setTimezone(account.getTimezone());
-		uinfo.setType(account.getType());
-		uinfo.setStorageId(account.getStorageId());
-		uinfo.setState(GroupUsers.UserState.ACTIVE.name());
-	
-		Long pubcapacity = account.getPubcapacity();
-		Long pricapacity = account.getPricapacity();
-		
-		// password not consistent
-		if(!StringUtils.equals(confirmPwd, account.getPassword())){
-		
-			result = ActionResult.failure(getMessage("mesg.pwd.diff.cfm"));
-			mav.addAllObjects(result.asMap());
-
-		}else{
-			try{
-				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
-				result = ActionResult.success(getMessage("mesg.save.account"));
-			}catch(CoreException ce){
-				result = super.wrapResult(ce);
-			}
-			mav.addAllObjects(result.asMap());
-		}
-
-		return mav;
-	}
+//		
+//	@RequestMapping("account-add")
+//	public ModelAndView doNewAccount(HttpServletRequest request, HttpServletResponse response) throws WebException {
+//		
+//		if(LOGGER.isDebugEnabled())
+//			ExWebUtils.dumpRequestAttributes(request);
+//		
+//		Account account = new Account();
+//		super.readRequestParams( account);
+//		
+//		GPrincipal principal = super.getPrincipal();
+//		AccessPoint accesspoint = super.getAccessPoint(request);
+//		ActionResult result = new ActionResult();		
+//		ModelAndView mav = getJsonModelView();		
+//		
+//		String confirmPwd = super.readRequestParam("confirm");
+//		UserInfo uinfo = new UserInfo();
+//		uinfo.setAccount(account.getAccount());
+//		uinfo.setFullName(account.getName());
+//		uinfo.setLanguage(account.getLanguage());
+//		uinfo.setEmail(account.getEmail());
+//		uinfo.setPassword(account.getPassword());
+//		uinfo.setPhone(account.getPhone());
+//		uinfo.setMobile(account.getMobile());
+//		uinfo.setTimezone(account.getTimezone());
+//		uinfo.setType(account.getType());
+//		uinfo.setStorageId(account.getStorageId());
+//		uinfo.setState(GroupUsers.UserState.ACTIVE.name());
+//	
+//		Long pubcapacity = account.getPubcapacity();
+//		Long pricapacity = account.getPricapacity();
+//		
+//		// password not consistent
+//		if(!StringUtils.equals(confirmPwd, account.getPassword())){
+//		
+//			result = ActionResult.failure(getMessage("mesg.pwd.diff.cfm"));
+//			mav.addAllObjects(result.asMap());
+//
+//		}else{
+//			try{
+//				SecurityFacade.newAccount(accesspoint, principal, uinfo, pubcapacity, pricapacity);
+//				result = ActionResult.success(getMessage("mesg.save.account"));
+//			}catch(CoreException ce){
+//				result = super.wrapResult(ce);
+//			}
+//			mav.addAllObjects(result.asMap());
+//		}
+//
+//		return mav;
+//	}
 
 }
