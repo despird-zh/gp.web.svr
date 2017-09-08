@@ -37,15 +37,15 @@ var PageContext = (function ($, AdminLTE) {
 				data: JSON.stringify({ "source_id" : -9999}), // local instance id
 				success: function(response)
 				{	
-					if(response.state == 'success'){
-						LocalInstance.$source_name.val(response.data.name);
-						LocalInstance.$global_id.val(response.data.globalId);
-						LocalInstance.$entity_code.val(response.data.entityCode);
-						LocalInstance.$node_code.val(response.data.nodeCode);
+					if(response.meta.state == 'success'){
+						LocalInstance.$source_name.val(response.data.entity_name);
+						LocalInstance.$global_id.val(response.data.global_id);
+						LocalInstance.$entity_code.val(response.data.entity_code);
+						LocalInstance.$node_code.val(response.data.node_code);
 						LocalInstance.$source_abbr.val(response.data.abbr);
-						LocalInstance.$short_name.val(response.data.shortName);
-						LocalInstance.$binary_url.val(response.data.binaryUrl);
-						LocalInstance.$service_url.val(response.data.serviceUrl);
+						LocalInstance.$short_name.val(response.data.short_name);
+						LocalInstance.$binary_url.val(response.data.binary_url);
+						LocalInstance.$service_url.val(response.data.service_url);
 						LocalInstance.$description.val(response.data.description);
 						LocalInstance.$admin.val(response.data.admin);
 						LocalInstance.$email.val(response.data.email);
