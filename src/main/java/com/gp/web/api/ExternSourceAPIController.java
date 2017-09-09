@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gp.common.AccessPoint;
 import com.gp.common.GPrincipal;
 import com.gp.common.Sources;
-import com.gp.core.CoreConstants;
 import com.gp.core.SourceFacade;
 import com.gp.exception.CoreException;
 import com.gp.dao.info.SourceInfo;

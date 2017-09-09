@@ -16,10 +16,13 @@ var PageContext =(function ($, window, undefined){
 			_self.$group_select.select2({
 				minimumResultsForSearch: -1, //hide the search box
 				ajax: {
-					url: "../ga/sys-option-groups.do",
-					dataType: 'json',
+					url: "gpapi/sys-opt-groups",
+					headers: {'Authorization': GPContext.Principal.token},
+					dataType : "json",
+					contentType: "application/json", 
+					method: "POST",
 					delay: 250,
-					data: {},
+					data: "{}",
 					processResults: function (resp_data, params) {
 					  // parse the results into the format expected by Select2
 					  // since we are using custom formatting functions we do not need to
@@ -88,7 +91,7 @@ var PageContext =(function ($, window, undefined){
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             "order": [
                 [0, "asc"]
             ], // set first column as a default sort by asc
@@ -135,11 +138,14 @@ var PageContext =(function ($, window, undefined){
 		var _self = this;
 		var _group = _self.$group_select.val();
 		$.ajax({
-			url: "../ga/sys-option-search.do",
+			url: "gpapi/sys-opts-query",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					opt_group : _group
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();
@@ -164,12 +170,15 @@ var PageContext =(function ($, window, undefined){
 		var _opt_key = _$self.attr('data-opt-key');
 		var _opt_value = $('input[data-opt-key=' + _opt_key + ']').val();
 		$.ajax({
-			url: "../ga/sys-option-save.do",
+			url: "gpapi/sys-opt-save",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					option_key : _opt_key,
 					option_value : _opt_value
-				},
+				}),
 			success: function(response)
 			{	
 				// show message in header

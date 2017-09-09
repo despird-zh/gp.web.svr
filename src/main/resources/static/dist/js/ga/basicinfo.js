@@ -442,7 +442,7 @@ var PageContext = (function ($, AdminLTE) {
 			method : "POST",
 			success: function(response)
 			{	
-				GPContext.AppendResult(response, (response.state != "success"));
+				GPContext.AppendResult(response, (response.meta.state != "success"));
 			}
 		});
 		

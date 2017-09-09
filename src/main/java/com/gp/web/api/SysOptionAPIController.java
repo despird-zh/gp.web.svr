@@ -15,6 +15,7 @@ import com.gp.common.GPrincipal;
 import com.gp.core.MasterFacade;
 import com.gp.dao.info.SysOptionInfo;
 import com.gp.exception.CoreException;
+import com.gp.info.KVPair;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.SysOption;
@@ -89,6 +90,37 @@ public class SysOptionAPIController extends BaseController{
 			result = super.wrapResult(ce);
 		}
 		mav.addAllObjects(result.asMap());
+		return mav;
+	}
+	
+	@RequestMapping(
+			value = "sys-opt-groups",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doGetSystemOptionGroups(){
+		
+		ActionResult ars = new ActionResult();
+		List<KVPair<?,?>> groups = new ArrayList<KVPair<?,?>>();
+		GPrincipal princ = super.getPrincipal();
+		AccessPoint ap = super.getAccessPoint(request);
+
+		try{
+			List<String> grst = MasterFacade.findSystemOptionGroups(ap, princ);
+			for(String group : grst){
+				KVPair<String,String> item = new KVPair<String,String>(group,group);
+				groups.add(item);
+			}
+			
+			ars = ActionResult.success(getMessage("mesg.find.sysopt.group"));
+			ars.setData(groups);
+			
+		}catch(CoreException ce){
+			ars = super.wrapResult(ce);
+		}
+
+		ModelAndView mav = super.getJsonModelView();
+		mav.addAllObjects(ars.asMap());
+		
 		return mav;
 	}
 }
