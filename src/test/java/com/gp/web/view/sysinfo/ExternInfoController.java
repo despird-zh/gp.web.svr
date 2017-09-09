@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.common.AccessPoint;
@@ -22,18 +24,24 @@ import com.gp.pagination.PageQuery;
 import com.gp.web.ActionResult;
 import com.gp.web.BaseController;
 import com.gp.web.model.Source;
+import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.util.ExWebUtils;
 
 @Controller
+@RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
 public class ExternInfoController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(ExternInfoController.class);
 
-	@RequestMapping("ext-source-search")
-	public ModelAndView doExternInstanceSearch(HttpServletRequest request){
+	@RequestMapping(
+			value = "ext-entities-query",
+			method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doExternInstanceSearch(@RequestBody String payload){
 
 		if(LOGGER.isDebugEnabled())
 			ExWebUtils.dumpRequestAttributes(request);
+		
 		String name = request.getParameter("source-name");
 		PageQuery pq = new PageQuery(5,1);
 		// read paging parameter
@@ -77,7 +85,7 @@ public class ExternInfoController extends BaseController{
 	}
 	
 	
-	@RequestMapping("ext-source-save")
+	@RequestMapping("ext-entity-save")
 	public ModelAndView doSaveExtInstance(HttpServletRequest request){
 
 		Source data = new Source();
@@ -113,7 +121,7 @@ public class ExternInfoController extends BaseController{
 		return mav;
 	}
 	
-	@RequestMapping("ext-source-info")
+	@RequestMapping("ext-entity-info")
 	public ModelAndView doGetExternSource(HttpServletRequest request){
 		
 		if(LOGGER.isDebugEnabled())

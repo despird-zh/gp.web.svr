@@ -32,10 +32,10 @@ import com.gp.web.servlet.ServiceTokenFilter;
  **/
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class EntityProfileAPIController extends BaseController{
+public class SourceProfileAPIController extends BaseController{
 
 	@RequestMapping(
-			value = "ent-profile-query",
+			value = "source-profile-query",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doProfileQuery(@RequestBody String payload){
@@ -87,7 +87,7 @@ public class EntityProfileAPIController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "ent-profile-sum",
+			value = "source-profile-sum",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doProfileSummaryQuery(@RequestBody String payload){
@@ -126,7 +126,7 @@ public class EntityProfileAPIController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "ent-profile-save",
+			value = "source-profile-save",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doProfileSave(@RequestBody String payload){

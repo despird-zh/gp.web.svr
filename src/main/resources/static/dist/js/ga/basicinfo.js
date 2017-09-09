@@ -32,7 +32,7 @@ var PageContext = (function ($, AdminLTE) {
 			$.ajax({
 				method: 'POST',
 				headers: {'Authorization': GPContext.Principal.token},
-				url: "gpapi/ent-profile-query",
+				url: "gpapi/source-profile-query",
 				dataType : "json",
 				contentType: "application/json", 
 				data: JSON.stringify({ "source_id" : -9999}), // local instance id
@@ -73,7 +73,7 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 				
 		var instdata = {
-			sourceId : -9999,
+			source_id : -9999,
 			entity_name : _self.$entity_name.val(),
 			source_name : _self.$source_name.val(),
 			global_id : _self.$global_id.val(),
@@ -89,7 +89,7 @@ var PageContext = (function ($, AdminLTE) {
 		};
 		
 		$.ajax({
-			url: "gpapi/ent-profile-save",
+			url: "gpapi/source-profile-save",
 			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
 			contentType: "application/json", 
@@ -159,7 +159,7 @@ var PageContext = (function ($, AdminLTE) {
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             "order": [
                 [1, "asc"]
             ], // set first column as a default sort by asc
@@ -200,12 +200,12 @@ var PageContext = (function ($, AdminLTE) {
 				}
             ],
 			"columns" : [
-				{data : 'entityCode'},
-				{data : 'nodeCode'},
-				{data : 'name'},
+				{data : 'entity_code'},
+				{data : 'node_code'},
+				{data : 'source_name'},
 				{data : 'state'},
 				{data : 'abbr'},
-				{data : 'shortName'},
+				{data : 'short_name'},
 				{data : 'description'},
 				{data : 'sourceId'}
 			]
@@ -218,12 +218,15 @@ var PageContext = (function ($, AdminLTE) {
 	InstanceList.search = function(){
 		var _self = this;
 		$.ajax({
-			url: "../ga/source-search.do",
+			url: "gpapi/sources-query.do",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
+			contentType: "application/json", 
+			method: "POST",
 			async: false,
-			data: { 
+			data: JSON.stringify({ 
 					source_name : _self.$search_ename.val()
-				},
+				}),
 			success: function(response)
 			{
 				_self.$table.dataTable().api().clear();
@@ -235,13 +238,15 @@ var PageContext = (function ($, AdminLTE) {
 	InstanceList.changeState = function(id, state){
 		var _self = this;
 		$.ajax({
-			url: "../ga/source-change-state.do",
+			url: "gpapi/source-change-state.do",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			async: false,
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					source_id : id,
 					source_state : state
-				},
+				}),
 			success: function(response)
 			{	
 				// process message
@@ -328,7 +333,7 @@ var PageContext = (function ($, AdminLTE) {
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             "order": [
                 [1, "asc"]
             ], // set first column as a default sort by asc
@@ -353,12 +358,12 @@ var PageContext = (function ($, AdminLTE) {
 				$('#tab_2 table[gpid="extern_list_table"] input[type="checkbox"]').uniform();
 			},
 			"columns" : [
-				{data : 'sourceId'},
-				{data : 'entityCode'},
-				{data : 'nodeCode'},
+				{data : 'source_id'},
+				{data : 'entity_code'},
+				{data : 'node_code'},
 				{data : 'email'},
-				{data : 'name'},
-				{data : 'globalId'}
+				{data : 'source_name'},
+				{data : 'global_id'}
 			]
         });
 	};
@@ -366,14 +371,16 @@ var PageContext = (function ($, AdminLTE) {
 	ExtInstances.search = function(pageindex){
 		var _self = this;
 		$.ajax({
-			url: "../ga/ext-source-search.do",
+			url: "gpapi/ext-sources-query",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			async: false,
-			data: { 
-					pageNumber : 1,
-					pageSize : 10,
-					instanceName : ''
-				},
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
+					page_number : 1,
+					page_size : 10,
+					instance_name : ''
+				}),
 			success: function(response)
 			{
 				_self.$table.dataTable().api().clear();
@@ -390,11 +397,14 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var global_id = $(evt).attr('data-global-id');
 		$.ajax({
-			url: "../ga/ext-source-info.do",
+			url: "gpapi/ext-source-info",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					"global_id" : global_id
-				},
+				}),
 			method : "POST",
 			success: function(response)
 			{	
@@ -412,20 +422,23 @@ var PageContext = (function ($, AdminLTE) {
 	ExtInstances.saveExternInstance = function(){
 		var _self = this;
 		$.ajax({
-			url: "../ga/ext-source-save.do",
+			url: "gpapi/ext-source-save.do",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
-					globalId : _self.$global_id.val(),
-					entityCode : _self.$entity_code.val(),
-					nodeCode : _self.$node_code.val(),
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
+					global_id : _self.$global_id.val(),
+					entity_code : _self.$entity_code.val(),
+					node_code : _self.$node_code.val(),
 					name : _self.$name.val(),
 					abbr : _self.$abbr.val(),
-					shortName : _self.$short_name.val(),
+					short_name : _self.$short_name.val(),
 					email : _self.$email.val(),
 					admin : _self.$admin.val(),
-					binaryUrl : _self.$binurl.val(),
-					serviceUrl : _self.$svcurl.val()
-				},
+					binary_url : _self.$binurl.val(),
+					service_url : _self.$svcurl.val()
+				}),
 			method : "POST",
 			success: function(response)
 			{	

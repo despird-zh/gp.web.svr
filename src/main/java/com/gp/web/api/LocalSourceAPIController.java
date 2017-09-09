@@ -31,12 +31,12 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class EntitySourceAPIController extends BaseController{
+public class LocalSourceAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(EntitySourceAPIController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(LocalSourceAPIController.class);
 	
 	@RequestMapping(
-			value = "entity-info",
+			value = "source-info",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetInstance(@RequestBody String payload){
@@ -93,7 +93,7 @@ public class EntitySourceAPIController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "entity-change-state",
+			value = "source-change-state",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doChangeSourceState(@RequestBody String payload){
@@ -124,7 +124,7 @@ public class EntitySourceAPIController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "entity-save",
+			value = "source-save",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	public ModelAndView doSaveInstance(@RequestBody String payload){
@@ -168,7 +168,7 @@ public class EntitySourceAPIController extends BaseController{
 	}
 	
 	@RequestMapping(
-			value = "entities-query",
+			value = "sources-query",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
 	ModelAndView doSearchInstance(@RequestBody String payload){
