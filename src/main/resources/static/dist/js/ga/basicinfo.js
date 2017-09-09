@@ -12,6 +12,7 @@ var PageContext = (function ($, AdminLTE) {
 		$source_name : $('#source-name'),
 		$global_id : $('#global-id'),
 		$entity_code : $('#entity-code'),
+		$entity_name : $('#entity-name'),
 		$node_code : $('#node-code'),
 		$source_abbr : $('#source-abbr'),
 		$short_name : $('#short-name'),
@@ -38,7 +39,8 @@ var PageContext = (function ($, AdminLTE) {
 				success: function(response)
 				{	
 					if(response.meta.state == 'success'){
-						LocalInstance.$source_name.val(response.data.entity_name);
+						LocalInstance.$entity_name.val(response.data.entity_name);
+						LocalInstance.$source_name.val(response.data.source_name);
 						LocalInstance.$global_id.val(response.data.global_id);
 						LocalInstance.$entity_code.val(response.data.entity_code);
 						LocalInstance.$node_code.val(response.data.node_code);
@@ -72,24 +74,27 @@ var PageContext = (function ($, AdminLTE) {
 				
 		var instdata = {
 			sourceId : -9999,
-			name : _self.$source_name.val(),
-			globalId : _self.$global_id.val(),
-			entityCode : _self.$entity_code.val(),
-			nodeCode : _self.$node_code.val(),
+			entity_name : _self.$entity_name.val(),
+			source_name : _self.$source_name.val(),
+			global_id : _self.$global_id.val(),
+			entity_code : _self.$entity_code.val(),
+			node_code : _self.$node_code.val(),
 			abbr : _self.$source_abbr.val(),
-			shortName : _self.$short_name.val(),
-			binaryUrl : _self.$binary_url.val(),
-			serviceUrl : _self.$service_url.val(),
+			short_name : _self.$short_name.val(),
+			binary_url : _self.$binary_url.val(),
+			service_url : _self.$service_url.val(),
 			description : _self.$description.val(),
 			admin : _self.$admin.val(),
 			email : _self.$email.val()
 		};
 		
 		$.ajax({
-			url: "../ga/source-save.do",
+			url: "gpapi/ent-profile-save",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
+			contentType: "application/json", 
 			method: "POST",
-			data: instdata, // local instance id
+			data: JSON.stringify(instdata), // local instance id
 			success: function(response)
 			{	
 				// process message show it in header

@@ -54,7 +54,7 @@
 									<form class="form-horizontal">
 										<div class="box-body p-none">
 											<div class="form-group">
-												<label class="col-sm-2 control-label" for="source-name">Instance Name</label>
+												<label class="col-sm-2 control-label" for="source-name">Node Source Name</label>
 												<div class="col-sm-4">
 													<input type="text" placeholder="instance name" id="source-name" class="form-control">
 												</div>
@@ -69,6 +69,12 @@
 												<label class="col-sm-2 control-label" for="entity-code">Entity Code</label>
 												<div class="col-sm-3">
 													<input type="text" placeholder="entity code" disabled="" id="entity-code" class="form-control">
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="entity-name">Entity Name</label>
+												<div class="col-sm-3">
+													<input type="text" placeholder="entity name" disabled="" id="entity-name" class="form-control">
 												</div>
 											</div>
 											<div class="form-group">
@@ -261,12 +267,7 @@
 				</div> <!-- /.row -->
 			</section><!-- /.content -->
 		</div><!-- /.content-wrapper -->
-		<footer class="main-footer">
-			<div class="pull-right hidden-xs">
-			  <b>Version</b> 2.3.0
-			</div>
-			<strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
-		</footer>
+		<%@include file="../common/footer.jsp" %>
 	</div><!-- ./wrapper -->
 
     <!-- FastClick -->

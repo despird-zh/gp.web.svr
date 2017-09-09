@@ -139,22 +139,32 @@
     ErrMessage.appendResult = function(action_result,showdetail){
         var _self = this;
         var currDate = new Date();
-        if(action_result.state == 'success'){
+        console.log(action_result);
+        var arrayMsgs = []
+        
+        if(action_result.data !== null && typeof action_result.data === 'object'){
+	        for (var key in action_result.data) {
+	            if (action_result.data.hasOwnProperty(key)) {
+	            		arrayMsgs.push({"property" : key, "message" : action_result.data[key] })
+	            }
+	        }
+        }
+        if(action_result.meta.state == 'success'){
             if(action_result.detailmsgs == undefined || action_result.detailmsgs.length == 0){
                 // show message.
                 _self.appendMessage({
                     info : true,
                     timeText : currDate.toLocaleTimeString(),
-                    messageText : action_result.message,
-                    detailMessages : action_result.detailmsgs
+                    messageText : action_result.meta.message,
+                    detailMessages : arrayMsgs
                 }, true, showdetail);
             }else{
                 // show message.
                 _self.appendMessage({
                     warning : true,
                     timeText : currDate.toLocaleTimeString(),
-                    messageText : action_result.message,
-                    detailMessages : action_result.detailmsgs
+                    messageText : action_result.meta.message,
+                    detailMessages : arrayMsgs
                 }, true, showdetail);
             }
         }
@@ -163,8 +173,8 @@
             _self.appendMessage({
                 error : true,
                 timeText : currDate.toLocaleTimeString(),
-                messageText : action_result.message,
-                detailMessages : action_result.detailmsgs
+                messageText : action_result.meta.message,
+                detailMessages : arrayMsgs
             }, true,showdetail);
         }
     };

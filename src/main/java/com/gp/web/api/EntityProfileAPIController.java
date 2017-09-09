@@ -159,7 +159,7 @@ public class EntityProfileAPIController extends BaseController{
 			
 			boolean done = SourceFacade.saveSource(accesspoint, principal, instinfo);
 			
-			result = done ? ActionResult.success(getMessage("mesg.find.instance")) 
+			result = done ? ActionResult.success(getMessage("mesg.save.instance")) 
 					: ActionResult.success(getMessage("excp.save.instance")) ;
 			
 		} catch (CoreException ce) {
