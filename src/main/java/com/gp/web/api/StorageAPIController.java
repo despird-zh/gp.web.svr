@@ -214,9 +214,13 @@ public class StorageAPIController extends BaseController{
 		    value = "storage-remove", 
 		    method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doRemoveStorage(@RequestBody String payload){
+	public ModelAndView doRemoveStorage(@RequestBody(required=false) String payload){
 		
-		String storageId = super.readRequestParam("storage_id");
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+		
+		Map<String,String> paramap = this.readRequestJson(payload);
+		String storageId = paramap.get("storage_id");
 		GPrincipal principal = super.getPrincipal();
 		AccessPoint accesspoint = super.getAccessPoint(request);
 		ModelAndView mav = super.getJsonModelView();
@@ -239,5 +243,48 @@ public class StorageAPIController extends BaseController{
 		}
 		mav.addAllObjects(result.asMap());
 		return mav;
+	}
+	
+	@RequestMapping(value = "storage-info", 
+		    method = RequestMethod.POST,
+		    consumes = {"text/plain", "application/*"})
+	public ModelAndView doGetStorage(@RequestBody(required=false) String payload){
+		
+		if(LOGGER.isDebugEnabled())
+			ExWebUtils.dumpRequestAttributes(request);
+		
+		Map<String,String> paramap = this.readRequestJson(payload);
+		String storageId = paramap.get("storage_id");
+		Storage storage = new Storage();
+		// read trace information
+		GPrincipal principal = super.getPrincipal();
+		AccessPoint accesspoint = super.getAccessPoint(request);
+		ModelAndView mav = super.getJsonModelView();
+		ActionResult aresult = new ActionResult();
+		
+		InfoId<Integer> sid = IdKeys.getInfoId(IdKey.GP_STORAGES , Integer.valueOf(storageId));
+		try{
+			StorageInfo sinfo = StorageFacade.findStorage(accesspoint, principal, sid);
+			storage.setStorageId(sinfo.getInfoId().getId());
+			storage.setName(sinfo.getStorageName());
+			storage.setState(sinfo.getState());
+			storage.setType(sinfo.getStorageType());
+			storage.setDescription(sinfo.getDescription());
+			storage.setCapacity(sinfo.getCapacity().toString());
+			storage.setUsed(sinfo.getUsed().toString());
+			
+			Map<String, Object> setting = Storages.parseSetting(sinfo.getSettingJson());
+			storage.setStorePath((String)setting.get(StoreSetting.StorePath.name()));
+			storage.setHdfsHost((String)setting.get(StoreSetting.HdfsHost.name()));
+			storage.setHdfsPort((String)setting.get(StoreSetting.HdfsPort.name()));
+			aresult = ActionResult.success(getMessage("mesg.find.storage"));
+			aresult.setData(storage);
+			
+		}catch(CoreException ce){
+			aresult = super.wrapResult(ce);
+		}
+		
+		mav.addAllObjects(aresult.asMap());
+		return mav;	
 	}
 }

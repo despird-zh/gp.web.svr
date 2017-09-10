@@ -64,7 +64,7 @@ var PageContext = (function ($, AdminLTE) {
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             //"pagingType": "bootstrap_full_number",
             "order": [
                 [1, "asc"]
@@ -90,8 +90,8 @@ var PageContext = (function ($, AdminLTE) {
 				 'orderable': false,
 				 'render': function (data, type, full, meta){
 					 return '<div class="btn-group">' +
-					 '<button data-storage-id="'+full.storageId+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.LoadStorage(this);"><i class="fa fa-edit"></i></button>'+
-					 '<button data-storage-id="'+full.storageId+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveStorage(this);"><i class="fa fa-close"></i></button>'+
+					 '<button data-storage-id="'+full.storage_id+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.LoadStorage(this);"><i class="fa fa-edit"></i></button>'+
+					 '<button data-storage-id="'+full.storage_id+'" class="btn btn-primary btn-xs" onclick="javascript:PageContext.RemoveStorage(this);"><i class="fa fa-close"></i></button>'+
 					 '</div>';
 				 },
 				 'width' : 50
@@ -99,7 +99,7 @@ var PageContext = (function ($, AdminLTE) {
             ],
 
 			"columns" : [
-				{ data : 'storageId'},
+				{ data : 'storage_id'},
 				{ data : 'name'},
 				{ data : 'type'},
 				{ data : 'capacity'},
@@ -107,7 +107,7 @@ var PageContext = (function ($, AdminLTE) {
 				{ data : 'percent'},
 				{ data : 'state'},
 				{ data : 'description'},
-				{ data : 'storageId'}
+				{ data : 'storage_id'}
 			]
         });
 	};
@@ -117,13 +117,16 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var _sname = _self.$storage_name.val();
 		$.ajax({
-			url: "../ga/storage-search.do",
+			url: "gpapi/storages-query",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
-					storage_name : _sname,
-					storage_type : _self.$storage_type.val(),
-					storage_state : _self.$storage_state.val()
-				},
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
+					filter : _sname,
+					type : _self.$storage_type.val(),
+					state : _self.$storage_state.val()
+				}),
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();
@@ -199,26 +202,28 @@ var PageContext = (function ($, AdminLTE) {
 		
 		var _self = this, _url;
 		var storagedata = {
-			storageId : _self.$id.val(),
+			storage_id : _self.$id.val(),
 			name : _self.$name.val(),
 			type : _self.$type.val(),
 			capacity : _self.$capacity.val(),
 			used : _self.$used.val(),
 			state : _self.$state.val(),
 			description : _self.$description.val(),
-			storePath : _self.$store_path.val(),
-			hdfsHost : _self.$hdfs_host.val(),
-			hdfsPort : _self.$hdfs_port.val()
+			store_path : _self.$store_path.val(),
+			hdfs_host : _self.$hdfs_host.val(),
+			hdfs_port : _self.$hdfs_port.val()
 		};
 		
 		$.ajax({
-			url: "../ga/storage-save.do",
+			url: "gpapi/storage-save",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			method : "POST",
-			data: storagedata, // 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify(storagedata), // 
 			success: function(response)
 			{	
-				GPContext.AppendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.meta.state));
 			}
 		});
 	}
@@ -232,13 +237,16 @@ var PageContext = (function ($, AdminLTE) {
 		$('a[gpid="edit-tab"]').tab('show');
 		var storageId = $(e).attr('data-storage-id');
 		$.ajax({
-			url: "../ga/storage-info.do",
+			url: "gpapi/storage-info",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: {storage_id : storageId}, // 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({storage_id : storageId}), // 
 			success: function(response)
 			{	
 				var currDate = new Date();
-				if(response.state == 'success'){
+				if(response.meta.state == 'success'){
 					_self.$id.val(response.data.storageId);
 					_self.$name.val(response.data.name);
 					
@@ -266,12 +274,14 @@ var PageContext = (function ($, AdminLTE) {
 	StorageEdit.removeStorage = function(e){
 		var storageId = $(e).attr('data-storage-id');
 		$.ajax({
-			url: "../ga/storage-remove.do",
+			url: "gpapi/storage-remove",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			method : "POST",
-			data: {
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({
 				storage_id : storageId
-			}, // 
+			}), // 
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, true);
