@@ -60,22 +60,24 @@ var PageContext = (function ($, AdminLTE) {
 			used : '0',
 			state : _self.$state.val(),
 			description : _self.$description.val(),
-			storePath : _self.$store_path.val(),
-			hdfsHost : _self.$hdfs_host.val(),
-			hdfsPort : _self.$hdfs_port.val()
+			store_path : _self.$store_path.val(),
+			hdfs_host : _self.$hdfs_host.val(),
+			hdfs_port : _self.$hdfs_port.val()
 		};
 		
 		$.ajax({
-			url: "../ga/storage-add.do",
+			url: "gpapi/storage-add.do",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			method : "POST",
-			data: storagedata, // 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify(storagedata), // 
 			success: function(response)
 			{	
-				if('success' == response.state){
+				if('success' == response.meta.state){
 					_self.clear();
 				}
-				GPContext.AppendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.meta.state));
 			}
 		});
 	}

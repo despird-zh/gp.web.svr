@@ -42,27 +42,34 @@
 			
 			_self.$item_storage_sel.select2({
 			  ajax: {
-				url: "../common/storage-list.do",
-				dataType: 'json',
-				delay: 250,
+				url: "gpapi/common-storage-list",
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
+				method: "POST",
 				data: function (params) {
-				  return {
-					storage_name: params.term, // search term
-					pageNumber: params.page,
-					pageSize : 10
-				  };
-				},
-				processResults: function (data, params) {
+					  return JSON.stringify({
+						instance_name: params.term, // search term
+						page_number: params.page,
+						page_size : 10,
+						all_option : true
+					  });
+					},
+				processResults: function (result, params) {
+				  // parse the results into the format expected by Select2
+				  // since we are using custom formatting functions we do not need to
+				  // alter the remote JSON data, except to indicate that infinite
+				  // scrolling can be used
 				  params.page = params.page || 1;
 				   
-				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].key;
-					   data.items[i].text = data.items[i].value;
+				   for(var i = 0; i < result.data.length; i++){
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
-					  more: (params.page * 10) < data.total_count
+					  more: (params.page * 10) < result.total_count
 					}
 				  };
 				},
@@ -88,7 +95,7 @@
 			language : _self.$item_language.val(),
 			timezone : _self.$item_timezone.val(),
 			phone : _self.$item_phone.val(),
-			storageId : _self.$item_storage_sel.val(),
+			storage_id : _self.$item_storage_sel.val(),
 			pubcapacity: _self.$item_pub_capacity.val(),
 			pricapacity: _self.$item_pri_capacity.val()
 		};
@@ -117,16 +124,18 @@
 		var account_data = _self.getAccount();
 	
 		$.ajax({
-			url: "../ga/account-add.do",
+			url: "gpapi/user-add",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: account_data,
-			method : "POST",
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify(account_data),
 			success: function(response)
 			{	
-				if('success' == response.state){
+				if('success' == response.meta.state){
 					_self.clearAccount();
 				}
-				GPContext.AppendResult(response, ('success' != response.state));    
+				GPContext.AppendResult(response, ('success' != response.meta.state));    
 			}
 		});
 	};

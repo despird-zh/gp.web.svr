@@ -45,7 +45,7 @@ public class CommonAPIController extends BaseController{
 
 	static Logger LOGGER = LoggerFactory.getLogger(CommonAPIController.class);
 	
-	@RequestMapping(value = "common-entity-list",
+	@RequestMapping(value = "common-source-list",
 	method = RequestMethod.POST,
     consumes = {"text/plain", "application/*"})
 	public ModelAndView doGetEntityNodeList(@RequestBody String payload) throws WebException {

@@ -30,7 +30,7 @@ public class AccountAddController extends BaseController{
 	@RequestMapping("account-new")
 	public ModelAndView doInitial(){
 		
-		ModelAndView mav = getJspModelView("ga/config/account-new");
+		ModelAndView mav = getJspModelView("config/account-new");
 		Account account = new Account();
 		account.setPubcapacity(123l);
 		account.setPricapacity(125l);

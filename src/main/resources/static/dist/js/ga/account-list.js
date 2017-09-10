@@ -40,32 +40,34 @@
 			// initial select2 element
 			_self.$search_enode.select2({
 			  ajax: {
-				url: "../common/entity-list.do",
-				dataType: 'json',
-				delay: 250,
+				url: "gpapi/common-source-list",
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
+				method: "POST",
 				data: function (params) {
-				  return {
+				  return JSON.stringify({
 					instance_name: params.term, // search term
-					pageNumber: params.page,
-					pageSize : 10,
+					page_number: params.page,
+					page_size : 10,
 					all_option : true
-				  };
+				  });
 				},
-				processResults: function (data, params) {
+				processResults: function (result, params) {
 				  // parse the results into the format expected by Select2
 				  // since we are using custom formatting functions we do not need to
 				  // alter the remote JSON data, except to indicate that infinite
 				  // scrolling can be used
 				  params.page = params.page || 1;
 				   
-				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].key;
-					   data.items[i].text = data.items[i].value;
+				   for(var i = 0; i < result.data.length; i++){
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
-					  more: (params.page * 10) < data.total_count
+					  more: (params.page * 10) < result.total_count
 					}
 				  };
 				},
@@ -113,7 +115,7 @@
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             //"pagingType": "bootstrap_full_number",
             "order": [
                 [0, "asc"]
@@ -169,9 +171,9 @@
 				{ data : 'mobile'},
 				{ data : 'type'},
 				{ data : 'state'},
-				{ data : 'sourceName'},
-				{ data : 'createDate'},
-				{ data : 'userId'}
+				{ data : 'source_name'},
+				{ data : 'create_date'},
+				{ data : 'user_id'}
 			]
 			
         });
@@ -185,14 +187,17 @@
 		var _self = this;
 		
 		$.ajax({
-			url: "../ga/account-search.do",
+			url: "gpapi/users-query",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					uname : _self.$search_user.val(),
 					instance_id : _self.$search_enode.val(),
 					type : _self.$search_type.val(),
 					state : _self.$search_state.val()
-				},
+				}),
 			success: function(response)
 			{					  
 				_self.$table.dataTable().api().clear();
@@ -213,11 +218,14 @@
 	
 		var userid = $(e).attr('data-user-id');
 		$.ajax({
-			url: "../ga/account-delete.do",
+			url: "gpapi/user-remove",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: {
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({
 				user_id : userid
-			},
+			}),
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, true);  
@@ -272,25 +280,27 @@
 			
 			_self.$item_storage_sel.select2({
 			  ajax: {
-				url: "../common/storage-list.do",
-				dataType: 'json',
-				delay: 250,
+				url: "gpapi/common-storage-list",
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
+				method: "POST",
 				data: function (params) {
-				  return {
+				  return JSON.stringify({
 					storage_name: params.term, // search term
-					pageNumber: params.page,
-					pageSize : 10
-				  };
+					page_number: params.page,
+					page_size : 10
+				  });
 				},
-				processResults: function (data, params) {
+				processResults: function (result, params) {
 				  params.page = params.page || 1;
 				   
-				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].key;
-					   data.items[i].text = data.items[i].value;
+				   for(var i = 0; i < result.data.length; i++){
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
 					  more: (params.page * 10) < data.total_count
 					}
@@ -307,7 +317,7 @@
 	AccountEdit.getAccount = function(){
 		var _self = this;
 		return {
-			userId : _self.$item_uid.val(),
+			user_id : _self.$item_uid.val(),
 			account : _self.$item_account.html(),
 			name : _self.$item_name.val(),
 			type : _self.$item_type.val(),
@@ -319,7 +329,7 @@
 			language : _self.$item_language.val(),
 			timezone : _self.$item_timezone.val(),
 			phone : _self.$item_phone.val(),
-			storageId : _self.$item_storage_sel.val(),
+			storage_id : _self.$item_storage_sel.val(),
 			pubcapacity: _self.$item_pub_capacity.val(),
 			pricapacity: _self.$item_pri_capacity.val()
 		};
@@ -328,7 +338,7 @@
 	AccountEdit.setAccount = function(item){
 		var _self = this;
 		
-		_self.$item_uid.val(item.userId);
+		_self.$item_uid.val(item.user_id);
 		_self.$item_account.html(item.account);
 		_self.$item_name.val(item.name);
 
@@ -342,7 +352,7 @@
 		_self.$item_timezone.val(item.timezone).trigger('change');
 		
 		_self.$item_storage_sel.empty();
-		var dft_opt = '<option value="' + item.storageId + '" selected>' + item.storageName + '</option>';
+		var dft_opt = '<option value="' + item.storage_id + '" selected>' + item.storage_name + '</option>';
 		_self.$item_storage_sel.append(dft_opt).trigger('change');
 	
 		_self.$item_pub_capacity.val(item.pubcapacity),
@@ -354,9 +364,12 @@
 		var account_data = _self.getAccount();
 		
 		$.ajax({
-			url: "../ga/account-update.do",
+			url: "gpapi/user-save",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: account_data,
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify(account_data),
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, false);    
@@ -372,11 +385,14 @@
 		$('a[gpid="edit-tab"]').tab('show');
 		var uid = $(e).attr('data-user-id');
 		$.ajax({
-			url: "../ga/account-info.do",
+			url: "gpapi/user-info",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: {
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({
 				'user_id' : uid,
-				},
+				}),
 			success: function(response)
 			{	
 				_self.setAccount(response.data);

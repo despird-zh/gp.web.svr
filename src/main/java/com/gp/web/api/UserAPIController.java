@@ -196,7 +196,7 @@ public class UserAPIController extends BaseController{
 
 		}else{
 			try{
-				if(account.getImagePath().startsWith("data:image/")){
+				if(StringUtils.startsWith(account.getImagePath(), "data:image/")){
 					// process the avatar base64 image
 					String cachedImage = ServiceAPIHelper.cacheImage(account.getImagePath());
 					boolean done = ServiceAPIHelper.saveCachedImage(accesspoint, principal, Images.Category.USER_AVATAR.name(), cachedImage, cachedImage);
