@@ -22,6 +22,9 @@ public class WebCoreInitializer extends CoreInitializer{
 				CoreOperationHooker operHooker = new CoreOperationHooker(EventType.CORE);
 				EventDispatcher.getInstance().regEventHooker( operHooker );
 				
+				CoreSyncHooker syncHooker = new CoreSyncHooker();
+				EventDispatcher.getInstance().regEventHooker( syncHooker );
+				
 				sendFeedback(false, "WebCoreLifecycleHooker initial done");
 				
 			}

@@ -17,33 +17,33 @@ import com.gp.exception.RingEventException;
  *  @version 0.1 2016-08-07
  *  
  **/
-public class CoreOperationHooker extends EventHooker<EventPayload> {
+public class CoreSyncHooker extends EventHooker<EventPayload> {
 
-	public CoreOperationHooker(EventType eventType) {
-		super(eventType);
+	public CoreSyncHooker() {
+		super(EventType.SYNC);
 	}
 
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
 
 		CoreEventLoad coreload = (CoreEventLoad) payload;
+		
 		Operations operation = Operations.valueOf(coreload.getOperation());
 		try {
 			switch (operation) {
-			case UPDATE_BASIC_SETTING:
+			case UPDATE_ACCOUNT:
 				OperationFacade.handleUpdateAccount(coreload);
 				break;
 			case UPDATE_SYSOPTION:
 				OperationFacade.handleUpdateSysOption(coreload);
 				break;
 			default:
+				System.out.println("----xxxx"+operation);
 				break;
 			}
 		} catch (CoreException ce) {
 
 			throw new RingEventException("Fail to handle core event and persist operation log", ce);
 		}
-		coreload.setEventType(EventType.SYNC);
-		coreload.addChainPayload(coreload);
 	}
 }
