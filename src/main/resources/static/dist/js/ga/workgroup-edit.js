@@ -46,27 +46,29 @@ var PageContext = (function ($, window, undefined){
 			});
 			_self.$workgroup_storage.select2({
 			  ajax: {
-				url: "../common/storage-list.do",
-				dataType: 'json',
-				delay: 250,
+				url: "apapi/common-storage-list",
+				method: 'POST',
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
 				data: function (params) {
-				  return {
+				  return JSON.stringify({
 					storage_name: params.term, // search term
 					pageNumber: params.page,
 					pageSize : 10
-				  };
+				  });
 				},
-				processResults: function (data, params) {
+				processResults: function (result, params) {
 				  params.page = params.page || 1;
 				   
 				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].key;
-					   data.items[i].text = data.items[i].value;
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
-					  more: (params.page * 10) < data.total_count
+					  more: (params.page * 10) < result.total_count
 					}
 				  };
 				},
@@ -113,37 +115,39 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		var wdata = _self.getWorkgroup();
 		$.ajax({
-			url: '../ga/workgroup-info.do',
+			url: 'gpapi/wgroup-info',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { "wgroup_id" : _self.$workgroup_id.val()} ,
-			method : "POST",
+			contentType: "application/json", 
+			data: JSON.stringify({ "wgroup_id" : _self.$workgroup_id.val()} ),
 			success: function(response)
 			{	
-				if('success' != response.state)
+				if('success' != response.meta.state)
 					GPContext.AppendResult(response, true);
 				else{
 					GPContext.AppendResult(response, false);
 					var wg_data = response.data;
-					_self.$workgroup_id.val(wg_data.workgroupId);
-					_self.$workgroup_name.val(wg_data.workgroupName);				
+					_self.$workgroup_id.val(wg_data.workgroup_id);
+					_self.$workgroup_name.val(wg_data.workgroup_name);				
 					_self.$workgroup_state.val(wg_data.state).trigger('change');
 					_self.$workgroup_admin.val(wg_data.admin);
 					_self.$workgroup_manager.val(wg_data.manager);
-					_self.$workgroup_org_id.val(wg_data.orgId);
-					_self.$workgroup_org_name.val(wg_data.orgName);
+					_self.$workgroup_org_id.val(wg_data.org_id);
+					_self.$workgroup_org_name.val(wg_data.org_name);
 					_self.$workgroup_descr.val(wg_data.description);				
-					var dft_opt = '<option value="' + wg_data.storageId + '" selected>' + wg_data.storageName + '</option>';
+					var dft_opt = '<option value="' + wg_data.storage_id + '" selected>' + wg_data.storage_name + '</option>';
 					_self.$workgroup_storage.append(dft_opt).trigger('change');
-					_self.$workgroup_publish.prop("checked",wg_data.publishOn).uniform.update();
-					_self.$workgroup_netdisk.prop("checked",wg_data.netdiskOn).uniform.update();
+					_self.$workgroup_publish.prop("checked",wg_data.publish_on).uniform.update();
+					_self.$workgroup_netdisk.prop("checked",wg_data.netdisk_on).uniform.update();
 					_self.$workgroup_publish_capacity.val(wg_data.publishCapacity);
 					_self.$workgroup_netdisk_capacity.val(wg_data.netdiskCapacity);
-					_self.$workgroup_topic.prop("checked",wg_data.topicOn).uniform.update();
-					_self.$workgroup_share.prop("checked",wg_data.shareOn).uniform.update();
-					_self.$workgroup_link.prop("checked",wg_data.linkOn).uniform.update();
-					_self.$workgroup_task.prop("checked",wg_data.taskOn).uniform.update();
-					_self.$workgroup_weight.val(wg_data.taskWeight);
-					_self.$workgroup_image[0].src=wg_data.imagePath;
+					_self.$workgroup_topic.prop("checked",wg_data.topic_on).uniform.update();
+					_self.$workgroup_share.prop("checked",wg_data.share_on).uniform.update();
+					_self.$workgroup_link.prop("checked",wg_data.link_on).uniform.update();
+					_self.$workgroup_task.prop("checked",wg_data.task_on).uniform.update();
+					_self.$workgroup_weight.val(wg_data.task_weight);
+					_self.$workgroup_image[0].src=wg_data.image_path;
 				}
 			}
 		});
@@ -153,10 +157,12 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		var wdata = _self.getWorkgroup();
 		$.ajax({
-			url: '../ga/workgroup-update.do',
+			url: 'gpapi/workgroup-update',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: wdata,
-			method : "POST",
+			contentType: "application/json", 
+			data: JSON.stringify(wdata),
 			success: function(response)
 			{	
 				if('success' == response.state)
@@ -220,27 +226,30 @@ var PageContext = (function ($, window, undefined){
 			var _self = this;
 			_self.$member_search_enode.select2({
 			  ajax: {
-				url: "../common/entity-list.do",
-				dataType: 'json',
+				url: "gpapi/common-entity-list",
+				method: 'POST',
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
 				delay: 250,
 				data: function (params) {
-				  return {
+				  return JSON.stringify({
 					instance_name: params.term, // search term
-					pageNumber: params.page,
-					pageSize : 10
-				  };
+					page_number: params.page,
+					page_size : 10
+				  });
 				},
-				processResults: function (data, params) {
+				processResults: function (result, params) {
 				  params.page = params.page || 1;
 				   
-				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].key;
-					   data.items[i].text = data.items[i].value;
+				   for(var i = 0; i < result.data.length; i++){
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
-					  more: (params.page * 10) < data.total_count
+					  more: (params.page * 10) < result.total_count
 					}
 				  };
 				},
@@ -253,28 +262,31 @@ var PageContext = (function ($, window, undefined){
 			
 			_self.$member_avail_user.select2({
 			  ajax: {
-				url: "../common/avail-user-list.do",
-				dataType: 'json',
+				url: "gpapi/common-avail-user-list",
+				method: 'POST',
+				headers: {'Authorization': GPContext.Principal.token},
+				dataType : "json",
+				contentType: "application/json", 
 				delay: 250,
 				data: function (params) {
-				  return {
+				  return JSON.stringify({
 					account: params.term, // search term
 					wgroup_id : WorkgroupBasic.$workgroup_id.val(), // read from the workgroup create tab panel
-					pageNumber: params.page,
-					pageSize : 10
-				  };
+					page_number: params.page,
+					page_size : 10
+				  });
 				},
-				processResults: function (data, params) {
-				  params.page = params.page || 1;
+				processResults: function (result, params) {
+					params.page = params.page || 1;
 				   
-				   for(var i = 0; i < data.items.length; i++){
-					   data.items[i].id= data.items[i].account;
-					   data.items[i].text = data.items[i].name;
+				   for(var i = 0; i < result.data.length; i++){
+					   result.data[i].id= result.data[i].key;
+					   result.data[i].text = result.data[i].value;
 				   }
 				  return {
-					results: data.items,
+					results: result.data,
 					pagination: {
-					  more: (params.page * 10) < data.total_count
+					  more: (params.page * 10) < result.total_count
 					}
 				  };
 				},
@@ -345,7 +357,7 @@ var PageContext = (function ($, window, undefined){
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             "order": [
                 [0, "asc"]
             ], // set first column as a default sort by asc
@@ -380,7 +392,7 @@ var PageContext = (function ($, window, undefined){
 
 			"columns" : [
 				{ data : 'uname'},
-				{ data : 'sourceName'},
+				{ data : 'source_name'},
 				{ data : 'email'},
 				{ data : 'role'},
 				{ data : 'type'},
@@ -429,13 +441,16 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		
 		$.ajax({
-			url: "../ga/workgroup-member-search.do",
+			url: "gpapi/workgroup-member-search",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 					account : _self.$member_search_user.val(),
 					wgroup_id : WorkgroupBasic.$workgroup_id.val(),
 					enode_id : _self.$member_search_enode.val()
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$member_table.dataTable().api().clear();
@@ -447,13 +462,16 @@ var PageContext = (function ($, window, undefined){
 	WorkgroupMembers.saveMember = function(){
 		var _self = this;
 		$.ajax({
-			url: '../ga/workgroup-member-add.do',
+			url: 'gpapi/workgroup-member-add',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 				wgroup_id : WorkgroupBasic.$workgroup_id.val(),
 				account : _self.$member_account.val(),
 				role : _self.$member_role.val()
-			},
+			}),
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, (response.state != 'success'));
@@ -467,12 +485,15 @@ var PageContext = (function ($, window, undefined){
 		var user_account = $(el).attr('data-account');
 		var _row = _self.$member_table.dataTable().api().row($(el).parents('tr'));
 		$.ajax({
-			url: '../ga/workgroup-member-remove.do',
+			url: 'gpapi/workgroup-member-remove',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 				'wgroup_id' : WorkgroupBasic.$workgroup_id.val(),
 				'account' : user_account
-				},
+				}),
 			success: function(response)
 			{	
 				if(response.state == 'success'){
@@ -632,7 +653,7 @@ var PageContext = (function ($, window, undefined){
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             "order": [
                 [0, "asc"]
             ], // set first column as a default sort by asc
@@ -694,11 +715,14 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		
 		$.ajax({
-			url: "../ga/workgroup-group-member-search.do",
+			url: "gpapi/workgroup-group-member-search",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringigy({ 
 					group_id : _self.$group_id.val()
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$group_mbr_table.dataTable().api().clear();
@@ -713,12 +737,15 @@ var PageContext = (function ($, window, undefined){
 		var account = $(el).attr('data-account');
 		var _row = _self.$group_mbr_table.dataTable().api().row($(el).closest('tr'));
 		$.ajax({
-			url: "../ga/workgroup-group-member-remove.do",
+			url: "gpapi/workgroup-group-member-remove",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: {
+			contentType: "application/json", 
+			data: JSON.stringify({
 				'group_id' : _self.$group_id.val(),
 				'account' : account
-				},
+				}),
 			success: function(response)
 			{	
 				if('success' == response.state){
@@ -734,12 +761,15 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		
 		$.ajax({
-			url: "../ga/workgroup-group-search.do",
+			url: "gpapi/workgroup-group-search",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 					group : _self.$group_search_name.val(),
 					wgroup_id : WorkgroupBasic.$workgroup_id.val()
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$group_table.dataTable().api().clear();
@@ -753,12 +783,14 @@ var PageContext = (function ($, window, undefined){
 		var _self = this;
 		var _row = _self.$group_table.dataTable().api().row($(el).closest('tr'));
 		$.ajax({
-			url: "../ga/workgroup-group-remove.do",
+			url: "gpapi/workgroup-group-remove",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: {
+			contentType: "application/json", 
+			data: JSON.stringify({
 				'group_id' : $(el).attr('data-group-id')
-				},
-			method : "POST",
+				}),
 			success: function(response)
 			{	
 				if('success' == response.state){
@@ -772,17 +804,19 @@ var PageContext = (function ($, window, undefined){
 	WorkgroupGroups.saveGroup = function(){
 		var _self = this;
 		$.ajax({
-			url: '../ga/workgroup-group-add.do',
+			url: 'gpapi/workgroup-group-add',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 				'wgroup_id' : WorkgroupBasic.$workgroup_id.val(),
 				'group' : _self.$group_name.val(),
 				'description' : _self.$group_description.val()
-				},
-			method : "POST",
+				}),
 			success: function(response)
 			{	
-				GPContext.AppendResult(response, ('success' != response.state));
+				GPContext.AppendResult(response, ('success' != response.meta.state));
 			}
 		});
 	};
@@ -791,12 +825,15 @@ var PageContext = (function ($, window, undefined){
 		console.log(users_data);
 		var _self = this;
 		$.ajax({
-			url: '../ga/workgroup-group-member-add.do',
+			url: 'gpapi/workgroup-group-member-add',
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 				group_id : _self.$group_id.val(),
 				users : JSON.stringify(users_data)
-				},
+				}),
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, ('success' != response.state));

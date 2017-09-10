@@ -57,7 +57,7 @@ var PageContext = (function ($, AdminLTE) {
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             //"pagingType": "bootstrap_full_number",
             "order": [
                 [0, "asc"]
@@ -78,14 +78,14 @@ var PageContext = (function ($, AdminLTE) {
             ],
 
 			"columns" : [
-				{ data : 'sourceName'},
-				{ data : 'workgroupName'},
+				{ data : 'source_name'},
+				{ data : 'workgroup_name'},
 				{ data : 'state'},
 				{ data : 'admin'},
 				{ data : 'description'},
-				{ data : 'taskOn'},
-				{ data : 'createDate'},
-				{ data : 'workgroupId'}
+				{ data : 'task_on'},
+				{ data : 'create_date'},
+				{ data : 'workgroup_id'}
 			]
 			
         });
@@ -96,13 +96,16 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var _wname = _self.$search_wgroup_name.val();
 		$.ajax({
-			url: "../ga/workgroup-local-search.do",
+			url: "gpapi/wgroups-query",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
-					pageNumber : pageindex,
-					pageSize : 10,
+			contentType: "application/json", 
+			data: JSON.stringify({ 
+					page_number : pageindex,
+					page_size : 10,
 					wgroup_name : _wname
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();
@@ -115,7 +118,7 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var $tr = $(el).closest('tr');
 		var row_data = _self.$table.dataTable().api().row($tr).data();
-		var url = '../ga/workgroup-edit.do?wgroup_id='+row_data.workgroupId;
+		var url = 'workgroup-edit?wgroup_id='+row_data.workgroup_id;
 		window.location.href = url;
 	};
 	
@@ -180,7 +183,7 @@ var PageContext = (function ($, AdminLTE) {
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             //"pagingType": "bootstrap_full_number",
             "order": [
                 [1, "asc"]
@@ -208,15 +211,15 @@ var PageContext = (function ($, AdminLTE) {
             ],
 
 			"columns" : [
-				{ data : 'nodeCode'},
-				{ data : 'sourceName'},
-				{ data : 'workgroupName'},
+				{ data : 'node_code'},
+				{ data : 'source_name'},
+				{ data : 'workgroup_name'},
 				{ data : 'state'},
 				{ data : 'admin'},
 				{ data : 'description'},
-				{ data : 'taskOn'},
-				{ data : 'createDate'},
-				{ data : 'workgroupId'}
+				{ data : 'task_on'},
+				{ data : 'create_date'},
+				{ data : 'workgroup_id'}
 			]
 			
         });
@@ -227,13 +230,16 @@ var PageContext = (function ($, AdminLTE) {
 		var _self = this;
 		var _wname = _self.$search_wgroup_name.val();
 		$.ajax({
-			url: "../ga/workgroup-mirror-search.do",
+			url: "gpapi/workgroup-mirror-search",
+			method: 'POST',
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			data: JSON.stringify({ 
 					pageNumber : pageindex,
 					pageSize : 10,
 					wgroup_name : _wname
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();

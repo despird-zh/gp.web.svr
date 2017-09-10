@@ -79,7 +79,7 @@
                 [5, 10, 20, "All"] // change per page values here
             ],
             // set the initial value
-            "pageLength": 5,            
+            "pageLength": 10,            
             //"pagingType": "bootstrap_full_number",
             "order": [
                 [0, "asc"]
@@ -127,10 +127,12 @@
 		var _self = this;
 
 		$.ajax({
-			url: "../ga/account-ext-new.do",
+			url: "gpapi/ext-user-add",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			method : "POST",
-			data: {
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({
 					entity : _self.$ext_entity.html(),
 					node : _self.$ext_node.html(),
 					account : _self.$ext_account.html(),
@@ -138,7 +140,7 @@
 					name : _self.$ext_name.val(),
 					email : _self.$ext_email.html(),
 					mobile : _self.$ext_mobile.html(),
-				},
+				}),
 			success: function(response)
 			{	
 				GPContext.AppendResult(response, true);  
@@ -150,11 +152,14 @@
 		var _self = this;
 		var _scond = _self.$search_cond.val();
 		$.ajax({
-			url: "../ga/account-ext-search.do",
+			url: "gpapi/ext-users-query",
+			headers: {'Authorization': GPContext.Principal.token},
 			dataType : "json",
-			data: { 
+			contentType: "application/json", 
+			method: "POST",
+			data: JSON.stringify({ 
 					search_cond : _scond,
-				},
+				}),
 			success: function(response)
 			{	
 				_self.$table.dataTable().api().clear();

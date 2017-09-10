@@ -27,9 +27,9 @@ import com.gp.web.util.ExWebUtils;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
-public class ExternSourceAPIController extends BaseController{
+public class ExterSourceAPIController extends BaseController{
 
-	static Logger LOGGER = LoggerFactory.getLogger(ExternSourceAPIController.class);
+	static Logger LOGGER = LoggerFactory.getLogger(ExterSourceAPIController.class);
 
 	@RequestMapping(
 			value = "ext-sources-query",

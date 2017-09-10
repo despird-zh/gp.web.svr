@@ -159,7 +159,7 @@ public class UserAPIController extends BaseController{
 			value = "user-add",
 			method = RequestMethod.POST,
 		    consumes = {"text/plain", "application/*"})
-	public ModelAndView doNewAccount(@RequestBody String payload) throws WebException {
+	public ModelAndView doNewAccount(@RequestBody(required=false) String payload) throws WebException {
 		
 		if(LOGGER.isDebugEnabled())
 			ExWebUtils.dumpRequestAttributes(request);

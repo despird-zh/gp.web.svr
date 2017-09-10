@@ -178,12 +178,7 @@
             </div><!-- nav-tabs-custom -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-      <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-          <b>Version</b> 2.3.0
-        </div>
-        <strong>Copyright &copy; 2014-2015 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights reserved.
-      </footer>
+      <%@include file="../common/footer.jsp" %>
     </div><!-- ./wrapper -->
 
     <!-- FastClick -->
@@ -203,7 +198,7 @@
     <script src="${path_script}/app.ctx.js"></script>	
     <!-- GPress Err Message -->
 	<script src="${path_script}/message.js"></script>
-	<%@include file="../../dialog/select-user.jsp" %>
+	<%@include file="../dialog/select-user.jsp" %>
     <!-- AdminLTE for demo purposes -->
     <script src="${path_script}/ga/orghier.js"></script>
   </body>

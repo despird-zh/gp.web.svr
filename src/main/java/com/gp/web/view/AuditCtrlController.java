@@ -1,4 +1,4 @@
-package com.gp.web.view.audit;
+package com.gp.web.view;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

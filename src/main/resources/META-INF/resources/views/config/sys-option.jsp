@@ -75,7 +75,7 @@
 					</div><!-- nav-tabs-custom -->
 				</section><!-- /.content -->
 			</div><!-- /.content-wrapper -->
-      <%@include file="../common/footer.jsp" %>
+		<%@include file="../common/footer.jsp" %>
     </div><!-- ./wrapper -->
 
     <!-- FastClick -->

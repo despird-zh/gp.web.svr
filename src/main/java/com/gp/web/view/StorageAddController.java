@@ -1,4 +1,4 @@
-package com.gp.web.view.config;
+package com.gp.web.view;
 
 import java.util.HashMap;
 import java.util.Map;

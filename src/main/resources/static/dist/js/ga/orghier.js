@@ -43,9 +43,13 @@ var PageContext =(function ($, window, undefined){
 		                	'name': 'proton'
 						},
 						'data' : {
-							'url' : '../common/org-nodes.do',
+							'url' : 'gpapi/common-org-nodes',
+							'headers': {'Authorization': GPContext.Principal.token},
+							'dataType' : "json",
+							'contentType': "application/json", 
+							'method': 'POST',
 							'data' : function (node) {
-							  return { 'org_id' : node.id };
+							  return JSON.stringify({ 'org_id' : node.id });
 							}
 						}
 					},
