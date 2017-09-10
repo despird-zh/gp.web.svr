@@ -168,7 +168,7 @@ var PageContext =(function ($, window, undefined){
 	BaseSystemSetting.saveOptionValue = function(e){
 		var _$self = $(e);
 		var _opt_key = _$self.attr('data-opt-key');
-		var _opt_value = $('input[data-opt-key=' + _opt_key + ']').val();
+		var _opt_value = $('input[data-opt-key="' + _opt_key + '"]').val();
 		$.ajax({
 			url: "gpapi/sys-opt-save",
 			headers: {'Authorization': GPContext.Principal.token},
@@ -176,8 +176,8 @@ var PageContext =(function ($, window, undefined){
 			contentType: "application/json", 
 			method: "POST",
 			data: JSON.stringify({ 
-					option_key : _opt_key,
-					option_value : _opt_value
+					option : _opt_key,
+					value : _opt_value
 				}),
 			success: function(response)
 			{	
