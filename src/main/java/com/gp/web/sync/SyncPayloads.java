@@ -1,11 +1,13 @@
 package com.gp.web.sync;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 
 import com.google.common.collect.Sets;
+import com.gp.sync.message.SyncType;
 /**
  * static methods to clean the property map which inherit from {@link CoreEventPayload}  
  * the cleaned property map will be sent as sync command pay load.
@@ -23,9 +25,9 @@ public class SyncPayloads {
 	 * @param payload the paylod map to be clean
 	 * @param includeKeys the keys to reserve
 	 **/
-	public static void includePayload(Map<String, Object> payload, String ... includeKeys) {
+	public static Map<String, Object> includePayload(Map<String, Object> payload, String ... includeKeys) {
 		
-		cleanPayload(payload, true, includeKeys);
+		return cleanPayload(payload, true, includeKeys);
 	}
 	
 	/**
@@ -34,27 +36,32 @@ public class SyncPayloads {
 	 * @param payload the paylod map to be clean
 	 * @param excludeKeys the keys to remove
 	 **/
-	public static void excludePayload(Map<String, Object> payload, String ... excludeKeys) {
+	public static Map<String, Object> excludePayload(Map<String, Object> payload, String ... excludeKeys) {
 		
-		cleanPayload(payload, false, excludeKeys);
+		return cleanPayload(payload, false, excludeKeys);
 	}
 	
 	/**
 	 * Clean the payload of operation message 
 	 * 
 	 **/
-	private static void cleanPayload(Map<String, Object> payload, boolean include, String ... keys) {
+	private static Map<String, Object> cleanPayload(Map<String, Object> payload, boolean include, String ... keys) {
 		
-		if(MapUtils.isEmpty(payload)) return;
+		if(MapUtils.isEmpty(payload)) return Collections.emptyMap();
+		
+		Map<String, Object> rtv = Collections.emptyMap();
+		
 		Set<String> keylist = Sets.newHashSet(keys);
 		for(Map.Entry<String, Object> entry: payload.entrySet()) {
 			
-			if((!keylist.contains(entry.getKey())) && include ) {
-				payload.remove(entry.getKey());
+			if((keylist.contains(entry.getKey())) && include ) {
+				rtv.put(entry.getKey(), entry.getValue());
 			}
-			else if((keylist.contains(entry.getKey())) && !include ) {
-				payload.remove(entry.getKey());
+			else if((!keylist.contains(entry.getKey())) && !include ) {
+				rtv.put(entry.getKey(), entry.getValue());
 			}
 		}
+		
+		return rtv;
 	}
 }
