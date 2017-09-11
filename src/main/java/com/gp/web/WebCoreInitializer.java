@@ -5,6 +5,7 @@ import com.gp.disruptor.EventType;
 import com.gp.exception.BaseException;
 import com.gp.launcher.CoreInitializer;
 import com.gp.launcher.LifecycleHooker;
+import com.gp.web.sync.CoreSyncHooker;
 
 public class WebCoreInitializer extends CoreInitializer{
 

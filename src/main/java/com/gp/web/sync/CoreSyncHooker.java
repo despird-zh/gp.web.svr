@@ -1,4 +1,4 @@
-package com.gp.web;
+package com.gp.web.sync;
 
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
@@ -10,8 +10,7 @@ import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
 
 /**
- * Here generate the operation log for resource, member, workgroup
- * the trace logs are content of time line.
+ * This hooker monitor the SYNC {@link EventType}, then push a sync command to sync node
  * 
  *  @author gdiao 
  *  @version 0.1 2016-08-07
@@ -46,4 +45,6 @@ public class CoreSyncHooker extends EventHooker<EventPayload> {
 			throw new RingEventException("Fail to handle core event and persist operation log", ce);
 		}
 	}
+	
+	
 }
