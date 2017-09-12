@@ -44,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.csrf().disable()
 			.authorizeRequests()
-            .antMatchers("/", "/home", ServiceTokenFilter.FILTER_PREFIX + "/**").permitAll()
+            .antMatchers("/", "/home", ServiceTokenFilter.FILTER_PREFIX + "/**", "/debug").permitAll()
             .anyRequest().authenticated()
         .and()
         	.formLogin()

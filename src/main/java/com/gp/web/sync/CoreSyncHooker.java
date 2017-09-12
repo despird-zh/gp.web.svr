@@ -33,29 +33,29 @@ public class CoreSyncHooker extends EventHooker<EventPayload> {
 		CoreEventLoad coreload = (CoreEventLoad) payload;
 		
 		Operations operation = Operations.valueOf(coreload.getOperation());
-		SyncPushMessage pushMessage = convertToPushMessage(
-				operation,
-				coreload.getWorkgroupId(),
-				coreload.getObjectId(),
-				coreload.getPredicates(),
-				coreload.getTimestamp()
-				);
-		try {
-			switch (operation) {
-			case UPDATE_ACCOUNT:
-				OperationFacade.handleUpdateAccount(coreload);
-				break;
-			case UPDATE_SYSOPTION:
-				OperationFacade.handleUpdateSysOption(coreload);
-				break;
-			default:
-				System.out.println("----xxxx"+operation);
-				break;
-			}
-		} catch (CoreException ce) {
-
-			throw new RingEventException("Fail to handle core event and persist operation log", ce);
-		}
+//		SyncPushMessage pushMessage = convertToPushMessage(
+//				operation,
+//				coreload.getWorkgroupId(),
+//				coreload.getObjectId(),
+//				coreload.getPredicates(),
+//				coreload.getTimestamp()
+//				);
+//		try {
+//			switch (operation) {
+//			case UPDATE_ACCOUNT:
+//				//OperationFacade.handleUpdateAccount(coreload);
+//				break;
+//			case UPDATE_SYSOPTION:
+//				//OperationFacade.handleUpdateSysOption(coreload);
+//				break;
+//			default:
+//				System.out.println("----xxxx"+operation);
+//				break;
+//			}
+//		} catch (CoreException ce) {
+//
+//			throw new RingEventException("Fail to handle core event and persist operation log", ce);
+//		}
 	}
 	
 	/**

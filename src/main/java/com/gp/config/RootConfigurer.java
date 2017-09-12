@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.Ordered;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gp.core.AppContextHelper;
 import com.gp.core.AppContextListener;
+import com.gp.sync.client.SyncClientConfigurer;
 
 /**
  *
@@ -31,6 +33,9 @@ import com.gp.core.AppContextListener;
 @ComponentScan(basePackages = { 
 		"com.gp.core"
  })
+@Import({
+	SyncClientConfigurer.class
+})
 public class RootConfigurer {
 	
 	@Autowired(required=true)
