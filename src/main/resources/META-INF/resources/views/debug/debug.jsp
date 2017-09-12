@@ -34,7 +34,6 @@
 		</div>
    	</div>
   </div>
-  <script src="jquery.min.js"></script>
   <script>
   $(document).ready(function(){
 	  $('#login').bind('click', function(){
