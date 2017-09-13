@@ -71,7 +71,9 @@ public class CoreStarter implements ServletContextListener{
 		}
 	}
 	
-
+	/**
+	 * The delegate class 
+	 **/
 	class CoreFacadeDelegate implements CoreFacade{
 
 		@Override

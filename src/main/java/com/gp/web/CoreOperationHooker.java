@@ -43,6 +43,7 @@ public class CoreOperationHooker extends EventHooker<EventPayload> {
 
 			throw new RingEventException("Fail to handle core event and persist operation log", ce);
 		}
+		// hand over the sync event load to SyncEventHooker
 		coreload.setEventType(EventType.SYNC);
 		coreload.addChainPayload(coreload);
 	}
