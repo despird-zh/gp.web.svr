@@ -16,8 +16,8 @@
   <h1>Spring Boot - MVC web application debug page</h1>
   <hr>
 
-  <div class="form">
-  	<div style="margin-bottom:5px">
+  <div class="form" style="margin:15px;">
+  	<div style="margin-bottom:10px">
 		<table>
 			<tr>
 				<th> user</th> <td> <input id="user" value="dev1"/></td>
