@@ -46,7 +46,7 @@ import com.gp.svc.SourceService;
 import com.gp.svc.SystemService;
 import com.gp.svc.SecurityService;
 import com.gp.svc.info.UserExtInfo;
-import com.gp.util.ConfigSettingUtils;
+import com.gp.web.util.ConfigUtils;
 import com.gp.util.HashUtils;
 import com.gp.util.JwtTokenUtils;
 import com.gp.validate.ValidateMessage;
@@ -61,7 +61,7 @@ public class SecurityFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(SecurityFacade.class);
 	
-	public static final String HASH_SALT = ConfigSettingUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
+	public static final String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 		
 	private static SecurityService securityservice;
 

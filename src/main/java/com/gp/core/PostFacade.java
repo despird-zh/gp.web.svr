@@ -17,7 +17,7 @@ import com.gp.svc.PostService;
 import com.gp.svc.QuickFlowService;
 import com.gp.svc.info.PostExt;
 import com.gp.svc.info.UserLiteInfo;
-import com.gp.util.ConfigSettingUtils;
+import com.gp.web.util.ConfigUtils;
 import com.gp.validate.ValidateMessage;
 import com.gp.validate.ValidateUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -37,8 +37,8 @@ import java.util.Set;
 @Component
 public class PostFacade {
 
-    static String CachePath = ConfigSettingUtils.getSystemOption(SystemOptions.FILE_CACHE_PATH);
-    static String ImagePath = ConfigSettingUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
+    static String CachePath = ConfigUtils.getSystemOption(SystemOptions.FILE_CACHE_PATH);
+    static String ImagePath = ConfigUtils.getSystemOption(SystemOptions.IMAGE_CACHE_PATH);
 
     private static PostService postservice;
 
