@@ -57,7 +57,7 @@ public class ImagesAPIController extends BaseController{
 		String category = paramap.get("category");
 		ActionResult ars = new ActionResult();
 		try{
-			SysOptionInfo opt = MasterFacade.findSystemOption(accesspoint, principal, SystemOptions.PUBLIC_ACCESS);
+			SysOptionInfo opt = MasterFacade.findSystemOption( principal, SystemOptions.PUBLIC_ACCESS);
 			String image_cache = GeneralConfig.getString(SystemOptions.IMAGE_CACHE_PATH);
 			
 			List<Image> images = new ArrayList<Image>();		

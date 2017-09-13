@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.gp.common.AccessPoint;
 import com.gp.common.Operations;
 import com.gp.common.GPrincipal;
+import com.gp.common.GroupUsers;
 import com.gp.common.ServiceContext;
 import com.gp.exception.CoreException;
 import com.gp.exception.ServiceException;
@@ -91,29 +92,19 @@ public class MasterFacade {
 	/**
 	 * find the system options by group key 
 	 **/
-	public static SysOptionInfo findSystemOption(AccessPoint accesspoint,
+	public static SysOptionInfo findSystemOption(
 			GPrincipal principal,
 			String optionKey)throws CoreException{
 			
 		SysOptionInfo result = null;		
-		try(ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
-				Operations.FIND_SYSOPTIONS)){
+		try{
 			
-			String[][] parms = new String[][]{
-				{"optkey",optionKey}};	
-				
-			Map<?,?> parmap = ArrayUtils.toMap(parms);			
-			svcctx.addOperationPredicates(parmap);
-
+			ServiceContext svcctx = new ServiceContext(GroupUsers.PSEUDO_USER);
 			// query accounts information
 			result = systemservice.getOption(svcctx, optionKey);
 
 		} catch (Exception e) {
-		
-			ContextHelper.stampContext(e, "excp.find.sysopts");
-		}finally{
-			
-			ContextHelper.handleContext();
+			throw new CoreException("Fail get system option",e);
 		}
 		
 		return result;

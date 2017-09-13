@@ -54,7 +54,7 @@ public class JwtAuthenProvider implements AuthenticationProvider{
 				// not find any token in db
 				throw new BadCredentialsException("Invalid Token");
 			}else{
-				SysOptionInfo secret = MasterFacade.findSystemOption(accesspoint, GroupUsers.PSEUDO_USER, SystemOptions.SECURITY_JWT_SECRET);
+				SysOptionInfo secret = MasterFacade.findSystemOption( GroupUsers.PSEUDO_USER, SystemOptions.SECURITY_JWT_SECRET);
 				
 				if(!StringUtils.equals(tokenInfo.getJwtToken(), token)){
 					

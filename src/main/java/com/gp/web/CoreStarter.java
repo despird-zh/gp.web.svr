@@ -93,9 +93,9 @@ public class CoreStarter implements ServletContextListener{
 		}
 
 		@Override
-		public SysOptionInfo findSystemOption(AccessPoint accesspoint, GPrincipal principal, String optionKey) throws CoreException{
+		public SysOptionInfo findSystemOption(GPrincipal principal, String optionKey) throws CoreException{
 			
-			return MasterFacade.findSystemOption(accesspoint, principal, optionKey);
+			return MasterFacade.findSystemOption( principal, optionKey);
 		}
 
 		@Override

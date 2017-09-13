@@ -228,7 +228,7 @@ public class OrgHierAPIController extends BaseController{
 		ModelAndView mav = getJsonModelView();
 		
 		try{
-			SysOptionInfo opt = MasterFacade.findSystemOption(accesspoint, principal, SystemOptions.PUBLIC_ACCESS);
+			SysOptionInfo opt = MasterFacade.findSystemOption( principal, SystemOptions.PUBLIC_ACCESS);
 			
 			List<UserLiteInfo> ulist = OrgHierFacade.findOrgHierMembers(accesspoint, principal, nodeId);
 			for(UserLiteInfo uinfo : ulist){
