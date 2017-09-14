@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.gp.core.AppContextHelper;
 import com.gp.core.AppContextListener;
-import com.gp.sync.client.SyncClientConfigurer;
+import com.gp.sync.client.SyncNodeConfigurer;
 
 /**
  *
@@ -34,7 +34,7 @@ import com.gp.sync.client.SyncClientConfigurer;
 		"com.gp.core"
  })
 @Import({
-	SyncClientConfigurer.class
+	SyncNodeConfigurer.class
 })
 public class RootConfigurer {
 	

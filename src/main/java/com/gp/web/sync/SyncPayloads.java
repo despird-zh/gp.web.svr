@@ -1,13 +1,14 @@
 package com.gp.web.sync;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.collections.MapUtils;
 
 import com.google.common.collect.Sets;
-import com.gp.sync.message.SyncType;
+import com.gp.sync.SyncType;
 /**
  * static methods to clean the property map which inherit from {@link CoreEventPayload}  
  * the cleaned property map will be sent as sync command pay load.
@@ -49,7 +50,7 @@ public class SyncPayloads {
 		
 		if(MapUtils.isEmpty(payload)) return Collections.emptyMap();
 		
-		Map<String, Object> rtv = Collections.emptyMap();
+		Map<String, Object> rtv = new HashMap<String, Object>();
 		
 		Set<String> keylist = Sets.newHashSet(keys);
 		for(Map.Entry<String, Object> entry: payload.entrySet()) {

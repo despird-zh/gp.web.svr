@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.sync.client.SyncNodeClient;
 import com.gp.sync.message.SyncPushMessage;
+import com.gp.sync.message.SyncTriggerMessage;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.sync.SyncPayloads;
@@ -25,13 +26,13 @@ public class DevDebugAPIController extends BaseController{
 		ModelAndView rtv= super.getJsonModelView();
 		
 		SyncNodeClient client = SyncNodeClient.getInstance();
-		client.setAuthenSetting("dev1", "1", "http://localhost:8081/gpapi/authenticate", "web.client");
-		SyncPushMessage pushMessage = new SyncPushMessage();
+		client.setAuthenSetting("dev1", "1", "http://localhost:8081", "web.client");
+		SyncTriggerMessage pushMessage = new SyncTriggerMessage();
 		pushMessage.setNode("xx");
 		pushMessage.setTraceCode("xxxxx");
 		pushMessage.setPayload("{}sss");
 		pushMessage.setType(SyncPayloads.CMD_UPD_SOURCE);
-		client.pushMessage("http://localhost:8081/gpapi/sync-push",pushMessage);
+		client.sendMessage("/gpapi/sync-push",pushMessage);
 		
 		return rtv;
 	}
