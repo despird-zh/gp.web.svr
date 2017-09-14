@@ -3,6 +3,9 @@ package com.gp.config;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -34,10 +37,19 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 	 * assembly the initializer to sort the LifecycleHooker with priority. 
 	 **/
 	@Bean 
-	ServletListenerRegistrationBean<CoreStarter> coreStarterListener(){
-		ServletListenerRegistrationBean<CoreStarter> listenerReg = new ServletListenerRegistrationBean<CoreStarter>();
-		
-		listenerReg.setListener(new CoreStarter());
+	ServletListenerRegistrationBean<ServletContextListener> coreStarterListener(){
+		ServletListenerRegistrationBean<ServletContextListener> listenerReg = new ServletListenerRegistrationBean<ServletContextListener>();
+		ServletContextListener coreListener = new  ServletContextListener() {
+
+			@Override
+			public void contextInitialized(ServletContextEvent sce) {}
+
+			@Override
+			public void contextDestroyed(ServletContextEvent sce) {
+				CoreStarter.shutdown();
+			}
+		};
+		listenerReg.setListener(coreListener);
 		return listenerReg;
 	}
 
@@ -137,4 +149,6 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
             fileSizeThreshold
         );
     }
+    
+ 
 }

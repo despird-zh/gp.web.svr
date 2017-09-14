@@ -57,7 +57,7 @@ public class GPressAppInitializer implements ServletContextInitializer {
         servletContext.addListener(new ContextLoaderListener(rootContext));
 
         // Add context listeners
-        servletContext.addListener(new CoreStarter());        
+        //servletContext.addListener(new CoreStarter());        
         servletContext.addListener(new RequestContextListener());
 
         // Add encoding filter

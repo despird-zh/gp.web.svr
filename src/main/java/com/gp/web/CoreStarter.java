@@ -33,31 +33,29 @@ import com.gp.info.InfoId;
  * @version 0.1 2015-12-12
  * 
  **/
-public class CoreStarter implements ServletContextListener{
+public class CoreStarter{
 	
 	static Logger LOGGER = LoggerFactory.getLogger(CoreStarter.class);
 
-	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
-		LOGGER.debug("ServletContextListener:CoreStarter destroying");
+
+	public static void shutdown() {
+		LOGGER.debug("CoreStarter destroying");
 		try {
 
 			CoreEngine.shutdown();
 			LOGGER.debug("CoreEngine shutdown");
 			
 		} catch (BaseException e) {
-			LOGGER.debug("fail to shutdown CoreFacade.",e);
+			LOGGER.debug("fail to shutdown.",e);
 		}
 	}
 	
-	@Override
-	public void contextInitialized(ServletContextEvent arg0) {
-		LOGGER.debug("ServletContextListener:CoreStarter starting");
+
+	public static void startup() {
+		LOGGER.debug("CoreStarter starting");
 		try {
 			
 			// register the core event hooker with customized one
-			//CoreHooker coreHooker = new CoreWebHooker();
-			//EventDispatcher.getInstance().regEventHooker(coreHooker);
 			CoreAuditHandler coreHandler = new CoreAuditHandler();
 			EventDispatcher.getInstance().regEventHandler(coreHandler);
 			// initialize the engine
@@ -65,7 +63,7 @@ public class CoreStarter implements ServletContextListener{
 			CoreEngine.initial(coreFacade);
 			LOGGER.debug("CoreEngine initialized");
 			CoreEngine.startup();
-			LOGGER.debug("CoreEngine startup");
+			LOGGER.debug("CoreEngine startup done");
 		} catch (BaseException e) {
 			LOGGER.debug("fail to startup CoreFacade.",e);
 		}
@@ -74,7 +72,7 @@ public class CoreStarter implements ServletContextListener{
 	/**
 	 * The delegate class 
 	 **/
-	class CoreFacadeDelegate implements CoreFacade{
+	static class CoreFacadeDelegate implements CoreFacade{
 
 		@Override
 		public InfoId<Long> persistAudit(AuditInfo operaudit) throws CoreException {

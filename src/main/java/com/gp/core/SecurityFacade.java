@@ -61,7 +61,7 @@ public class SecurityFacade {
 	
 	static Logger LOGGER = LoggerFactory.getLogger(SecurityFacade.class);
 	
-	public static final String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
+	//public static final String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 		
 	private static SecurityService securityservice;
 
@@ -145,7 +145,7 @@ public class SecurityFacade {
 	public static boolean saveAccount(AccessPoint accesspoint,
 			GPrincipal principal,
 			UserInfo uinfo, Long pubcapacity, Long pricapacity)throws CoreException{
-
+		String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 		Boolean result = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.UPDATE_ACCOUNT)){
@@ -197,7 +197,7 @@ public class SecurityFacade {
 				coreexcp.addValidateMessages(vmsg);
 				throw coreexcp;
 			}
-			
+			String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 			// encrypt the password
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
 			uinfo.setPassword(hashpwd);
@@ -240,7 +240,7 @@ public class SecurityFacade {
 		InfoId<Long> result = null;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.NEW_ACCOUNT)){
-			
+			String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 			svcctx.addOperationPredicates(uinfo);
 			// encrypt the password
 			String hashpwd = HashUtils.hashEncodeBase64(uinfo.getPassword(), HASH_SALT);
@@ -377,7 +377,7 @@ public class SecurityFacade {
 		boolean pass = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.AUTHENTICATE)){
-			
+			String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 			svcctx.addOperationPredicates(new DefaultKeyValue("password", password));
 			byte[] pwdbytes;
 			try {
@@ -462,7 +462,7 @@ public class SecurityFacade {
 		Boolean gresult = false;
 		try (ServiceContext svcctx = ContextHelper.beginServiceContext(principal, accesspoint,
 				Operations.CHANGE_PWD)){
-			
+			String HASH_SALT = ConfigUtils.getSystemOption(SystemOptions.SECURITY_HASH_SALT);
 			String hashpwd = HashUtils.hashEncodeBase64(password, HASH_SALT);
 			// password match means logon success reset the retry_times
 			gresult = securityservice.changePassword(svcctx, account, hashpwd);

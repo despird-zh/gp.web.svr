@@ -39,12 +39,12 @@ public class WebCompConfigurer {
 	/**
 	 * The CoreStart listener 
 	 **/
-	@Bean ServletListenerRegistrationBean<CoreStarter> coreStarterListener(){
-		ServletListenerRegistrationBean<CoreStarter> listenerReg = new ServletListenerRegistrationBean<CoreStarter>();
-		
-		listenerReg.setListener(new CoreStarter());
-		return listenerReg;
-	}
+//	@Bean ServletListenerRegistrationBean<CoreStarter> coreStarterListener(){
+//		ServletListenerRegistrationBean<CoreStarter> listenerReg = new ServletListenerRegistrationBean<CoreStarter>();
+//		
+//		listenerReg.setListener(new CoreStarter());
+//		return listenerReg;
+//	}
 	
 	/**
 	 * The Request Context Listener, currently comment it off
