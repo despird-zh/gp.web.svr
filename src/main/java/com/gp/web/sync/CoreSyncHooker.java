@@ -2,10 +2,12 @@ package com.gp.web.sync;
 
 import java.util.Map;
 
+import com.gp.common.GPrincipal;
 import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
 import com.gp.core.OperationFacade;
+import com.gp.core.SyncFacade;
 import com.gp.disruptor.EventHooker;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
@@ -33,29 +35,27 @@ public class CoreSyncHooker extends EventHooker<EventPayload> {
 		CoreEventLoad coreload = (CoreEventLoad) payload;
 		
 		Operations operation = Operations.valueOf(coreload.getOperation());
-//		SyncPushMessage pushMessage = convertToPushMessage(
-//				operation,
-//				coreload.getWorkgroupId(),
-//				coreload.getObjectId(),
-//				coreload.getPredicates(),
-//				coreload.getTimestamp()
-//				);
-//		try {
-//			switch (operation) {
-//			case UPDATE_ACCOUNT:
-//				//OperationFacade.handleUpdateAccount(coreload);
-//				break;
-//			case UPDATE_SYSOPTION:
-//				//OperationFacade.handleUpdateSysOption(coreload);
-//				break;
-//			default:
-//				System.out.println("----xxxx"+operation);
-//				break;
-//			}
-//		} catch (CoreException ce) {
-//
-//			throw new RingEventException("Fail to handle core event and persist operation log", ce);
-//		}
+		SyncPushMessage pushMessage = convertToPushMessage(
+				operation,
+				coreload.getWorkgroupId(),
+				coreload.getObjectId(),
+				coreload.getPredicates(),
+				coreload.getTimestamp()
+				);
+		GPrincipal princ = new GPrincipal(coreload.getOperator());
+		try {
+			switch (operation) {
+			case UPDATE_ACCOUNT:
+				SyncFacade.addSyncMsgOut(princ, pushMessage);
+				break;
+			default:
+				SyncFacade.addSyncMsgOut(princ, pushMessage);
+				break;
+			}
+		} catch (CoreException ce) {
+
+			throw new RingEventException("Fail to handle core event and persist operation log", ce);
+		}
 	}
 	
 	/**

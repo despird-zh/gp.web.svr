@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.gp.sync.client.SyncHttpClient;
+import com.gp.sync.client.SyncNodeClient;
 import com.gp.sync.message.SyncPushMessage;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceTokenFilter;
@@ -24,7 +24,7 @@ public class DevDebugAPIController extends BaseController{
 		
 		ModelAndView rtv= super.getJsonModelView();
 		
-		SyncHttpClient client = SyncHttpClient.getInstance();
+		SyncNodeClient client = SyncNodeClient.getInstance();
 		client.setAuthenSetting("dev1", "1", "http://localhost:8081/gpapi/authenticate", "web.client");
 		SyncPushMessage pushMessage = new SyncPushMessage();
 		pushMessage.setNode("xx");
