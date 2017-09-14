@@ -1,4 +1,4 @@
-package com.gp.web.sync;
+package com.gp.web;
 
 import java.util.Map;
 
@@ -14,6 +14,7 @@ import com.gp.disruptor.EventType;
 import com.gp.exception.CoreException;
 import com.gp.exception.RingEventException;
 import com.gp.info.InfoId;
+import com.gp.sync.SyncPayloads;
 import com.gp.sync.client.SyncNodeClient;
 import com.gp.sync.message.SyncPushMessage;
 import com.gp.sync.message.SyncTriggerMessage;

@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gp.sync.client.SyncNodeClient;
-import com.gp.sync.message.SyncPushMessage;
 import com.gp.sync.message.SyncTriggerMessage;
 import com.gp.web.BaseController;
 import com.gp.web.servlet.ServiceTokenFilter;
-import com.gp.web.sync.SyncPayloads;
 
 @Controller
 @RequestMapping(ServiceTokenFilter.FILTER_PREFIX)
@@ -31,7 +29,7 @@ public class DevDebugAPIController extends BaseController{
 		pushMessage.setNode("xx");
 		pushMessage.setTraceCode("xxxxx");
 		pushMessage.setPayload("{}sss");
-		pushMessage.setType(SyncPayloads.CMD_UPD_SOURCE);
+		pushMessage.setType(com.gp.sync.SyncPayloads.CMD_UPD_SOURCE);
 		client.sendMessage("/gpapi/sync-push",pushMessage);
 		
 		return rtv;

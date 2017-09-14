@@ -14,7 +14,6 @@ import com.gp.launcher.LifecycleHooker;
 import com.gp.sync.client.SyncNodeAdapter;
 import com.gp.sync.client.SyncNodeClient;
 import com.gp.sync.message.SyncTriggerMessage;
-import com.gp.web.sync.CoreSyncHooker;
 import com.gp.web.util.ConfigUtils;
 
 public class WebCoreInitializer extends CoreInitializer{
