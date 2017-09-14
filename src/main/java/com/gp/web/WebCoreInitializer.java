@@ -62,7 +62,7 @@ public class WebCoreInitializer extends CoreInitializer{
 	class SyncNodeDelegate implements SyncNodeAdapter{
 
 		@Override
-		public InfoId<?> persistMessage(SyncTriggerMessage triggerMsg) {
+		public InfoId<Long> persistOutMessage(SyncTriggerMessage triggerMsg) {
 			GPrincipal princ = GroupUsers.PSEUDO_USER;
 			InfoId<Long> outId = null;
 			try {
@@ -77,7 +77,7 @@ public class WebCoreInitializer extends CoreInitializer{
 		}
 		
 		@Override
-		public void changeMessageState(InfoId<Long> outId, SyncState state) {
+		public void changeOutMessageState(InfoId<Long> outId, SyncState state) {
 			GPrincipal princ = GroupUsers.PSEUDO_USER;
 			try {
 				SyncFacade.saveSyncMsgOut(princ, outId, state);
