@@ -6,7 +6,6 @@ import com.gp.common.GPrincipal;
 import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
-import com.gp.core.OperationFacade;
 import com.gp.core.SyncFacade;
 import com.gp.disruptor.EventHooker;
 import com.gp.disruptor.EventPayload;
@@ -16,7 +15,6 @@ import com.gp.exception.RingEventException;
 import com.gp.info.InfoId;
 import com.gp.sync.SyncPayloads;
 import com.gp.sync.client.SyncNodeClient;
-import com.gp.sync.message.SyncPushMessage;
 import com.gp.sync.message.SyncTriggerMessage;
 
 /**
