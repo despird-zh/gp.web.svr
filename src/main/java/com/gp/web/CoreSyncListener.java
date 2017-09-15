@@ -7,7 +7,7 @@ import com.gp.common.IdKeys;
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
 import com.gp.core.SyncFacade;
-import com.gp.disruptor.EventHooker;
+import com.gp.disruptor.EventListener;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
 import com.gp.exception.CoreException;
@@ -24,9 +24,9 @@ import com.gp.sync.message.SyncTriggerMessage;
  *  @version 0.1 2016-08-07
  *  
  **/
-public class CoreSyncHooker extends EventHooker<EventPayload> {
+public class CoreSyncListener extends EventListener<EventPayload> {
 
-	public CoreSyncHooker() {
+	public CoreSyncListener() {
 		super(EventType.SYNC);
 	}
 

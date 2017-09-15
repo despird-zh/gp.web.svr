@@ -10,7 +10,7 @@ import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
 import com.gp.launcher.CoreInitializer;
-import com.gp.launcher.LifecycleHooker;
+import com.gp.launcher.LifecycleListener;
 import com.gp.sync.client.SyncNodeAdapter;
 import com.gp.sync.client.SyncNodeClient;
 import com.gp.sync.message.SyncTriggerMessage;
@@ -23,17 +23,17 @@ public class WebCoreInitializer extends CoreInitializer{
 	}
 
 	@Override
-	public LifecycleHooker setupLifecycleHooker() throws BaseException {
-		return new LifecycleHooker("WebCoreLifecycleHooker", 10){
+	public LifecycleListener setupLifecycleHooker() throws BaseException {
+		return new LifecycleListener("WebCoreLifecycleHooker", 10){
 
 			@Override
 			public void initial() {
 				
 				// Register the operation hooker to generate operation log
-				CoreOperationHooker operHooker = new CoreOperationHooker(EventType.CORE);
+				CoreOperationListener operHooker = new CoreOperationListener(EventType.CORE);
 				EventDispatcher.getInstance().regEventHooker( operHooker );
 				// Register sync hooker to persist and notify sync push 
-				CoreSyncHooker syncHooker = new CoreSyncHooker();
+				CoreSyncListener syncHooker = new CoreSyncListener();
 				EventDispatcher.getInstance().regEventHooker( syncHooker );
 				
 				sendFeedback(false, "WebCoreLifecycleHooker initial done");

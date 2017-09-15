@@ -3,7 +3,7 @@ package com.gp.web;
 import com.gp.common.Operations;
 import com.gp.core.CoreEventLoad;
 import com.gp.core.OperationFacade;
-import com.gp.disruptor.EventHooker;
+import com.gp.disruptor.EventListener;
 import com.gp.disruptor.EventPayload;
 import com.gp.disruptor.EventType;
 import com.gp.exception.CoreException;
@@ -17,9 +17,9 @@ import com.gp.exception.RingEventException;
  *  @version 0.1 2016-08-07
  *  
  **/
-public class CoreOperationHooker extends EventHooker<EventPayload> {
+public class CoreOperationListener extends EventListener<EventPayload> {
 
-	public CoreOperationHooker(EventType eventType) {
+	public CoreOperationListener(EventType eventType) {
 		super(eventType);
 	}
 
