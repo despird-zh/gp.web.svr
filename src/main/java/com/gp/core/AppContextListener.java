@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
-import com.gp.web.CoreStarter;
+import com.gp.web.WebCoreLauncher;
 
 /**
  * This is just a place holder, it do nothing. 
@@ -23,6 +23,6 @@ public class AppContextListener implements ApplicationListener<ContextRefreshedE
 		if(LOGGER.isDebugEnabled())
 			LOGGER.debug("ApplicationEvent:ContextRefreshedEvent trigger startup steps");
 		
-		CoreStarter.startup();
+		WebCoreLauncher.getInstance(WebCoreLauncher.class).engineOn();
     }
 }

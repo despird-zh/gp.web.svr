@@ -21,7 +21,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.gp.config.ServiceConfigurer;
 import com.gp.config.WebMVCConfigurer;
-import com.gp.web.CoreStarter;
+import com.gp.web.WebCoreLauncher;
 import com.gp.web.servlet.ImageFilter;
 import com.gp.web.servlet.ServiceTokenFilter;
 import com.gp.web.servlet.TransferServlet;

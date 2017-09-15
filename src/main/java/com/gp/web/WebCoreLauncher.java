@@ -2,9 +2,6 @@ package com.gp.web;
 
 import java.util.Locale;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +22,7 @@ import com.gp.disruptor.EventDispatcher;
 import com.gp.exception.BaseException;
 import com.gp.exception.CoreException;
 import com.gp.info.InfoId;
+import com.gp.launcher.CoreLauncher;
 
 /**
  * the core starter of application event engine.
@@ -33,12 +31,12 @@ import com.gp.info.InfoId;
  * @version 0.1 2015-12-12
  * 
  **/
-public class CoreStarter{
+public class WebCoreLauncher extends CoreLauncher{
 	
-	static Logger LOGGER = LoggerFactory.getLogger(CoreStarter.class);
+	static Logger LOGGER = LoggerFactory.getLogger(WebCoreLauncher.class);
 
-
-	public static void shutdown() {
+	@Override
+	public void engineOff() {
 		LOGGER.debug("CoreStarter destroying");
 		try {
 
@@ -50,8 +48,8 @@ public class CoreStarter{
 		}
 	}
 	
-
-	public static void startup() {
+	@Override
+	public void engineOn() {
 		LOGGER.debug("CoreStarter starting");
 		try {
 			

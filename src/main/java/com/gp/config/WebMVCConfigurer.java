@@ -19,7 +19,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.gp.web.CoreStarter;
+import com.gp.web.WebCoreLauncher;
 import com.gp.web.DatabaseMessageSource;
 import com.gp.web.PrincipalLocaleResolver;
 import com.gp.web.servlet.ImageFilter;
@@ -46,7 +46,7 @@ public class WebMVCConfigurer extends WebMvcConfigurerAdapter {
 
 			@Override
 			public void contextDestroyed(ServletContextEvent sce) {
-				CoreStarter.shutdown();
+				WebCoreLauncher.getInstance(WebCoreLauncher.class).engineOff();
 			}
 		};
 		listenerReg.setListener(coreListener);
